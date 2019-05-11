@@ -31,13 +31,16 @@
         @include('partials.footer')
       </div>
     </div>
+      <!-- SweetAlert2 -->
+      <script src="sweetalert2.min.js"></script>
+      <link rel="stylesheet" href="sweetalert2.min.css">
       <!-- Argon Scripts -->
       <!-- Core -->
       <script src="{{ URL::to('vendor/jquery/dist/jquery.min.js') }}"></script>
       <script src="{{ URL::to('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
       <!-- Optional JS -->
-      <script src="{{ URL::to('vendor/chart.js/dist/Chart.min.js') }}"></script>
-      <script src="{{ URL::to('vendor/chart.js/dist/Chart.extension.js') }}"></script>
+      {{-- <script src="{{ URL::to('vendor/chart.js/dist/Chart.min.js') }}"></script>
+      <script src="{{ URL::to('vendor/chart.js/dist/Chart.extension.js') }}"></script> --}}
       <!-- Argon JS -->
       <script src="{{ URL::to('js/argon.js?v=1.0.0') }}"></script>
       {{--@include('partials.errors')
