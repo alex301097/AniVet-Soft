@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
      protected $fillable = ['rol_id','cedula','nombre','apellidos','nacionalidad','fecha_nacimiento','sexo',
-                            'edad','estado_civil','codigo','email','password','telefono','direccion'];
+                            'estado_civil','codigo','email','password','telefono','direccion'];
 
     /**
      * The attributes that should be hidden for arrays.

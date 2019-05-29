@@ -16,44 +16,48 @@
             <i class="ni ni-bell-55"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right" aria-labelledby="navbar-default_dropdown_1">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Acción</a>
+            <a class="dropdown-item" href="#">Otra acción</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="#">Alguna otra acción</a>
           </div>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" src="{{ URL::to('img/theme/team-1-800x800.jpg') }}">
+                @if (empty(auth()->user()->imagen))
+                  <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar rounded-circle" style="width:35px; height:35px; top:35px; left:35px;"alt="User Avatar">
+                @else
+                  <img class="user-avatar rounded-circle" src="{{ url('imgPerfiles/'.Auth::user()->imagen) }}" style="width:35px; height:35px; top:35px; left:35px;"alt="User Avatar">
+                @endif
               </span>
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
             <div class=" dropdown-header noti-title">
-              <h6 class="text-overflow m-0">Bienvenido!</h6>
+              <h6 class="text-overflow m-0">Bienvenido
+                @if (auth()->user())
+                  {{auth()->user()->nombre}} {{auth()->user()->apellidos}}</h6>
+                @endif
+                !
             </div>
-            <a href="./examples/profile.html" class="dropdown-item">
+            <a href="#" class="dropdown-item">
               <i class="ni ni-single-02"></i>
               <span>Mi perfil</span>
             </a>
-            <a href="./examples/profile.html" class="dropdown-item">
+            <a href="#" class="dropdown-item">
               <i class="ni ni-settings-gear-65"></i>
-              <span>Configuraciones</span>
+              <span>Configuración</span>
             </a>
-            <a href="./examples/profile.html" class="dropdown-item">
-              <i class="ni ni-calendar-grid-58"></i>
-              <span>Actividades</span>
-            </a>
-            <a href="./examples/profile.html" class="dropdown-item">
+            <a href="#" class="dropdown-item">
               <i class="ni ni-support-16"></i>
               <span>Soporte</span>
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               <i class="ni ni-user-run"></i>
-              <span>Cerrar sesion</span>
+              <span>Cerrar sesión</span>
             </a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
@@ -82,7 +86,7 @@
         <!-- Form -->
         <form class="mt-4 mb-3 d-md-none">
           <div class="input-group input-group-rounded input-group-merge">
-            <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Search" aria-label="Search">
+            <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Buscar" aria-label="Search">
             <div class="input-group-prepend">
               <div class="input-group-text">
                 <span class="fa fa-search"></span>
@@ -135,7 +139,7 @@
         <!-- Navigation -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('usuarios')}}">
               <i class="ni ni-planet text-blue"></i> Usuarios
             </a>
           </li>

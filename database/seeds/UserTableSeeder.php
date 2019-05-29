@@ -27,9 +27,8 @@ class UserTableSeeder extends Seeder
       $user->direccion = "Villa Elia, Río Segundo de Alajuela";
       $user->telefono = "87677126";
       $user->email = "admin1@gmail.com";
-      $user->codigo = "";
+      $user->codigo = "alox124";
       $user->password = Hash::make("admin1234");
-      $user->actualizado = 0;
       $user->rol()->associate(1);
       $user->save();
     }

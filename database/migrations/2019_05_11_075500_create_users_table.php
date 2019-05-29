@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +21,7 @@ class CreateUsersTable extends Migration
           $table->string('codigo', 50)->nullable();
           $table->integer('rol_id')->unsigned();
           $table->foreign('rol_id')->references('id')->on('rols');
-          
+
           $table->string('cedula')->unique();
           $table->string('nombre', 150);
           $table->string('apellidos', 150);

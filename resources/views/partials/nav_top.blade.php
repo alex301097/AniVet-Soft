@@ -2,7 +2,7 @@
   <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
     <div class="container-fluid">
       <!-- Brand -->
-      <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="#">Dashboard</a>
+      <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="#">Inicio</a>
       <!-- Form -->
       <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
         <div class="form-group mb-0">
@@ -10,7 +10,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-search"></i></span>
             </div>
-            <input class="form-control" placeholder="Search" type="text">
+            <input class="form-control" placeholder="Buscar" type="text">
           </div>
         </div>
       </form>
@@ -20,37 +20,48 @@
           <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" src="{{ URL::to('img/theme/team-4-800x800.jpg') }}">
+                @if (empty(auth()->user()->imagen))
+                  <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar rounded-circle" style="width:35px; height:35px; top:35px; left:35px;" alt="User Avatar">
+                @else
+                  <img class="user-avatar rounded-circle" src="{{ url('imgPerfiles/'.Auth::user()->imagen) }}" style="width:35px; height:35px; top:35px; left:35px;" alt="User Avatar">
+                @endif
               </span>
               <div class="media-body ml-2 d-none d-lg-block">
-                <span class="mb-0 text-sm  font-weight-bold">Jessica Jones</span>
+                <span class="mb-0 text-sm  font-weight-bold">
+                  @if (auth()->user())
+                    {{auth()->user()->nombre}} {{auth()->user()->apellidos}}</h6>
+                  @else
+                    Sin especificar
+                  @endif
+                </span>
               </div>
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
             <div class=" dropdown-header noti-title">
-              <h6 class="text-overflow m-0">Welcome!</h6>
+              <h6 class="text-overflow m-0">Bienvenido
+                @if (auth()->user())
+                  {{auth()->user()->nombre}} {{auth()->user()->apellidos}}</h6>
+                @endif
+                !
+              </h6>
             </div>
-            <a href="./examples/profile.html" class="dropdown-item">
+            <a href="#" class="dropdown-item">
               <i class="ni ni-single-02"></i>
-              <span>My profile</span>
+              <span>Mi perfil</span>
             </a>
-            <a href="./examples/profile.html" class="dropdown-item">
+            <a href="#" class="dropdown-item">
               <i class="ni ni-settings-gear-65"></i>
-              <span>Settings</span>
+              <span>Configuración</span>
             </a>
-            <a href="./examples/profile.html" class="dropdown-item">
-              <i class="ni ni-calendar-grid-58"></i>
-              <span>Activity</span>
-            </a>
-            <a href="./examples/profile.html" class="dropdown-item">
+            <a href="#" class="dropdown-item">
               <i class="ni ni-support-16"></i>
-              <span>Support</span>
+              <span>Soporte</span>
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               <i class="ni ni-user-run"></i>
-              <span>Cerrar sesion</span>
+              <span>Cerrar sesión</span>
             </a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
