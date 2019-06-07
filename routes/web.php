@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home')->middleware('auth');
 
-Route::group(['prefix'=>'usuarios', 'middleware'=>'auth'], function(){
+Route::group(['prefix'=>'mantenimiento/usuarios', 'middleware'=>'auth'], function(){
   Route::get('/', 'UsuarioController@index')->name('usuarios');
 
   Route::post('añadir', 'UsuarioController@añadir_usuarios')->name('usuarios.añadir');
@@ -30,6 +30,56 @@ Route::group(['prefix'=>'usuarios', 'middleware'=>'auth'], function(){
 
   Route::post('filtro/{estado}', 'UsuarioController@filtrar_usuarios')->name('filtro.usuarios');
 });
+
+Route::group(['prefix'=>'mantenimiento/tipos_animales', 'middleware'=>'auth'], function(){
+  Route::get('/', 'TipoAnimalController@index')->name('tipos_animales');
+
+  Route::post('añadir', 'TipoAnimalController@añadir_tipos_animales')->name('tipos_animales.añadir');
+
+  Route::post('editar', 'TipoAnimalController@editar_tipos_animales')->name('tipos_animales.editar');
+
+  Route::post('eliminar', 'TipoAnimalController@eliminar_tipos_animales')->name('tipos_animales.eliminar');
+
+  Route::post('filtro/{estado}', 'TipoAnimalController@filtrar_tipos_animales')->name('filtro.tipos_animales');
+});
+
+Route::group(['prefix'=>'mantenimiento/animales', 'middleware'=>'auth'], function(){
+  Route::get('/', 'VentaAnimalController@index')->name('animales');
+
+  Route::get('detalle/{id}', 'VentaAnimalController@get_detalle_animales')->name('animales.get_detalle');
+
+  Route::get('añadir', 'VentaAnimalController@get_añadir_animales')->name('animales.get_añadir');
+
+  Route::post('añadir', 'VentaAnimalController@añadir_animales')->name('animales.añadir');
+
+  Route::get('editar/{id}', 'VentaAnimalController@get_editar_animales')->name('animales.get_editar');
+
+  Route::post('editar', 'VentaAnimalController@editar_animales')->name('animales.editar');
+
+  Route::post('eliminar', 'VentaAnimalController@eliminar_animales')->name('animales.eliminar');
+
+  Route::post('filtro/{estado}', 'VentaAnimalController@filtrar_animales')->name('filtro.animales');
+
+  Route::post('file-upload', 'VentaAnimalController@upload_file')->name('file-upload');
+});
+
+Route::group(['prefix'=>'adopcion', 'middleware'=>'auth'], function(){
+  Route::get('/', 'AdopcionController@index')->name('adopciones');
+
+  Route::get('detalle/{id}', 'AdopcionController@get_detalle_adopciones')->name('adopciones.get_detalle');
+
+  Route::get('añadir', 'AdopcionController@get_añadir_adopciones')->name('adopciones.get_añadir');
+
+  Route::post('añadir', 'AdopcionController@añadir_adopciones')->name('adopciones.añadir');
+
+  Route::get('editar/{id}', 'AdopcionController@get_editar_adopciones')->name('adopciones.get_editar');
+
+  Route::post('editar', 'AdopcionController@editar_adopciones')->name('adopciones.editar');
+
+  Route::post('eliminar', 'AdopcionController@eliminar_adopciones')->name('adopciones.eliminar');
+});
+
+
 
 
 // Route::get('registro', 'HomeController@index')->name('home');

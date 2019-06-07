@@ -14,15 +14,12 @@ class CreateAdopcionsTable extends Migration
     public function up()
     {
         Schema::create('adopcions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nombre');
-            $table->string('edad');
-            $table->string('peso');
-            $table->date('fecha_nacimiento')->nullable();
-            $table->string('sexo', 15)->nullable();
+            $table->bigIncrements('id');
+            $table->bigInteger('animal_venta_id')->unsigned();
+            $table->foreign('animal_venta_id')->references('id')->on('animal_ventas');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('observaciones');
-            $table->integer('tipo_animal_id')->unsigned();
-            $table->foreign('tipo_animal_id')->references('id')->on('tipo_animals');
             $table->softDeletes();
             $table->timestamps();
         });

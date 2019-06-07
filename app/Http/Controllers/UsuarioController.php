@@ -146,14 +146,14 @@ class UsuarioController extends Controller
   }
 
   public function eliminar_usuarios(Request $request)
-    {
-      $user = User::withTrashed()->where('id', $request->input('id'))->first();
-      if(!$user->trashed()){
-        $user->delete();
-        return response()->json($user);
-      }else{
-        $user->restore();
-        return response()->json($user);
-      }
+  {
+    $user = User::withTrashed()->where('id', $request->input('id'))->first();
+    if(!$user->trashed()){
+      $user->delete();
+      return response()->json($user);
+    }else{
+      $user->restore();
+      return response()->json($user);
     }
+  }
 }

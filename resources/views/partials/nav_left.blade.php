@@ -6,7 +6,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <!-- Brand -->
-      <a class="navbar-brand pt-0" href="./index.html">
+      <a class="navbar-brand pt-0" href="{{route('home')}}">
         <img src="{{ URL::to('img/brand/blue.png') }}" class="navbar-brand-img" alt="...">
       </a>
       <!-- User -->
@@ -71,7 +71,7 @@
         <div class="navbar-collapse-header d-md-none">
           <div class="row">
             <div class="col-6 collapse-brand">
-              <a href="#">
+              <a href="{{route('home')}}">
                 <img src="{{ URL::to('img/brand/blue.png') }}">
               </a>
             </div>
@@ -97,37 +97,21 @@
         <!-- Navigation -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html">
+            <a class="nav-link" href="{{route('home')}}">
               <i class="ni ni-tv-2 text-primary"></i> Inicio
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="ni ni-planet text-blue"></i> Apertura/Cierre de caja
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="ni ni-pin-3 text-orange"></i> Inventario de productos
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('adopciones')}}">
               <i class="ni ni-single-02 text-yellow"></i> Adopción de Mascotas
             </a>
-          </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="ni ni-bullet-list-67 text-red"></i> Venta de productos
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('home')}}">
               <i class="ni ni-key-25 text-info"></i> Citas medicas
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('home')}}">
               <i class="ni ni-key-25 text-info"></i> Expediente medico
             </a>
           </li>
@@ -144,13 +128,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="ni ni-bullet-list-67 text-red"></i> Productos
+            <a class="nav-link" href="{{route('tipos_animales')}}">
+              <i class="ni ni-pin-3 text-orange"></i> Tipos de animales
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="ni ni-pin-3 text-orange"></i> Tipos de mascotas
+            <a class="nav-link" href="{{route('animales')}}">
+              <i class="ni ni-bullet-list-67 text-red"></i> Animales en venta/adopción
             </a>
           </li>
           <li class="nav-item">
