@@ -138,7 +138,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('tipos_servicios')}}">
               <i class="ni ni-single-02 text-yellow"></i> Servicios
             </a>
           </li>

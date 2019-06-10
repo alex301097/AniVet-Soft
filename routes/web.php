@@ -79,6 +79,18 @@ Route::group(['prefix'=>'adopcion', 'middleware'=>'auth'], function(){
   Route::post('eliminar', 'AdopcionController@eliminar_adopciones')->name('adopciones.eliminar');
 });
 
+Route::group(['prefix'=>'mantenimiento/tipos_servicios', 'middleware'=>'auth'], function(){
+  Route::get('/', 'TipoServicioController@index')->name('tipos_servicios');
+
+  Route::post('añadir', 'TipoServicioController@añadir_tipos_servicios')->name('tipos_servicios.añadir');
+
+  Route::post('editar', 'TipoServicioController@editar_tipos_servicios')->name('tipos_servicios.editar');
+
+  Route::post('eliminar', 'TipoServicioController@eliminar_tipos_servicios')->name('tipos_servicios.eliminar');
+
+  Route::post('filtro/{estado}', 'TipoServicioController@filtrar_tipos_servicios')->name('filtro.tipos_servicios');
+});
+
 
 
 
