@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Paciente;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +13,15 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('pacientes', function(){
+  return datatables()
+  ->eloquent(Paciente::query()->withTrashed())
+  ->addColumn('estado', 'mantenimientos.pacientes.estado')
+  ->addColumn('btn', 'mantenimientos.pacientes.actions')
+  ->rawColumns(['btn', 'estado'])
+  ->toJson();
 });
+
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

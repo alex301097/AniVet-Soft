@@ -142,6 +142,11 @@
               <i class="ni ni-single-02 text-yellow"></i> Servicios
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('pacientes')}}">
+              <i class="ni ni-planet text-blue"></i> Pacientes
+            </a>
+          </li>
         </ul>
         <!-- Divider -->
         <hr class="my-3">

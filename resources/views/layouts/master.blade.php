@@ -15,6 +15,9 @@
     <!-- Argon CSS -->
     <link type="text/css" href="{{ URL::to('css/argon.css?v=1.0.0') }}" rel="stylesheet">
 
+    <!-- Font awesome -->
+    <script src="https://kit.fontawesome.com/3297d5584a.js"></script>
+
     <meta name="_token" content="{{ csrf_token() }}">
     <style>.hidden { display: none; visibility: hidden; } </style>
     @yield('css')
@@ -35,7 +38,7 @@
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
       <!-- AJAX and Jquery -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-      
+
       <!-- Argon Scripts -->
       <!-- Core -->
       <script src="{{ URL::to('vendor/jquery/dist/jquery.min.js') }}"></script>

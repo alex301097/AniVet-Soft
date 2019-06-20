@@ -141,7 +141,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group" id="div_imagen" name="div_imagen">
-                            <form action="{{route('file-upload')}}" method="post"
+                            <form action="{{route('file-upload.animales')}}" method="post"
                             class="dropzone" enctype="multipart/form-data"
                             id="my-awesome-dropzone">
                               {{csrf_field()}}
