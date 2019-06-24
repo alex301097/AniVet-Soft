@@ -99,9 +99,44 @@ Route::group(['prefix'=>'adopcion', 'middleware'=>'auth'], function(){
   Route::post('eliminar', 'AdopcionController@eliminar_adopciones')->name('adopciones.eliminar');
 });
 
+Route::group(['prefix'=>'mantenimiento/tipos_servicios', 'middleware'=>'auth'], function(){
+  Route::get('/', 'TipoServicioController@index')->name('tipos_servicios');
+
+  Route::post('añadir', 'TipoServicioController@añadir_tipos_servicios')->name('tipos_servicios.añadir');
+
+  Route::post('editar', 'TipoServicioController@editar_tipos_servicios')->name('tipos_servicios.editar');
+
+  Route::post('eliminar', 'TipoServicioController@eliminar_tipos_servicios')->name('tipos_servicios.eliminar');
+
+  Route::post('filtro/{estado}', 'TipoServicioController@filtrar_tipos_servicios')->name('filtro.tipos_servicios');
+});
+
+Route::group(['prefix'=>'mantenimiento/pacientes', 'middleware'=>'auth'], function(){
+  Route::get('/', 'PacienteController@index')->name('pacientes');
+
+  Route::get('detalle/{id}', 'PacienteController@get_detalle_pacientes')->name('pacientes.get_detalle');
+
+  Route::get('añadir', 'PacienteController@get_añadir_pacientes')->name('pacientes.get_añadir');
+
+  Route::post('añadir', 'PacienteController@añadir_pacientes')->name('pacientes.añadir');
+
+  Route::get('editar/{id}', 'PacienteController@get_editar_pacientes')->name('pacientes.get_editar');
+
+  Route::post('editar', 'PacienteController@editar_pacientes')->name('pacientes.editar');
+
+  Route::post('eliminar', 'PacienteController@eliminar_pacientes')->name('pacientes.eliminar');
+
+  Route::post('filtro/{estado}', 'PacienteController@filtrar_pacientes')->name('filtro.pacientes');
+
+  Route::post('file-upload', 'PacienteController@upload_file')->name('file-upload.pacientes');
+
+  Route::get('autocompleteDuenno', 'PacienteController@autocompleteDuenno')->name('autocompleteDuenno');
+});
+
+
 Route::group(['prefix'=>'mantenimiento/citas', 'middleware'=>'auth'], function(){
   Route::get('/', 'CitasController@index')->name('citas');
-
+  
   Route::get('detalle/{id}', 'CitasController@get_detalle_citas')->name('citas.get_detalle');
 
   Route::get('añadir', 'CitasController@get_añadir_citas')->name('citas.get_añadir');

@@ -4,22 +4,11 @@
         <div class="row justify-content-center">
           <div class="col-lg-6 col-md-8">
             <div class="card bg-secondary shadow border-0">
-              <div class="card-header bg-transparent pb-5">
-                <div class="text-muted text-center mt-2 mb-4"><small>Ingresa con</small></div>
-                <div class="text-center">
-                  <a href="#" class="btn btn-neutral btn-icon mr-4">
-                    <span class="btn-inner--icon"><img src="{{URL::to('img/icons/common/github.svg')}}"></span>
-                    <span class="btn-inner--text">Github</span>
-                  </a>
-                  <a href="#" class="btn btn-neutral btn-icon">
-                    <span class="btn-inner--icon"><img src="{{URL::to('img/icons/common/google.svg')}}"></span>
-                    <span class="btn-inner--text">Google</span>
-                  </a>
-                </div>
+              <div class="card-header">
               </div>
-              <div class="card-body px-lg-5 py-lg-5">
+              <div class="card-body px-lg-4 py-lg-4">
                 <div class="text-center text-muted mb-4">
-                  <small>O registrate con tus credenciales</small>
+                  <small>Registrese con tus credenciales</small>
                 </div>
                 <form role="form" method="POST" action="{{ route('register') }}">
                   <div class="row">

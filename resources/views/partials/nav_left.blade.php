@@ -7,7 +7,7 @@
       </button>
       <!-- Brand -->
       <a class="navbar-brand pt-0" href="{{route('home')}}">
-        <img src="{{ URL::to('img/brand/blue.png') }}" class="navbar-brand-img" alt="...">
+        <img src="{{ URL::to('img/brand/yugo-mitchell.png') }}" style="width:350px;height:200px;" class="navbar-brand-img" alt="...">
       </a>
       <!-- User -->
       <ul class="nav align-items-center d-md-none">
@@ -72,7 +72,7 @@
           <div class="row">
             <div class="col-6 collapse-brand">
               <a href="{{route('home')}}">
-                <img src="{{ URL::to('img/brand/blue.png') }}">
+                <img src="{{ URL::to('img/brand/yugo.png') }}">
               </a>
             </div>
             <div class="col-6 collapse-close">
@@ -128,8 +128,18 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="{{route('pacientes')}}">
+              <i class="ni ni-planet text-blue"></i> Pacientes
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{{route('tipos_animales')}}">
               <i class="ni ni-pin-3 text-orange"></i> Tipos de animales
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('tipos_servicios')}}">
+              <i class="ni ni-single-02 text-yellow"></i> Servicios
             </a>
           </li>
           <li class="nav-item">

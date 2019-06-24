@@ -2,6 +2,8 @@
 @section('css')
   <!-- Dropzone.js css links -->
   <link rel="stylesheet" rel="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css"></script>
+  <link rel="stylesheet" rel="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css"></script>
+  <link rel="stylesheet" rel="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 @endsection
 @section('contenido')
     <div class="row">
@@ -39,7 +41,7 @@
                 <div class="row">
                   <div class="col-md-12">
                       <div class="table-responsive">
-                        <table class="table align-items-center table-dark" id="animales" name="animales">
+                        <table class="table align-items-center table-dark" id="animales_en_venta" name="animales_en_venta">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Animal</th>
@@ -53,76 +55,10 @@
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="lista-animales" name="lista-animales">
-                            @foreach ($animales as $animal)
-                              <tr id="animal_{{$animal->id}}" name="animal_{{$animal->id}}">
-                                  <th scope="row">
-                                      #{{$animal->id}} {{$animal->nombre}} / {{$animal->estado}}
-                                  </th>
-                                  <td>
-                                      {{$animal->edad}}
-                                  </td>
-                                  <td>
-                                      {{$animal->peso}}
-                                  </td>
-                                  <td>
-                                      {{$animal->tipo_animal->descripcion}}
-                                  </td>
-                                  <td>
-                                      {{$animal->raza}}
-                                  </td>
-                                  <td>
-                                      {{$animal->sexo}}
-                                  </td>
-                                  <td>
-                                      {{$animal->cantidad}}
-                                  </td>
-                                  <td>
-                                      <span class="badge badge-dot mr-4">
-                                        @if ($animal->deleted_at != null)
-                                          <i class="bg-danger"></i> Inactivo
-                                        @else
-                                          <i class="bg-success"></i> Activo
-                                        @endif
-                                      </span>
-                                  </td>
-                                  <td class="text-right">
-                                      <div class="dropdown">
-                                          <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                          </a>
-                                          <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                              <a class="dropdown-item" href="#" id="añadir_imagenes" name="añadir_imagenes"
-                                              data-toggle="modal" data-target="#modal-añadir" data-id="{{$animal->id}}">
-                                                <span><i class="ni ni-image"></i></span>
-                                                &nbsp;&nbsp;Imagenes
-                                              </a>
-                                              <a class="dropdown-item" href="{{route('animales_venta.get_detalle', $animal->id)}}" id="detalle_animal" name="detalle_animal">
-                                                <span><i class="ni ni-glasses-2"></i></span>
-                                                &nbsp;&nbsp;Detalle
-                                              </a>
-                                              <a class="dropdown-item" href="{{route('animales_venta.get_editar', $animal->id)}}" id="editar_animal" name="editar_animal">
-                                                <span><i class="ni ni-ruler-pencil"></i></span>
-                                                &nbsp;&nbsp;Editar
-                                              </a>
-                                              <a class="dropdown-item" href="#" id="deshabilitar_animal" name="deshabilitar_animal"
-                                              data-id="{{$animal->id}}">
-                                                <span><i class="ni ni-fat-remove"></i></span>
-                                                &nbsp;&nbsp;Deshabilitar
-                                              </a>
-                                          </div>
-                                      </div>
-                                  </td>
-                              </tr>
-                            @endforeach
+                        <tbody style="color:black;">
+
                         </tbody>
                       </table>
-                      <div class='row'>
-        								<div class="col-md-12">
-        									{{$animales->links()}}
-        								</div>
-        								<hr>
-        							</div>
                     </div>
                   </div>
                 </div>
@@ -196,6 +132,11 @@
 @section('scripts')
   <!-- Dropzone.js links -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
+  <!-- Dropzone.js links -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
+
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.2/js/dataTables.responsive.min.js"></script>
 
   <script type="text/javascript">
 
@@ -244,12 +185,54 @@
               imgDropzone.emit("complete", mockFile);
           });
       }
+      $(document).ready(function() {
+        $('#animales_en_venta').DataTable({
+          "processing":true,
+          "serverSide":true,
+          "ajax":"{{ url('api/animales_en_venta') }}",
+          "columns":
+          [
+            {data: 'nombre'},
+            {data: 'edad'},
+            {data: 'peso'},
+            {data: 'descripcionAnimal', orderable: false, searchable: false},
+            {data: 'raza'},
+            {data: 'sexo'},
+            {data: 'estado'},
+            {data: 'btn', orderable: false, searchable: false}
+          ],
+          "language":{
+            "info": "<span style='color:white;'>Mostrando total registros</span>",
+            "search": "<span style='color:white;'>Buscar</span>",
+            "paginate": {
+                "next": "<span style='color:white;'>Siguiente</span>",
+              "previous": "<span style='color:white;'>Anterior</span>",
+            },
+            "lengthMenu":
+            '<span style="color:white;">Mostrar&nbsp;</span><select>' +
+            '<option value="10">10</option>' +
+            '<option value="30">30</option>' +
+            '<option value="-1">Todos</option>' +
+            '</select> <span style="color:white;">&nbsp;registros</span>' ,
+            "loadingRecords": "<span style='color:black;'>Cargando..</span>",
+            "processing": "<span style='color:black;'>Procesando..</span>",
+            "emptyTable": "<span style='color:black;'>No hay datos</span>",
+            "zeroRecords": "<span style='color:black;'>No hay coincidencias</span>",
+            "infoEmpty": "",
+            "infoFiltered": "",
+          }
+        });
+
+      } );
 
       //Imagen
       $(document).on('click', '#añadir_imagenes', function() {
         $('#id_animal').val($(this).data('id'));
       });
 
+
+
+/**
       //filtro
       $('#filtro').change(function(){
         var urlFiltro = "{{route('filtro.animales_venta', ['filtro'=>':estado'])}}";
@@ -357,7 +340,7 @@
           }
         });
       });
-
+*/
       //Habilitar
       $(document).on('click', '#habilitar_animal', function() {
         var id = $(this).data('id');

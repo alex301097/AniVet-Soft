@@ -26,6 +26,7 @@ class CreatePacientesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('tipo_animal_id')->unsigned();
             $table->foreign('tipo_animal_id')->references('id')->on('tipo_animals');
+            $table->string('raza');
             $table->softDeletes();
             $table->timestamps();
         });

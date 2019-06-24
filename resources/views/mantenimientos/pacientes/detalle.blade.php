@@ -14,57 +14,55 @@
               <div class="row align-items-center">
                 <div class="col">
                   <h6 class="text-uppercase text-light ls-1 mb-1">Detalle</h6>
-                  <h2 class="text-white mb-0">Animal en {{$animal->estado}} - Existencias: {{$animal->cantidad}}</h2>
+                  <h2 class="text-white mb-0">Paciente en {{$paciente->estado}}</h2>
                 </div>
               </div>
             </div>
             <div class="card-body">
               <div class="row">
                 <div class="col-md-4">
-                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Nombre:</b><span style="color:gray;">&nbsp;{{$animal->nombre}}</span></label>
+                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Nombre:</b><span style="color:gray;">&nbsp;{{$paciente->nombre}}</span></label>
                 </div>
                 <div class="col-md-4">
-                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Edad:</b><span style="color:gray;">&nbsp;{{$animal->edad}}</span></label>
+                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Edad:</b><span style="color:gray;">&nbsp;{{$paciente->edad}}</span></label>
                 </div>
                 <div class="col-md-4">
-                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Peso:</b><span style="color:gray;">&nbsp;{{$animal->peso}}</span></label>
+                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Peso:</b><span style="color:gray;">&nbsp;{{$paciente->peso}}</span></label>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-4">
-                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Especie:</b><span style="color:gray;">&nbsp;{{$animal->tipo_animal->descripcion}}</span></label>
+                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Fecha de nacimiento:</b><span style="color:gray;">&nbsp;{{$paciente->fecha_nacimiento}}</span></label>
                 </div>
                 <div class="col-md-4">
-                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Raza:</b><span style="color:gray;">&nbsp;{{$animal->raza}}</span></label>
+                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Sexo:</b><span style="color:gray;">&nbsp;{{$paciente->sexo}}</span></label>
                 </div>
                 <div class="col-md-4">
-                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Sexo:</b><span style="color:gray;">&nbsp;{{$animal->sexo}}</span></label>
+                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Especie:</b><span style="color:gray;">&nbsp;{{$paciente->tipo_animal->descripcion}}</span></label>
+                </div>
+                <div class="col-md-4">
+                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Raza:</b><span style="color:gray;">&nbsp;{{$paciente->raza}}</span></label>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
-                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Condiciones:</b><span style="color:gray;">&nbsp;{{$animal->condiciones}}</span></label>
-                </div>
-                <div class="col-md-6">
-                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Observaciones:</b><span style="color:gray;">&nbsp;{{$animal->observaciones}}</span></label>
+                  <label style="color:white;"><b><i class="ni ni-bold-right"></i>Observaciones:</b><span style="color:gray;">&nbsp;{{$paciente->observaciones}}</span></label>
                 </div>
               </div>
-              @if (!empty($animal->imagenes))
+              @if (!empty($paciente->imagenes))
               <h1 style="color:white;"><i class="ni ni-bold-right"></i> Imagenes</h1>
                 <div class="demo-gallery">
                   <ul id="lightgallery">
-                    @foreach ($animal->imagenes as $imagen)
-                      <li  data-src="{{ url('imgPerfiles/'.$imagen->imagen) }}"
-                      data-sub-html="<h4>Nombre: {{$animal->nombre}}</h4>
+                    @foreach ($paciente->imagenes as $imagen)
+                      <li  data-src="{{ url('imgPacientes/'.$imagen->imagen) }}"
+                      data-sub-html="<h4>Nombre: {{$paciente->nombre}}</h4>
                       <p>
-                        Especie: {{$animal->tipo_animal->descripcion}} - Raza: {{$animal->raza}} - Edad: {{$animal->edad}} años
+                        Especie: {{$paciente->tipo_animal->descripcion}} - Raza: {{$paciente->raza}} - Edad: {{$paciente->edad}} años
                         <br>
-                        Condiciones: {{$animal->condiciones}}
-                        <br>
-                        Observaciones: {{$animal->observaciones}}
+                        Observaciones: {{$paciente->observaciones}}
                       </p>">
                         <a href="">
-                          <img class="img-responsive" src="{{ url('imgPerfiles/'.$imagen->imagen) }}" alt="{{$animal->nombre}}">
+                          <img class="img-responsive" src="{{ url('imgPacientes/'.$imagen->imagen) }}" alt="{{$paciente->nombre}}">
                           <div class="demo-gallery-poster">
                             <img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
                           </div>
@@ -74,7 +72,7 @@
                   </ul>
                 </div>
               @else
-                <h3 style="color:white;"><i class="ni ni-fat-delete"></i> No tienes imagenes añadidas al animal. Por favor agregalas.</h3>
+                <h3 style="color:white;"><i class="ni ni-fat-delete"></i> No tienes imagenes añadidas del paciente. Por favor agregalas.</h3>
               @endif
             </div>
           </div>

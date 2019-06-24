@@ -42,10 +42,15 @@ return [
     */
 
     'disks' => [
-      
+
         'imgPerfiles' => [
             'driver' => 'local',
             'root' => public_path('imgPerfiles'),
+          ],
+
+        'imgPacientes' => [
+            'driver' => 'local',
+            'root' => public_path('imgPacientes'),
           ],
 
         'local' => [
