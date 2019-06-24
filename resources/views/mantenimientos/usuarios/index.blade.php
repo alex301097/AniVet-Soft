@@ -1,4 +1,36 @@
 @extends('layouts.master')
+@section('css')
+  <style>
+    .simple-form {
+    padding-bottom: 1.25rem;
+    }
+    .simple-form input {
+    margin: 0 .25rem;
+    min-width: 125px;
+    border: 1px solid #eee;
+    border-left: 3px solid;
+    border-radius: 5px;
+    transition: border-color .5s ease-out;
+    }
+    .simple-form input:optional {
+    border-left-color: #999;
+    }
+    .simple-form input:required:valid {
+    border-left-color: palegreen;
+    }
+    .simple-form input:invalid {
+    border-left-color: salmon;
+    }
+    .simple-form input:required:focus:valid {
+    background: url("/img/icons/success.svg") no-repeat 95% 50%;
+    background-size: 25px;
+    }
+    .simple-form input:focus:invalid {
+    background: url("/img/icons/cancel.svg") no-repeat 95% 50%;
+    background-size: 25px;
+    }
+  </style>
+@endsection
 @section('contenido')
     <div class="row">
       <div class="col-md-12">
@@ -55,7 +87,7 @@
                                             @if (empty($usuario->imagen))
                                               <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar">
                                             @else
-                                              <img src="{{ url('imgPerfiles/'.Auth::user()->imagen) }}" lt="User Avatar">
+                                              <img src="{{ url('imgPerfiles/'.$usuario->imagen) }}" style="width:50px; height:50px; top:50px; left:50px;" alt="User Avatar">
                                             @endif
                                           </a>
                                           <div class="media-body">
@@ -89,7 +121,7 @@
                                           <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                               <a class="dropdown-item" href="#" id="detalle_usuario" name="detalle_usuario"
                                               data-toggle="modal" data-target="#modal-detalle"
-                                              data-id="{{$usuario->id}}" data-rol="{{$usuario->rol_id}}" data-cedula="{{$usuario->cedula}}"
+                                              data-id="{{$usuario->id}}" data-imagen={{(($usuario->imagen)?url('imgPerfiles/'.$usuario->imagen):"null")}} data-rol="{{$usuario->rol_id}}" data-cedula="{{$usuario->cedula}}"
                                               data-nombre="{{$usuario->nombre}}" data-apellidos="{{$usuario->apellidos}}" data-nacionalidad="{{$usuario->nacionalidad}}"
                                               data-fecha_nacimiento="{{$usuario->fecha_nacimiento}}" data-estado_civil="{{$usuario->estado_civil}}" data-sexo="{{$usuario->sexo}}"
                                               data-telefono="{{$usuario->telefono}}" data-direccion="{{$usuario->direccion}}" data-email="{{$usuario->email}}"
@@ -99,7 +131,7 @@
                                               </a>
                                               <a class="dropdown-item" href="#" id="editar_usuario" name="editar_usuario"
                                               data-toggle="modal" data-target="#modal-editar"
-                                              data-id="{{$usuario->id}}" data-rol="{{$usuario->rol_id}}" data-cedula="{{$usuario->cedula}}"
+                                              data-id="{{$usuario->id}}" data-imagen={{(($usuario->imagen)?url('imgPerfiles/'.$usuario->imagen):"null")}} data-rol="{{$usuario->rol_id}}" data-cedula="{{$usuario->cedula}}"
                                               data-nombre="{{$usuario->nombre}}" data-apellidos="{{$usuario->apellidos}}" data-nacionalidad="{{$usuario->nacionalidad}}"
                                               data-fecha_nacimiento="{{$usuario->fecha_nacimiento}}" data-estado_civil="{{$usuario->estado_civil}}" data-sexo="{{$usuario->sexo}}"
                                               data-telefono="{{$usuario->telefono}}" data-direccion="{{$usuario->direccion}}" data-email="{{$usuario->email}}"
@@ -136,7 +168,7 @@
     </div>
 
     <div class="modal fade" id="modal-añadir" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
-        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -147,192 +179,201 @@
                 </div>
 
                 <div class="modal-body">
-                  <form enctype="multipart/form-data">
-                    <div class="row">
-                      <div class="col-md">
-                        <h6 class="heading-small text-muted mb-4">Información personal</h6>
-                      </div>
+                  <div class="row">
+                    <div class="col-md">
+                      <h6 class="heading-small text-muted mb-4">Información personal</h6>
                     </div>
-                    <div class="row">
-                      <div class="col-md-1">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 text-center">
+                				<div class="row">
+                					<div class="col-lg-12" id="avatar" name="avatar">
+                						<img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar rounded-circle img-thumbnail" style="width:200px; height:200px; top:200px; left:200px;" alt="User Avatar">
+                					</div>
+                					<div class="col-lg-12">
+                						<div class="custom-file">
+                							<input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01" accept="image/*">
+                							<label class="custom-file-label" for="imagen">Seleccione una imagen</label>
+                              <p class="error_imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                						</div>
+                					</div>
+                				</div>
+                    </div>
+                    <div class="col-md-8">
+                      <form enctype="multipart/form-data" class="simple-form">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="rol"><h5>Rol</h5></label>
+                              <select class="form-control form-control-sm" required id="rol" name="rol">
+                                <option value="">Seleccione una opción</option>
+                                @foreach ($roles as $rol)
+                                  <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
+                                @endforeach
+                              </select>
+                              <p class="error_rol text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="cedula"><h5>Cédula</h5></label>
+                              <input required type="text" class="form-control form-control-sm form-control-alternative" id="cedula" name="cedula" placeholder="Cédula">
+                              <p class="error_cedula text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="nombre"><h5>Nombre</h5></label>
+                              <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
+                              <p class="error_nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="apellidos"><h5>Apellidos</h5></label>
+                              <input type="text" class="form-control form-control-sm form-control-alternative" id="apellidos" name="apellidos" placeholder="Apellidos">
+                              <p class="error_apellidos text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="nacionalidad"><h5>País de nacimiento</h5></label>
+      													<select name="nacionalidad" id="nacionalidad" class="form-control form-control-sm">
+                                  <option value="">Seleccione una opción</option>
+      	                          <option value="Costa Rica">Costa Rica</option>
+      	                          <option value="Panamá">Panamá</option>
+      	                          <option value="Nicaragua">Nicaragua</option>
+      	                          <option value="Guatemala">Guatemala</option>
+      														<option value="Honduras">Honduras</option>
+      														<option value="Otro">Otro</option>
+      	                        </select>
+                                <p class="error_nacionalidad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="fecha_nacimiento"><h5>Fecha de nacimiento</h5></label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
+                                </div>
+                                <p class="error_fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="estado_civil"><h5>Estado Civil</h5></label>
+                              <select class="form-control form-control-sm form-control-alternative" id="estado_civil" name="estado_civil">
+                                  <option value="">Seleccione una opción</option>
+      														<option value="Soltero(a)">Soltero(a)</option>
+      	                          <option value="Casado(a)">Casado(a)</option>
+      														<option value="Viudo(a)">Viudo(a)</option>
+      														<option value="Separado(a)">Separado(a)</option>
+      														<option value="Divorciado(a)">Divorciado(a)</option>
+      														<option value="Unión Libre">Unión Libre</option>
+                              </select>
+                              <p class="error_estado_civil text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
 
-                      </div>
-                      <div class="col-md-2 text-center">
-                          <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" id="avatar" name="avatar" class="avatar rounded-circle" style="width:35px; height:35px; top:35px; left:35px;"alt="User Avatar">
-                          <label for="avatar"><h5>Imagen</h5></label>
-                      </div>
-                      <div class="col-md-8">
-                        <input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01" accept="image/*">
-                        <label class="custom-file-label" for="imagen">Seleccione una imagen</label>
-                      </div>
-                      <div class="col-md-1">
+                            <div class="form-group">
+                              <label for="nacionalidad"><h5>Sexo</h5></label>
+                              <br>
+                              <div class="custom-control custom-radio custom-control-inline mb-3">
+                                <input name="sexo" class="custom-control-input" id="masculino" value="Masculino" checked type="radio">
+                                <label class="custom-control-label" for="masculino">Masculino</label>
+                              </div>
+                              <div class="custom-control custom-radio custom-control-inline mb-3">
+                                <input name="sexo" class="custom-control-input" id="femenino" value="Femenino" type="radio">
+                                <label class="custom-control-label" for="femenino">Femenino</label>
+                              </div>
+                              <p class="error_sexo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="telefono"><h5>Telefono</h5></label>
+                              <input type="text" class="form-control form-control-sm form-control-alternative" id="telefono" name="telefono" placeholder="Telefono">
+                              <p class="error_telefono text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="direccion"><h5>Dirección</h5></label>
+                              <textarea class="form-control" id="direccion" name="direccion" rows="3" placeholder="Dirección"></textarea>
+                              <p class="error_direccion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md">
+                            <h6 class="heading-small text-muted mb-4">Credenciales</h6>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <div class="input-group input-group-alternative mb-4">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                </div>
+                                <input class="form-control form-control-sm form-control-alternative" placeholder="name@example.com" type="email" id="email" name="email">
+                                <p class="error_email text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <div class="input-group input-group-alternative mb-4">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
+                                </div>
+                                <input class="form-control form-control-sm form-control-alternative" placeholder="Codigo" type="text" id="codigo" name="codigo">
+                                <p class="error_codigo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <div class="input-group input-group-alternative mb-4">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-key-25"></i></span>
+                                </div>
+                                <input class="form-control form-control-sm form-control-alternative" placeholder="Contraseña" type="password" id="password" name="password"></input>
+                                {{-- <small for="password" id="passwordHelpBlock" class="form-text text-muted">
+                                  Tu contraseña debe tener bla bla bla bla.
+                                </small> --}}
+                                <p class="error_password text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
 
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="rol"><h5>Rol</h5></label>
-                          <select class="form-control form-control-sm" id="rol" name="rol">
-                            <option value="">Seleccione una opción</option>
-                            @foreach ($roles as $rol)
-                              <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
-                            @endforeach
-                          </select>
-                          <p class="error_rol text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="cedula"><h5>Cédula</h5></label>
-                          <input type="text" class="form-control form-control-sm form-control-alternative" id="cedula" name="cedula" placeholder="Cédula">
-                          <p class="error_cedula text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="nombre"><h5>Nombre</h5></label>
-                          <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
-                          <p class="error_nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="apellidos"><h5>Apellidos</h5></label>
-                          <input type="text" class="form-control form-control-sm form-control-alternative" id="apellidos" name="apellidos" placeholder="Apellidos">
-                          <p class="error_apellidos text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="nacionalidad"><h5>País de nacimiento</h5></label>
-  													<select name="nacionalidad" id="nacionalidad" class="form-control form-control-sm">
-                              <option value="">Seleccione una opción</option>
-  	                          <option value="Costa Rica">Costa Rica</option>
-  	                          <option value="Panamá">Panamá</option>
-  	                          <option value="Nicaragua">Nicaragua</option>
-  	                          <option value="Guatemala">Guatemala</option>
-  														<option value="Honduras">Honduras</option>
-  														<option value="Otro">Otro</option>
-  	                        </select>
-                            <p class="error_nacionalidad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="fecha_nacimiento"><h5>Fecha de nacimiento</h5></label>
-                            <div class="input-group">
-                                <input type="date" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
+                              </div>
                             </div>
-                            <p class="error_fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="estado_civil"><h5>Estado Civil</h5></label>
-                          <select class="form-control form-control-sm form-control-alternative" id="estado_civil" name="estado_civil">
-                              <option value="">Seleccione una opción</option>
-  														<option value="Soltero(a)">Soltero(a)</option>
-  	                          <option value="Casado(a)">Casado(a)</option>
-  														<option value="Viudo(a)">Viudo(a)</option>
-  														<option value="Separado(a)">Separado(a)</option>
-  														<option value="Divorciado(a)">Divorciado(a)</option>
-  														<option value="Unión Libre">Unión Libre</option>
-                          </select>
-                          <p class="error_estado_civil text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="nacionalidad"><h5>Sexo</h5></label>
-                          <div class="custom-control custom-radio mb-3">
-                            <input name="sexo" class="custom-control-input" id="masculino" value="Masculino" checked type="radio">
-                            <label class="custom-control-label" for="masculino">Masculino</label>
                           </div>
-                          <div class="custom-control custom-radio mb-3">
-                            <input name="sexo" class="custom-control-input" id="femenino" value="Femenino" type="radio">
-                            <label class="custom-control-label" for="femenino">Femenino</label>
-                          </div>
-                          <p class="error_sexo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="telefono"><h5>Telefono</h5></label>
-                          <input type="text" class="form-control form-control-sm form-control-alternative" id="telefono" name="telefono" placeholder="Telefono">
-                          <p class="error_telefono text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="direccion"><h5>Dirección</h5></label>
-                          <textarea class="form-control" id="direccion" name="direccion" rows="3" placeholder="Dirección"></textarea>
-                          <p class="error_direccion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md">
-                        <h6 class="heading-small text-muted mb-4">Credenciales</h6>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <div class="input-group input-group-alternative mb-4">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <div class="input-group input-group-alternative mb-4">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-key-25"></i></span>
+                                </div>
+                                <input class="form-control form-control-sm form-control-alternative" placeholder="Confirmar contraseña" type="password" name="password_confirmation" id="password-confirm">
+                                <p class="error_password_confirmation text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                              </div>
                             </div>
-                            <input class="form-control form-control-sm form-control-alternative" placeholder="name@example.com" type="email" id="email" name="email">
-                            <p class="error_email text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <div class="input-group input-group-alternative mb-4">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
-                            </div>
-                            <input class="form-control form-control-sm form-control-alternative" placeholder="Codigo" type="text" id="codigo" name="codigo">
-                            <p class="error_codigo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                          </div>
-                        </div>
-                      </div>
+                      </form>
                     </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <div class="input-group input-group-alternative mb-4">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="ni ni-key-25"></i></span>
-                            </div>
-                            <input class="form-control form-control-sm form-control-alternative" placeholder="Contraseña" type="password" id="password" name="password">
-                            <p class="error_password text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <div class="input-group input-group-alternative mb-4">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="ni ni-key-25"></i></span>
-                            </div>
-                            <input class="form-control form-control-sm form-control-alternative" placeholder="Confirmar contraseña" type="password" name="password_confirmation" id="password-confirm">
-                            <p class="error_password_confirmation text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+                  </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="registrar" name="registrar">Añadir</button>
@@ -343,7 +384,7 @@
     </div>
 
     <div class="modal fade" id="modal-detalle" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
-      <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
 
               <div class="modal-header">
@@ -360,128 +401,139 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="rol_detalle"><h5>Rol</h5></label>
-                      <select class="form-control form-control-sm" readonly id="rol_detalle" name="rol_detalle">
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($roles as $rol)
-                          <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="cedula_detalle"><h5>Cédula</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" readonly id="cedula_detalle" name="cedula_detalle" placeholder="Cédula">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="nombre_detalle"><h5>Nombre</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" readonly id="nombre_detalle" name="nombre_detalle" placeholder="Nombre">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="apellidos_detalle"><h5>Apellidos</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" readonly id="apellidos_detalle" name="apellidos_detalle" placeholder="Apellidos">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="nacionalidad_detalle"><h5>País de nacimiento</h5></label>
-                        <select name="nacionalidad_detalle" id="nacionalidad_detalle" readonly class="form-control form-control-sm">
-                          <option value="">Seleccione una opción</option>
-                          <option value="Costa Rica">Costa Rica</option>
-                          <option value="Panamá">Panamá</option>
-                          <option value="Nicaragua">Nicaragua</option>
-                          <option value="Guatemala">Guatemala</option>
-                          <option value="Honduras">Honduras</option>
-                          <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="fecha_nacimiento_detalle"><h5>Fecha de nacimiento</h5></label>
-                        <div class="input-group">
-                            <input type="date" class="form-control form-control-sm" readonly id="fecha_nacimiento_detalle" name="fecha_nacimiento_detalle" placeholder="Fecha de nacimiento">
+                  <div class="col-md-4 text-center">
+                      <div class="row">
+                        <div class="col-lg-12" id="avatar_detalle" name="avatar_detalle">
+                          <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar rounded-circle img-thumbnail" id="avatar_prev_detalle" name="avatar_prev_detalle" style="width:200px; height:200px; top:200px; left:200px;" alt="User Avatar">
                         </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="estado_civil"><h5>Estado Civil</h5></label>
-                      <select class="form-control form-control-sm form-control-alternative" readonly id="estado_civil_detalle" name="estado_civil_detalle">
-                          <option value="">Seleccione una opción</option>
-                          <option value="Soltero(a)">Soltero(a)</option>
-                          <option value="Casado(a)">Casado(a)</option>
-                          <option value="Viudo(a)">Viudo(a)</option>
-                          <option value="Separado(a)">Separado(a)</option>
-                          <option value="Divorciado(a)">Divorciado(a)</option>
-                          <option value="Unión Libre">Unión Libre</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="sexo_detalle"><h5>Sexo</h5></label>
-                      <div class="custom-control custom-radio mb-3">
-                        <input name="sexo_detalle" class="custom-control-input" id="masculino_detalle" disabled value="Masculino" type="radio">
-                        <label class="custom-control-label" for="masculino_detalle">Masculino</label>
                       </div>
-                      <div class="custom-control custom-radio mb-3">
-                        <input name="sexo_detalle" class="custom-control-input" id="femenino_detalle" disabled value="Femenino" type="radio">
-                        <label class="custom-control-label" for="femenino_detalle">Femenino</label>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="rol_detalle"><h5>Rol</h5></label>
+                          <select class="form-control form-control-sm" readonly id="rol_detalle" name="rol_detalle">
+                            <option value="">Seleccione una opción</option>
+                            @foreach ($roles as $rol)
+                              <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="cedula_detalle"><h5>Cédula</h5></label>
+                          <input type="text" class="form-control form-control-sm form-control-alternative" readonly id="cedula_detalle" name="cedula_detalle" placeholder="Cédula">
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="telefono_detalle"><h5>Telefono</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" readonly id="telefono_detalle" name="telefono_detalle" placeholder="Telefono">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="direccion_detalle"><h5>Dirección</h5></label>
-                      <textarea class="form-control" id="direccion_detalle" name="direccion_detalle" readonly rows="3" placeholder="Dirección"></textarea>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md">
-                    <h6 class="heading-small text-muted mb-4">Credenciales</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <div class="input-group input-group-alternative mb-4">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="nombre_detalle"><h5>Nombre</h5></label>
+                          <input type="text" class="form-control form-control-sm form-control-alternative" readonly id="nombre_detalle" name="nombre_detalle" placeholder="Nombre">
                         </div>
-                        <input class="form-control form-control-sm form-control-alternative" readonly placeholder="name@example.com" type="email" id="email_detalle" name="email_detalle">
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="apellidos_detalle"><h5>Apellidos</h5></label>
+                          <input type="text" class="form-control form-control-sm form-control-alternative" readonly id="apellidos_detalle" name="apellidos_detalle" placeholder="Apellidos">
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <div class="input-group input-group-alternative mb-4">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="nacionalidad_detalle"><h5>País de nacimiento</h5></label>
+                            <select name="nacionalidad_detalle" id="nacionalidad_detalle" readonly class="form-control form-control-sm">
+                              <option value="">Seleccione una opción</option>
+                              <option value="Costa Rica">Costa Rica</option>
+                              <option value="Panamá">Panamá</option>
+                              <option value="Nicaragua">Nicaragua</option>
+                              <option value="Guatemala">Guatemala</option>
+                              <option value="Honduras">Honduras</option>
+                              <option value="Otro">Otro</option>
+                            </select>
                         </div>
-                        <input class="form-control form-control-sm form-control-alternative" readonly placeholder="Codigo" type="text" id="codigo_detalle" name="codigo_detalle">
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="fecha_nacimiento_detalle"><h5>Fecha de nacimiento</h5></label>
+                            <div class="input-group">
+                                <input type="date" class="form-control form-control-sm" readonly id="fecha_nacimiento_detalle" name="fecha_nacimiento_detalle" placeholder="Fecha de nacimiento">
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="estado_civil"><h5>Estado Civil</h5></label>
+                          <select class="form-control form-control-sm form-control-alternative" readonly id="estado_civil_detalle" name="estado_civil_detalle">
+                              <option value="">Seleccione una opción</option>
+                              <option value="Soltero(a)">Soltero(a)</option>
+                              <option value="Casado(a)">Casado(a)</option>
+                              <option value="Viudo(a)">Viudo(a)</option>
+                              <option value="Separado(a)">Separado(a)</option>
+                              <option value="Divorciado(a)">Divorciado(a)</option>
+                              <option value="Unión Libre">Unión Libre</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="sexo_detalle"><h5>Sexo</h5></label>
+                          <div class="custom-control custom-radio mb-3">
+                            <input name="sexo_detalle" class="custom-control-input" id="masculino_detalle" disabled value="Masculino" type="radio">
+                            <label class="custom-control-label" for="masculino_detalle">Masculino</label>
+                          </div>
+                          <div class="custom-control custom-radio mb-3">
+                            <input name="sexo_detalle" class="custom-control-input" id="femenino_detalle" disabled value="Femenino" type="radio">
+                            <label class="custom-control-label" for="femenino_detalle">Femenino</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="telefono_detalle"><h5>Telefono</h5></label>
+                          <input type="text" class="form-control form-control-sm form-control-alternative" readonly id="telefono_detalle" name="telefono_detalle" placeholder="Telefono">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="direccion_detalle"><h5>Dirección</h5></label>
+                          <textarea class="form-control" id="direccion_detalle" name="direccion_detalle" readonly rows="3" placeholder="Dirección"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md">
+                        <h6 class="heading-small text-muted mb-4">Credenciales</h6>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <div class="input-group input-group-alternative mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                            </div>
+                            <input class="form-control form-control-sm form-control-alternative" readonly placeholder="name@example.com" type="email" id="email_detalle" name="email_detalle">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <div class="input-group input-group-alternative mb-4">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
+                            </div>
+                            <input class="form-control form-control-sm form-control-alternative" readonly placeholder="Codigo" type="text" id="codigo_detalle" name="codigo_detalle">
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -495,7 +547,7 @@
     </div>
 
     <div class="modal fade" id="modal-editar" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
-      <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
 
               <div class="modal-header">
@@ -512,116 +564,134 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="rol_edicion"><h5>Rol</h5></label>
-                      <select class="form-control form-control-sm" id="rol_edicion" name="rol_edicion">
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($roles as $rol)
-                          <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
-                        @endforeach
-                      </select>
-                      <p class="error_rol_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="cedula_edicion"><h5>Cédula</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" id="cedula_edicion" name="cedula_edicion" placeholder="Cédula">
-                      <p class="error_cedula_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="nombre_edicion"><h5>Nombre</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre_edicion" name="nombre_edicion" placeholder="Nombre">
-                      <p class="error_nombre_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="apellidos_edicion"><h5>Apellidos</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" id="apellidos_edicion" name="apellidos_edicion" placeholder="Apellidos">
-                      <p class="error_apellidos_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="nacionalidad_edicion"><h5>País de nacimiento</h5></label>
-                        <select name="nacionalidad_edicion" id="nacionalidad_edicion" class="form-control form-control-sm">
-                          <option value="">Seleccione una opción</option>
-                          <option value="Costa Rica">Costa Rica</option>
-                          <option value="Panamá">Panamá</option>
-                          <option value="Nicaragua">Nicaragua</option>
-                          <option value="Guatemala">Guatemala</option>
-                          <option value="Honduras">Honduras</option>
-                          <option value="Otro">Otro</option>
-                        </select>
-                        <p class="error_nacionalidad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="fecha_nacimiento_edicion"><h5>Fecha de nacimiento</h5></label>
-                        <div class="input-group">
-                            <input type="date" class="form-control form-control-sm" id="fecha_nacimiento_edicion" name="fecha_nacimiento_edicion" placeholder="Fecha de nacimiento">
+                  <div class="col-md-4 text-center">
+                      <div class="row">
+                        <div class="col-lg-12" id="avatar_edicion" name="avatar_edicion">
+                          <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar rounded-circle img-thumbnail" id="avatar_prev_detalle" name="avatar_prev_detalle" style="width:200px; height:200px; top:200px; left:200px;" alt="User Avatar">
                         </div>
-                        <p class="error_fecha_nacimiento_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="estado_civil_edicion"><h5>Estado Civil</h5></label>
-                      <select class="form-control form-control-sm form-control-alternative" id="estado_civil_edicion" name="estado_civil_edicion">
-                          <option value="">Seleccione una opción</option>
-                          <option value="Soltero(a)">Soltero(a)</option>
-                          <option value="Casado(a)">Casado(a)</option>
-                          <option value="Viudo(a)">Viudo(a)</option>
-                          <option value="Separado(a)">Separado(a)</option>
-                          <option value="Divorciado(a)">Divorciado(a)</option>
-                          <option value="Unión Libre">Unión Libre</option>
-                      </select>
-                      <p class="error_estado_civil_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="sexo_edicion"><h5>Sexo</h5></label>
-                      <div class="custom-control custom-radio mb-3">
-                        <input name="sexo_edicion" class="custom-control-input" id="masculino_edicion" value="Masculino" type="radio">
-                        <label class="custom-control-label" for="masculino_edicion">Masculino</label>
+                        <div class="col-lg-12">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="imagen_edicion" name="imagen_edicion" aria-describedby="inputGroupFileAddon01" accept="image/*">
+                            <label class="custom-file-label" for="imagen">Seleccione una imagen</label>
+                            <p class="error_imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                          </div>
+                        </div>
                       </div>
-                      <div class="custom-control custom-radio mb-3">
-                        <input name="sexo_edicion" class="custom-control-input" id="femenino_edicion" value="Femenino" type="radio">
-                        <label class="custom-control-label" for="femenino_edicion">Femenino</label>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="rol_edicion"><h5>Rol</h5></label>
+                          <select class="form-control form-control-sm" id="rol_edicion" name="rol_edicion">
+                            <option value="">Seleccione una opción</option>
+                            @foreach ($roles as $rol)
+                              <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
+                            @endforeach
+                          </select>
+                          <p class="error_rol_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
                       </div>
-                      <p class="error_sexo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="cedula_edicion"><h5>Cédula</h5></label>
+                          <input type="text" class="form-control form-control-sm form-control-alternative" id="cedula_edicion" name="cedula_edicion" placeholder="Cédula">
+                          <p class="error_cedula_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="telefono_edicion"><h5>Telefono</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" id="telefono_edicion" name="telefono_edicion" placeholder="Telefono">
-                      <p class="error_telefono_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="nombre_edicion"><h5>Nombre</h5></label>
+                          <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre_edicion" name="nombre_edicion" placeholder="Nombre">
+                          <p class="error_nombre_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="apellidos_edicion"><h5>Apellidos</h5></label>
+                          <input type="text" class="form-control form-control-sm form-control-alternative" id="apellidos_edicion" name="apellidos_edicion" placeholder="Apellidos">
+                          <p class="error_apellidos_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="direccion_edicion"><h5>Dirección</h5></label>
-                      <textarea class="form-control" id="direccion_edicion" name="direccion_edicion" rows="3" placeholder="Dirección"></textarea>
-                      <p class="error_direccion_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="nacionalidad_edicion"><h5>País de nacimiento</h5></label>
+                            <select name="nacionalidad_edicion" id="nacionalidad_edicion" class="form-control form-control-sm">
+                              <option value="">Seleccione una opción</option>
+                              <option value="Costa Rica">Costa Rica</option>
+                              <option value="Panamá">Panamá</option>
+                              <option value="Nicaragua">Nicaragua</option>
+                              <option value="Guatemala">Guatemala</option>
+                              <option value="Honduras">Honduras</option>
+                              <option value="Otro">Otro</option>
+                            </select>
+                            <p class="error_nacionalidad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="fecha_nacimiento_edicion"><h5>Fecha de nacimiento</h5></label>
+                            <div class="input-group">
+                                <input type="date" class="form-control form-control-sm" id="fecha_nacimiento_edicion" name="fecha_nacimiento_edicion" placeholder="Fecha de nacimiento">
+                            </div>
+                            <p class="error_fecha_nacimiento_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
                     </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="estado_civil_edicion"><h5>Estado Civil</h5></label>
+                          <select class="form-control form-control-sm form-control-alternative" id="estado_civil_edicion" name="estado_civil_edicion">
+                              <option value="">Seleccione una opción</option>
+                              <option value="Soltero(a)">Soltero(a)</option>
+                              <option value="Casado(a)">Casado(a)</option>
+                              <option value="Viudo(a)">Viudo(a)</option>
+                              <option value="Separado(a)">Separado(a)</option>
+                              <option value="Divorciado(a)">Divorciado(a)</option>
+                              <option value="Unión Libre">Unión Libre</option>
+                          </select>
+                          <p class="error_estado_civil_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="sexo_edicion"><h5>Sexo</h5></label>
+                          <div class="custom-control custom-radio mb-3">
+                            <input name="sexo_edicion" class="custom-control-input" id="masculino_edicion" value="Masculino" type="radio">
+                            <label class="custom-control-label" for="masculino_edicion">Masculino</label>
+                          </div>
+                          <div class="custom-control custom-radio mb-3">
+                            <input name="sexo_edicion" class="custom-control-input" id="femenino_edicion" value="Femenino" type="radio">
+                            <label class="custom-control-label" for="femenino_edicion">Femenino</label>
+                          </div>
+                          <p class="error_sexo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="telefono_edicion"><h5>Telefono</h5></label>
+                          <input type="text" class="form-control form-control-sm form-control-alternative" id="telefono_edicion" name="telefono_edicion" placeholder="Telefono">
+                          <p class="error_telefono_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="direccion_edicion"><h5>Dirección</h5></label>
+                          <textarea class="form-control" id="direccion_edicion" name="direccion_edicion" rows="3" placeholder="Dirección"></textarea>
+                          <p class="error_direccion_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="hidden" name="id_edicion" id="id_edicion" value="">
                   </div>
-                </div>
-                <input type="hidden" name="id_edicion" id="id_edicion" value="">
+              </div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-primary" id="editar" name="editar">Editar</button>
@@ -647,6 +717,19 @@
           cancelButton: 'btn btn-danger'
         },
         buttonsStyling: false,
+      });
+
+      function filePreview(input){
+        if(input.files && input.files[0]){
+          var reader = new FileReader();
+          reader.onload = function(e){
+            $('#avatar').html("<img src='"+e.target.result+"' class='avatar rounded-circle img-thumbnail' style='width:200px; height:200px; top:200px; left:200px;' alt='User Avatar'>");
+          }
+            reader.readAsDataURL(input.files[0]);
+        }
+      }
+      $('#imagen').change(function(){
+        filePreview(this);
       });
 
     //filtro
@@ -770,27 +853,30 @@
 
     //Añadir
     $('#registrar').click(function(){
+      var form_data = new FormData();
+      form_data.append('_token', $('input[name=_token]').val());
+      form_data.append('imagen', $('#imagen')[0].files[0]);
+      form_data.append('rol', $('#rol').val());
+      form_data.append('cedula', $('#cedula').val());
+      form_data.append('nombre', $('#nombre').val());
+      form_data.append('apellidos', $('#apellidos').val());
+      form_data.append('nacionalidad', $('#nacionalidad').val());
+      form_data.append('fecha_nacimiento', $('#fecha_nacimiento').val());
+      form_data.append('estado_civil', $('#estado_civil').val());
+      form_data.append('sexo', $('#sexo').val());
+      form_data.append('telefono', $('#telefono').val());
+      form_data.append('direccion', $('#direccion').val());
+      form_data.append('email', $('#email').val());
+      form_data.append('codigo', $('#codigo').val());
+      form_data.append('password', $('#password').val());
+      form_data.append('password_confirmation', $('#password-confirm').val());
 
       $.ajax({
         type: 'post',
         url: '{{route('usuarios.añadir')}}',
-        data: {
-          '_token': $('input[name=_token]').val(),
-          'rol': $('#rol').val(),
-          'cedula': $('#cedula').val(),
-          'nombre': $('#nombre').val(),
-          'apellidos': $('#apellidos').val(),
-          'nacionalidad': $('#nacionalidad').val(),
-          'fecha_nacimiento': $('#fecha_nacimiento').val(),
-          'estado_civil': $('#estado_civil').val(),
-          'sexo': $('input[name="sexo"]:checked').val(),
-          'telefono': $('#telefono').val(),
-          'direccion': $('#direccion').val(),
-          'email': $('#email').val(),
-          'codigo': $('#codigo').val(),
-          'password': $('#password').val(),
-          'password_confirmation': $('#password-confirm').val()
-        },
+        data: form_data,
+        processData: false,
+        contentType: false,
         success: function(data){
           if((data.errors)){
             Toast.fire({
@@ -875,6 +961,12 @@
     //Detalle
     $(document).on('click', '#detalle_usuario', function() {
       $('#rol_detalle').val($(this).data('rol'));
+      var imagen = $(this).data('imagen');
+      if(imagen){
+        $('#avatar_detalle').html("<img src='" + $(this).data('imagen') + "' class='avatar rounded-circle img-thumbnail' style='width:200px; height:200px; top:200px; left:200px;' alt='User Avatar'>");
+      }else{
+        $('#avatar_detalle').html("<img src='http://ssl.gstatic.com/accounts/ui/avatar_2x.png' class='avatar rounded-circle img-thumbnail' style='width:200px; height:200px; top:200px; left:200px;' alt='User Avatar'>");
+      }
       $('#cedula_detalle').val($(this).data('cedula'));
       $('#nombre_detalle').val($(this).data('nombre'));
       $('#apellidos_detalle').val($(this).data('apellidos'));
@@ -890,12 +982,20 @@
       $('#direccion_detalle').val($(this).data('direccion'));
       $('#email_detalle').val($(this).data('email'));
       $('#codigo_detalle').val($(this).data('codigo'));
+
     });
 
     //Editar
     $(document).on('click', '#editar_usuario', function() {
       $('#id_edicion').val($(this).data('id'));
       $('#rol_edicion').val($(this).data('rol'));
+      var imagen = $(this).data('imagen');
+      if(imagen){
+        $('#avatar_edicion').html("<img src='" + $(this).data('imagen') + "' class='avatar rounded-circle img-thumbnail' style='width:200px; height:200px; top:200px; left:200px;' alt='User Avatar'>");
+      }else{
+        $('#avatar_edicion').html("<img src='http://ssl.gstatic.com/accounts/ui/avatar_2x.png' class='avatar rounded-circle img-thumbnail' style='width:200px; height:200px; top:200px; left:200px;' alt='User Avatar'>");
+      }
+      $('#cedula_edicion').val($(this).data('cedula'));
       $('#cedula_edicion').val($(this).data('cedula'));
       $('#nombre_edicion').val($(this).data('nombre'));
       $('#apellidos_edicion').val($(this).data('apellidos'));
@@ -912,24 +1012,24 @@
     });
 
     $('#editar').click(function(){
-
+      var form_data = new FormData();
+      form_data.append('_token', $('input[name=_token]').val());
+      form_data.append('id_edicion', $('#id_edicion').val());
+      form_data.append('imagen_edicion', $('#imagen_edicion')[0].files[0]);
+      form_data.append('rol_edicion', $('#rol_edicion').val());
+      form_data.append('cedula_edicion', $('#cedula_edicion').val());
+      form_data.append('nombre_edicion', $('#nombre_edicion').val());
+      form_data.append('apellidos_edicion', $('#apellidos_edicion').val());
+      form_data.append('nacionalidad_edicion', $('#nacionalidad_edicion').val());
+      form_data.append('fecha_nacimiento_edicion', $('#fecha_nacimiento_edicion').val());
+      form_data.append('estado_civil_edicion', $('#estado_civil_edicion').val());
+      form_data.append('sexo_edicion', $('#sexo').val());
+      form_data.append('telefono_edicion', $('#telefono_edicion').val());
+      form_data.append('direccion_edicion', $('#direccion_edicion').val());
       $.ajax({
         type: 'post',
         url: '{{route('usuarios.editar')}}',
-        data: {
-          '_token': $('input[name=_token]').val(),
-          'id_edicion': $('#id_edicion').val(),
-          'rol_edicion': $('#rol_edicion').val(),
-          'cedula_edicion': $('#cedula_edicion').val(),
-          'nombre_edicion': $('#nombre_edicion').val(),
-          'apellidos_edicion': $('#apellidos_edicion').val(),
-          'nacionalidad_edicion': $('#nacionalidad_edicion').val(),
-          'fecha_nacimiento_edicion': $('#fecha_nacimiento_edicion').val(),
-          'estado_civil_edicion': $('#estado_civil_edicion').val(),
-          'sexo_edicion': $('input[name="sexo_edicion"]:checked').val(),
-          'telefono_edicion': $('#telefono_edicion').val(),
-          'direccion_edicion': $('#direccion_edicion').val(),
-        },
+        data: form_data,
         success: function(data){
           if((data.errors)){
             Toast.fire({

@@ -119,6 +119,24 @@
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
+                      <label for="cantidad"><h5>Cantidad</h5></label>
+                      <input type="number" class="form-control form-control-sm form-control-alternative" id="cantidad" name="cantidad" placeholder="Cantidad">
+                      <p class="error-cantidad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="descripcion"><h5>Descripción</h5></label>
+                      <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripción"></textarea>
+                      <p class="error-descripcion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
                       <label for="estado"><h5>Estado</h5></label>
                       <select class="form-control form-control-sm" id="estado" name="estado">
                         <option value="">Seleccione una opción</option>

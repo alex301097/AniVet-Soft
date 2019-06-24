@@ -15,10 +15,11 @@ class CreateAdopcionsTable extends Migration
     {
         Schema::create('adopcions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('animal_venta_id')->unsigned();
+            $table->unsignedBigInteger('animal_venta_id');
             $table->foreign('animal_venta_id')->references('id')->on('animal_ventas');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('cantidad');
             $table->string('observaciones');
             $table->softDeletes();
             $table->timestamps();

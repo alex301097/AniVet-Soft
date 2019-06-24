@@ -16,7 +16,11 @@ class TipoAtencionTableSeeder extends Seeder
       $dato->save();
 
       $dato = new \App\TipoAtencion();
-      $dato->descripcion = "Cita";
+      $dato->descripcion = "Medicina General";
+      $dato->save();
+
+      $dato = new \App\TipoAtencion();
+      $dato->descripcion = "Estetica";
       $dato->save();
 
       $dato = new \App\TipoAtencion();

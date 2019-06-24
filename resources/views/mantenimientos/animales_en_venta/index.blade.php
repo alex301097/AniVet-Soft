@@ -30,7 +30,7 @@
                     </div>
                   </div>
                   <div class="col-md-2 text-left">
-                    <a class="btn btn-icon btn-primary btn-sm" type="button" href="{{route('animales.get_añadir')}}">
+                    <a class="btn btn-icon btn-primary btn-sm" type="button" href="{{route('animales_venta.get_añadir')}}">
                     	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
                       <span class="btn-inner--text">Añadir</span>
                     </a>
@@ -48,6 +48,7 @@
                                 <th scope="col">Tipo</th>
                                 <th scope="col">Raza</th>
                                 <th scope="col">Sexo</th>
+                                <th scope="col">Cantidad</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
                             </tr>
@@ -74,6 +75,9 @@
                                       {{$animal->sexo}}
                                   </td>
                                   <td>
+                                      {{$animal->cantidad}}
+                                  </td>
+                                  <td>
                                       <span class="badge badge-dot mr-4">
                                         @if ($animal->deleted_at != null)
                                           <i class="bg-danger"></i> Inactivo
@@ -93,11 +97,11 @@
                                                 <span><i class="ni ni-image"></i></span>
                                                 &nbsp;&nbsp;Imagenes
                                               </a>
-                                              <a class="dropdown-item" href="{{route('animales.get_detalle', $animal->id)}}" id="detalle_animal" name="detalle_animal">
+                                              <a class="dropdown-item" href="{{route('animales_venta.get_detalle', $animal->id)}}" id="detalle_animal" name="detalle_animal">
                                                 <span><i class="ni ni-glasses-2"></i></span>
                                                 &nbsp;&nbsp;Detalle
                                               </a>
-                                              <a class="dropdown-item" href="{{route('animales.get_editar', $animal->id)}}" id="editar_animal" name="editar_animal">
+                                              <a class="dropdown-item" href="{{route('animales_venta.get_editar', $animal->id)}}" id="editar_animal" name="editar_animal">
                                                 <span><i class="ni ni-ruler-pencil"></i></span>
                                                 &nbsp;&nbsp;Editar
                                               </a>
@@ -141,7 +145,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group" id="div_imagen" name="div_imagen">
-                            <form action="{{route('file-upload')}}" method="post"
+                            <form action="{{route('file-upload.animales_venta')}}" method="post"
                             class="dropzone" enctype="multipart/form-data"
                             id="my-awesome-dropzone">
                               {{csrf_field()}}
@@ -151,6 +155,32 @@
                               </div> --}}
                             </form>
                           <p class="error-imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          {{-- <div class="demo-gallery">
+                            <ul id="lightgallery">
+                              @foreach ($animal->imagenes as $imagen)
+                                <li  data-src="{{ url('imgPerfiles/'.$imagen->imagen) }}"
+                                data-sub-html="<h4>Nombre: {{$animal->nombre}}</h4>
+                                <p>
+                                  Especie: {{$animal->tipo_animal->descripcion}} - Raza: {{$animal->raza}} - Edad: {{$animal->edad}} años
+                                  <br>
+                                  Condiciones: {{$animal->condiciones}}
+                                  <br>
+                                  Observaciones: {{$animal->observaciones}}
+                                </p>">
+                                  <a href="">
+                                    <img class="img-responsive" src="{{ url('imgPerfiles/'.$imagen->imagen) }}" alt="{{$animal->nombre}}">
+                                    <div class="demo-gallery-poster">
+                                      <img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
+                                    </div>
+                                  </a>
+                                </li>
+                              @endforeach
+                            </ul>
+                          </div> --}}
                         </div>
                       </div>
                     </div>
@@ -194,6 +224,27 @@
         maxFilesize: 8
       };
 
+      previewThumbailFromUrl({
+          selector: '1559902529_mascotas-en-el-trabajo',
+          fileName: '1559902529_mascotas-en-el-trabajo',
+          imageURL: 'imgPerfiles/1559902529_mascotas-en-el-trabajo.jpg'
+      });
+
+      function previewThumbailFromUrl(opts) {
+          var imgDropzone = Dropzone.forElement("#" + opts.selector);
+          var mockFile = {
+              name: opts.fileName,
+              size: 12345,
+              accepted: true,
+              kind: 'image'
+          };
+          imgDropzone.emit("addedfile", mockFile);
+          imgDropzone.files.push(mockFile);
+          imgDropzone.createThumbnailFromUrl(mockFile, opts.imageURL, function() {
+              imgDropzone.emit("complete", mockFile);
+          });
+      }
+
       //Imagen
       $(document).on('click', '#añadir_imagenes', function() {
         $('#id_animal').val($(this).data('id'));
@@ -201,7 +252,7 @@
 
       //filtro
       $('#filtro').change(function(){
-        var urlFiltro = "{{route('filtro.animales', ['filtro'=>':estado'])}}";
+        var urlFiltro = "{{route('filtro.animales_venta', ['filtro'=>':estado'])}}";
         urlFiltro = urlFiltro.replace(':estado', this.value);
         $.ajax({
         type: 'post',
@@ -213,9 +264,9 @@
         success: function(data) {
           $('#lista-animales').empty();
           $.each(data['data'], function(index, value){
-            var ruta_detalle = "{{route('animales.get_detalle', ['id'=>':id'])}}";
+            var ruta_detalle = "{{route('animales_venta.get_detalle', ['id'=>':id'])}}";
             ruta_detalle = ruta_detalle.replace(':id', value.id);
-            var ruta_editar = "{{route('animales.get_editar', ['id'=>':id'])}}";
+            var ruta_editar = "{{route('animales_venta.get_editar', ['id'=>':id'])}}";
             ruta_editar = ruta_editar.replace(':id', value.id);
 
             if(value.deleted_at != null){
@@ -323,7 +374,7 @@
           if (result.value) {
             $.ajax({
   							type: "POST",
-  							url: "{{route('animales.eliminar')}}",
+  							url: "{{route('animales_venta.eliminar')}}",
   							data: {
   								'_token': $('input[name=_token]').val(),
   								'id':id,
@@ -367,7 +418,7 @@
           if (result.value) {
             $.ajax({
   							type: "POST",
-  							url: "{{route('animales.eliminar')}}",
+  							url: "{{route('animales_venta.eliminar')}}",
   							data: {
   								'_token': $('input[name=_token]').val(),
   								'id':id,

@@ -22,20 +22,20 @@ class VentaAnimalController extends Controller
     return view('mantenimientos.animales_en_venta.index', ['animales'=>$animales,'tipos_animales'=>$tipos_animales]);
   }
 
-  public function get_detalle_animales($id)
+  public function get_detalle_animales_venta($id)
   {
     $animal = AnimalVenta::find($id);
     $tipos_animales = TipoAnimal::all();
     return view('mantenimientos.animales_en_venta.detalle', ['animal'=>$animal,'tipos_animales'=>$tipos_animales]);
   }
 
-  public function get_añadir_animales()
+  public function get_añadir_animales_venta()
   {
     $tipos_animales = TipoAnimal::all();
     return view('mantenimientos.animales_en_venta.registrar', ['tipos_animales'=>$tipos_animales]);
   }
 
-  public function añadir_animales(Request $request)
+  public function añadir_animales_venta(Request $request)
   {
     $reglas = [
       'tipo_animal' => 'required',
@@ -84,14 +84,14 @@ class VentaAnimalController extends Controller
     }
   }
 
-  public function get_editar_animales($id)
+  public function get_editar_animales_venta($id)
   {
     $animal = AnimalVenta::find($id);
     $tipos_animales = TipoAnimal::all();
     return view('mantenimientos.animales_en_venta.editar', ['animal'=>$animal,'tipos_animales'=>$tipos_animales]);
   }
 
-  public function editar_animales(Request $request)
+  public function editar_animales_venta(Request $request)
   {
 
     $animal = AnimalVenta::find($request->input('id_edicion'));
@@ -141,7 +141,7 @@ class VentaAnimalController extends Controller
     }
   }
 
-  public function filtrar_animales($filtro)
+  public function filtrar_animales_venta($filtro)
   {
 
     if($filtro == "0" || $filtro == null){
@@ -153,7 +153,7 @@ class VentaAnimalController extends Controller
     return response()->json($animales);
   }
 
-  public function eliminar_animales(Request $request)
+  public function eliminar_animales_venta(Request $request)
   {
     $animal = AnimalVenta::withTrashed()->where('id', $request->input('id'))->first();
     if(!$animal->trashed()){

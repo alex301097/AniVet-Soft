@@ -133,13 +133,30 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{route('animales')}}">
-              <i class="ni ni-bullet-list-67 text-red"></i> Animales en venta/adopción
+            <a class="nav-link" href="{{route('animales_venta')}}">
+              <i class="ni ni-bullet-list-67 text-red"></i> Animales en venta
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="ni ni-single-02 text-yellow"></i> Servicios
+            <a class="nav-link" href="{{route('animales_adopcion')}}">
+              <i class="ni ni-bullet-list-67 text-red"></i> Animales en adopción
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('citas')}}">
+              <i class="ni ni-single-02 text-yellow"></i> Citas
+            </a>
+          </li>
+        </ul>
+        <!-- Divider -->
+        <hr class="my-3">
+        <!-- Heading -->
+        <h6 class="navbar-heading text-muted">Seguridad</h6>
+        <!-- Navigation -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('accesos')}}">
+              <i class="ni ni-single-02 text-yellow"></i> Accesos
             </a>
           </li>
         </ul>

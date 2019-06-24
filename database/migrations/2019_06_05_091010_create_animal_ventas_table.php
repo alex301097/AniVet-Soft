@@ -21,11 +21,13 @@ class CreateAnimalVentasTable extends Migration
             $table->string('raza');
             $table->date('fecha_nacimiento')->nullable();
             $table->string('sexo', 15)->nullable();
-            $table->string('observaciones');
             $table->integer('tipo_animal_id')->unsigned();
             $table->foreign('tipo_animal_id')->references('id')->on('tipo_animals');
-            $table->string('precio');
+            $table->integer('cantidad');
+            $table->integer('precio');
+            $table->string('observaciones');
             $table->string('condiciones');
+            $table->string('descripcion');
             $table->string('estado');
             $table->softDeletes();
             $table->timestamps();

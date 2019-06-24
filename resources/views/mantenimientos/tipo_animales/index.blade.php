@@ -205,49 +205,48 @@
 
           if(value.deleted_at != null){
   					icono = "<i class='bg-danger'></i> Inactivo";
-            acciones = "<div class='dropdown'> " +
-                "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-                  "<i class='fas fa-ellipsis-v'></i>" +
-                "</a>" +
-                "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>" +
-                    "<a class='dropdown-item' href='#' id='editar_tipo_animal' name='editar_tipo_animal'" +
-                    "data-toggle='modal' data-target='#modal-editar'" +
-                    "data-id='" + value.id + "' data-descripcion='" + value.descripcion + "'>" +
-                      "<span><i class='ni ni-ruler-pencil'></i></span>" +
-                      "&nbsp;&nbsp;Editar" +
-                    "</a>" +
-                    "<a class='dropdown-item' href='#' id='habilitar_tipo_animal' name='habilitar_tipo_animal'" +
-                    "data-id='" + value.id + "'>"
-                      "<span><i class='ni ni-fat-remove'></i></span>" +
-                      "&nbsp;&nbsp;Habilitar" +
-                    "</a>" +
-                "</div>" +
+            acciones = "<div class='dropdown'>"+
+                "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"+
+                  "<i class='fas fa-ellipsis-v'></i>"+
+                "</a>"+
+                "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>"+
+                    "<a class='dropdown-item' href='#' id='editar_tipo_animal' name='editar_tipo_animal'"+
+                    "data-id='" + value.id + "' data-descripcion='" + value.descripcion + "'>"+
+                      "<span><i class='ni ni-ruler-pencil'></i></span>"+
+                      "&nbsp;&nbsp;Editar"+
+                    "</a>"+
+                    "<a class='dropdown-item' href='#' id='habilitar_tipo_animal' name='habilitar_tipo_animal'"+
+                    "data-id='" + value.id + "'>"+
+                      "<span><i class='ni ni-fat-remove'></i></span>"+
+                      "&nbsp;&nbsp;Habilitar"+
+                    "</a>"+
+                "</div>"+
             "</div>";
   				}else{
             icono = "<i class='bg-success'></i> Activo";
-  					acciones = "<div class='dropdown'> " +
-                "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-                  "<i class='fas fa-ellipsis-v'></i>" +
-                "</a>" +
-                "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>" +
-                    "<a class='dropdown-item' href='#' id='editar_tipo_animal' name='editar_tipo_animal'" +
-                    "data-toggle='modal' data-target='#modal-editar'" +
-                    "data-id='" + value.id + "' data-descripcion='" + value.descripcion + "'>" +
-                      "<span><i class='ni ni-ruler-pencil'></i></span>" +
-                      "&nbsp;&nbsp;Editar" +
-                    "</a>" +
-                    "<a class='dropdown-item' href='#' id='deshabilitar_tipo_animal' name='deshabilitar_tipo_animal'" +
-                    "data-id='" + value.id + "'>"
-                      "<span><i class='ni ni-fat-remove'></i></span>" +
-                      "&nbsp;&nbsp;Deshabilitar" +
-                    "</a>" +
-                "</div>" +
+  					acciones = "<div class='dropdown'>"+
+                "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"+
+                  "<i class='fas fa-ellipsis-v'></i>"+
+                "</a>"+
+                "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>"+
+                    "<a class='dropdown-item' href='#' id='editar_tipo_animal' name='editar_tipo_animal'"+
+                    "data-toggle='modal' data-target='#modal-editar'"+
+                    "data-id='" + value.id + "' data-descripcion='" + value.descripcion + "'>"+
+                      "<span><i class='ni ni-ruler-pencil'></i></span>"+
+                      "&nbsp;&nbsp;Editar"+
+                    "</a>"+
+                    "<a class='dropdown-item' href='#' id='deshabilitar_tipo_animal' name='deshabilitar_tipo_animal'"+
+                    "data-id='" + value.id + "'>"+
+                      "<span><i class='ni ni-fat-remove'></i></span>"+
+                      "&nbsp;&nbsp;Deshabilitar"+
+                    "</a>"+
+                "</div>"+
             "</div>";
   				}
 
-          $('#lista-tipos_animales').append("<tr id='tipo_animal_" + value.id + "' name='tipo_animal_" + value.id + "'>" +
+          $('#lista-tipos_animales').append("<tr id='tipo_animal_" + value.id + " name='tipo_animal_" + value.id + ">" +
               "<th scope='row'>" +
-                  "# " + value.id +
+                "  # " + value.id +
               "</th>" +
               "<td>" +
                   value.descripcion +

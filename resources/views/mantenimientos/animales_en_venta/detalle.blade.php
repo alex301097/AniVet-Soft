@@ -14,7 +14,7 @@
               <div class="row align-items-center">
                 <div class="col">
                   <h6 class="text-uppercase text-light ls-1 mb-1">Detalle</h6>
-                  <h2 class="text-white mb-0">Animal en {{$animal->estado}}</h2>
+                  <h2 class="text-white mb-0">Animal en {{$animal->estado}} - Existencias: {{$animal->cantidad}}</h2>
                 </div>
               </div>
             </div>
@@ -49,8 +49,8 @@
                   <label style="color:white;"><b><i class="ni ni-bold-right"></i>Observaciones:</b><span style="color:gray;">&nbsp;{{$animal->observaciones}}</span></label>
                 </div>
               </div>
-              <h1 style="color:white;"><i class="ni ni-bold-right"></i> Imagenes</h1>
               @if (!empty($animal->imagenes))
+              <h1 style="color:white;"><i class="ni ni-bold-right"></i> Imagenes</h1>
                 <div class="demo-gallery">
                   <ul id="lightgallery">
                     @foreach ($animal->imagenes as $imagen)

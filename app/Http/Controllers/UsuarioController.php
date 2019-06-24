@@ -38,6 +38,7 @@ class UsuarioController extends Controller
   public function añadir_usuarios(Request $request)
   {
     $reglas = [
+      'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
       'rol' => 'required',
       'cedula' => 'required|unique:users,cedula',
       'nombre' => 'required',
@@ -50,10 +51,18 @@ class UsuarioController extends Controller
       'direccion' => 'required',
       'email' => 'required|unique:users,email|email',
       'codigo' => 'required|unique:users,codigo',
-      'password' => 'required|min:6|confirmed',
+      'password' => ['required',
+                     'string',
+                     'min:10',             // must be at least 10 characters in length
+                     'regex:/[a-z]/',      // must contain at least one lowercase letter
+                     'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                     'regex:/[0-9]/',      // must contain at least one digit
+                     'regex:/[@$!%*#?&-]/', // must contain a special character,
+                     'confirmed']
     ];
 
     $inputs = [
+      'imagen' => $request->imagen,
       'rol' => $request->rol,
       'cedula' => $request->cedula,
       'nombre' => $request->nombre,
@@ -75,6 +84,14 @@ class UsuarioController extends Controller
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
       $user = new User();
+      if($request->file('imagen') != null){
+      $img = $request->file('imagen');
+      $file_route = time().'_'.$img->getClientOriginalName();
+
+      Storage::disk('imgPerfiles')->put($file_route,file_get_contents($img->getRealPath()));
+
+      $user->imagen = $file_route;
+      }
       $user->rol()->associate($request->input('rol'));
       $user->cedula = $request->input('cedula');
       $user->nombre = $request->input('nombre');
@@ -130,6 +147,15 @@ class UsuarioController extends Controller
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
       $user->rol()->associate($request->input('rol_edicion'));
+      if($request->file('imagen') != null){
+      $img = $request->file('imagen');
+      $file_route = time().'_'.$img->getClientOriginalName();
+
+      Storage::disk('imgPerfiles')->delete($user->imagen);
+      Storage::disk('imgPerfiles')->put($file_route,file_get_contents($img->getRealPath()));
+
+      $user->imagen = $file_route;
+      }
       $user->cedula = $request->input('cedula_edicion');
       $user->nombre = $request->input('nombre_edicion');
       $user->apellidos = $request->input('apellidos_edicion');
