@@ -17,13 +17,10 @@ class Paciente extends Model
 
     protected $appends = ['descripcionAnimal'];
 
-     /**
-      * Accessor for tipo animal descripcion.
-      */
      public function getDescripcionAnimalAttribute()
-     {
-       return $this->tipo_animal->descripcion;
-     }
+    {
+     return $this->tipo_animal->descripcion;
+    }
 
     public function user(){
      return $this->belongsTo('App\User');
@@ -36,5 +33,7 @@ class Paciente extends Model
     public function imagenes(){
       return $this->hasMany('App\PacienteImagen','paciente_id');
     }
+
+
 
 }

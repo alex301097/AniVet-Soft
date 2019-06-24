@@ -26,4 +26,8 @@ class TipoAnimal extends Model
    public function animal_ventas(){
      return $this->hasMany('App\AnimalVenta');
    }
+
+   public function pacientes(){
+     return $this->hasMany('App\Paciente');
+   }
 }

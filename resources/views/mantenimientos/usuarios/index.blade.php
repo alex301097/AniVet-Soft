@@ -1,13 +1,18 @@
 @extends('layouts.master')
+@section('css')
+  <!-- datatable and dropzone css links -->
+  <link rel="stylesheet" rel="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css"></script>
+  <link rel="stylesheet" rel="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+@endsection
 @section('contenido')
     <div class="row">
       <div class="col-md-12">
-          <div class="card bg-secondary shadow">
-            <div class="card-header bg-white border-0">
+          <div class="card bg-gradient-default">
+            <div class="card-header bg-transparent">
               <div class="row align-items-center">
                 <div class="col">
-                  <h6 class="text-uppercase text-mute ls-1 mb-1">Mantenimiento</h6>
-                  <h2 class="text-black mb-0">Usuarios</h2>
+                  <h6 class="text-uppercase text-light ls-1 mb-1">Mantenimiento</h6>
+                  <h2 class="text-white mb-0">Usuarios</h2>
                 </div>
               </div>
             </div>
@@ -46,85 +51,12 @@
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="lista-usuarios" name="lista-usuarios">
-                            @foreach ($usuarios as $usuario)
-                              <tr id="usuario_{{$usuario->id}}" name="usuario_{{$usuario->id}}">
-                                  <th scope="row">
-                                      <div class="media align-items-center">
-                                          <a href="#" class="avatar rounded-circle mr-3">
-                                            @if (empty($usuario->imagen))
-                                              <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar">
-                                            @else
-                                              <img src="{{ url('imgPerfiles/'.Auth::user()->imagen) }}" lt="User Avatar">
-                                            @endif
-                                          </a>
-                                          <div class="media-body">
-                                              <span class="mb-0 text-sm">{{$usuario->nombre}} {{$usuario->apellidos}}</span>
-                                          </div>
-                                      </div>
-                                  </th>
-                                  <td>
-                                      {{$usuario->cedula}}
-                                  </td>
-                                  <td>
-                                      {{$usuario->telefono}}
-                                  </td>
-                                  <td>
-                                      {{$usuario->descripcionRol}}
-                                  </td>
-                                  <td>
-                                      <span class="badge badge-dot mr-4">
-                                        @if ($usuario->deleted_at != null)
-                                          <i class="bg-danger"></i> Inactivo
-                                        @else
-                                          <i class="bg-success"></i> Activo
-                                        @endif
-                                      </span>
-                                  </td>
-                                  <td class="text-right">
-                                      <div class="dropdown">
-                                          <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                          </a>
-                                          <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                              <a class="dropdown-item" href="#" id="detalle_usuario" name="detalle_usuario"
-                                              data-toggle="modal" data-target="#modal-detalle"
-                                              data-id="{{$usuario->id}}" data-rol="{{$usuario->rol_id}}" data-cedula="{{$usuario->cedula}}"
-                                              data-nombre="{{$usuario->nombre}}" data-apellidos="{{$usuario->apellidos}}" data-nacionalidad="{{$usuario->nacionalidad}}"
-                                              data-fecha_nacimiento="{{$usuario->fecha_nacimiento}}" data-estado_civil="{{$usuario->estado_civil}}" data-sexo="{{$usuario->sexo}}"
-                                              data-telefono="{{$usuario->telefono}}" data-direccion="{{$usuario->direccion}}" data-email="{{$usuario->email}}"
-                                              data-codigo="{{$usuario->codigo}}">
-                                                <span><i class="ni ni-glasses-2"></i></span>
-                                                &nbsp;&nbsp;Detalle
-                                              </a>
-                                              <a class="dropdown-item" href="#" id="editar_usuario" name="editar_usuario"
-                                              data-toggle="modal" data-target="#modal-editar"
-                                              data-id="{{$usuario->id}}" data-rol="{{$usuario->rol_id}}" data-cedula="{{$usuario->cedula}}"
-                                              data-nombre="{{$usuario->nombre}}" data-apellidos="{{$usuario->apellidos}}" data-nacionalidad="{{$usuario->nacionalidad}}"
-                                              data-fecha_nacimiento="{{$usuario->fecha_nacimiento}}" data-estado_civil="{{$usuario->estado_civil}}" data-sexo="{{$usuario->sexo}}"
-                                              data-telefono="{{$usuario->telefono}}" data-direccion="{{$usuario->direccion}}" data-email="{{$usuario->email}}"
-                                              data-codigo="{{$usuario->codigo}}">
-                                                <span><i class="ni ni-ruler-pencil"></i></span>
-                                                &nbsp;&nbsp;Editar
-                                              </a>
-                                              <a class="dropdown-item" href="#" id="deshabilitar_usuario" name="deshabilitar_usuario"
-                                              data-id="{{$usuario->id}}">
-                                                <span><i class="ni ni-fat-remove"></i></span>
-                                                &nbsp;&nbsp;Deshabilitar
-                                              </a>
-                                          </div>
-                                      </div>
-                                  </td>
-                              </tr>
-                            @endforeach
+                        <tbody style="color:black;">
+
                         </tbody>
+
                       </table>
-                      <div class='row'>
-        								<div class="col-md-12">
-        									{{$usuarios->links()}}
-        								</div>
-        								<hr>
-        							</div>
+
 
                     </div>
                   </div>
@@ -633,6 +565,14 @@
 
 @endsection
 @section('scripts')
+
+  <!-- Dropzone.js links -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
+
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.2/js/dataTables.responsive.min.js"></script>
+
+
   <script type="text/javascript">
       const Toast = Swal.mixin({
         toast: true,
@@ -649,7 +589,57 @@
         buttonsStyling: false,
       });
 
-    //filtro
+      Dropzone.options.myAwesomeDropzone = {
+        paramName: "Imagen",
+        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+        addRemoveLinks: true,
+        dictCancelUpload: "Cancelar",
+        dictCancelUploadConfirmation: "Cancelado.",
+        dictRemoveFile: "Eliminar",
+        maxFilesize: 8
+      };
+
+      $(document).ready(function() {
+        $('#usuarios').DataTable({
+          "processing":true,
+          "serverSide":true,
+            // "responsive": true,
+          "ajax":"{{ url('api/usuarios') }}",
+          "columns":
+          [
+            {data: 'nombre'},
+            {data: 'cedula'},
+            {data: 'telefono'},
+            {data: 'descripcionRol', orderable: false, searchable: false},
+            {data: 'estado'},
+            {data: 'btn', orderable: false, searchable: false}
+          ],
+          "language":{
+            "info": "<span style='color:white;'>Mostrando total registros</span>",
+            "search": "<span style='color:white;'>Buscar</span>",
+            "paginate": {
+                "next": "<span style='color:white;'>Siguiente</span>",
+              "previous": "<span style='color:white;'>Anterior</span>",
+            },
+            "lengthMenu":
+            '<span style="color:white;">Mostrar&nbsp;</span><select>' +
+            '<option value="10">10</option>' +
+            '<option value="30">30</option>' +
+            '<option value="-1">Todos</option>' +
+            '</select> <span style="color:white;">&nbsp;registros</span>' ,
+            "loadingRecords": "<span style='color:black;'>Cargando..</span>",
+            "processing": "<span style='color:black;'>Procesando..</span>",
+            "emptyTable": "<span style='color:black;'>No hay datos</span>",
+            "zeroRecords": "<span style='color:black;'>No hay coincidencias</span>",
+            "infoEmpty": "",
+            "infoFiltered": "",
+          }
+        });
+
+      } );
+
+/**
+     filtro
     $('#filtro').change(function(){
       var urlFiltro = "{{route('filtro.usuarios', ['filtro'=>':estado'])}}";
       urlFiltro = urlFiltro.replace(':estado', this.value);
@@ -767,7 +757,7 @@
         }
       });
     });
-
+*/
     //Añadir
     $('#registrar').click(function(){
 

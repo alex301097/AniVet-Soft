@@ -9,7 +9,7 @@ class AnimalVenta extends Model
 {
   use SoftDeletes;
   protected $dates = ['deleted_at'];
-
+ 
   /**
    * The attributes that are mass assignable.
    *
@@ -18,6 +18,12 @@ class AnimalVenta extends Model
    protected $fillable = ['nombre','edad','peso','raza','fecha_nacimiento','sexo',
                           'observaciones','precio','condiciones','estado','tipo_animal_id'];
 
+protected $appends = ['descripcion_animal'];
+
+  public function getDescripcionAnimalAttribute()
+  {
+      return $this->tipo_animal->descripcion;
+  }
 
     /**
      * Metodos de relacion.
@@ -33,4 +39,6 @@ class AnimalVenta extends Model
     public function adopcion(){
       return $this->belongsTo('App\Adopcion');
     }
+
+
 }

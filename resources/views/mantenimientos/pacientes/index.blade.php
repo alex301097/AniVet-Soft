@@ -145,14 +145,14 @@
             {data: 'nombre'},
             {data: 'edad'},
             {data: 'peso'},
-            {data: 'descripcionAnimal'},
+            {data: 'descripcionAnimal', orderable: false, searchable: false},
             {data: 'sexo'},
             {data: 'raza'},
             {data: 'estado'},
             {data: 'btn', orderable: false, searchable: false}
           ],
           "language":{
-            "info": "<span style='color:white;'>Mostrando TOTAL registros</span>",
+            "info": "<span style='color:white;'>Mostrando total registros</span>",
             "search": "<span style='color:white;'>Buscar</span>",
             "paginate": {
                 "next": "<span style='color:white;'>Siguiente</span>",

@@ -27,6 +27,7 @@ class PacienteController extends Controller
   {
     $paciente = Paciente::find($id);
     $tipos_animales = TipoAnimal::all();
+  
     return view('mantenimientos.pacientes.detalle', ['paciente'=>$paciente, 'tipos_animales'=>$tipos_animales]);
   }
 
