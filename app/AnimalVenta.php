@@ -9,7 +9,7 @@ class AnimalVenta extends Model
 {
   use SoftDeletes;
   protected $dates = ['deleted_at'];
- 
+
   /**
    * The attributes that are mass assignable.
    *
@@ -18,7 +18,7 @@ class AnimalVenta extends Model
    protected $fillable = ['nombre','edad','peso','raza','fecha_nacimiento','sexo',
                           'observaciones','precio','condiciones','estado','tipo_animal_id'];
 
-protected $appends = ['descripcion_animal'];
+protected $appends = ['descripcionAnimal'];
 
   public function getDescripcionAnimalAttribute()
   {

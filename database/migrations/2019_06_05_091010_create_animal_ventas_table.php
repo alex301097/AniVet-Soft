@@ -27,7 +27,6 @@ class CreateAnimalVentasTable extends Migration
             $table->integer('precio');
             $table->string('observaciones');
             $table->string('condiciones');
-            $table->string('descripcion');
             $table->string('estado');
             $table->softDeletes();
             $table->timestamps();

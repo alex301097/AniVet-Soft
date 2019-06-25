@@ -1,6 +1,6 @@
 <a type="button" class="btn btn-info btn-sm" title="Click para mostrar los detalles del usuario"
 data-toggle="modal" data-target="#modal-detalle" id="detalle_usuario" name="detalle_usuario"
-data-id="{{$id}}" data-rol="{{$rol_id}}" data-cedula="{{$cedula}}"
+data-id="{{$id}}" data-imagen={{(($imagen)?url('imgPerfiles/'.$imagen):"null")}} data-rol="{{$rol_id}}" data-cedula="{{$cedula}}"
 data-nombre="{{$nombre}}" data-apellidos="{{$apellidos}}" data-nacionalidad="{{$nacionalidad}}"
 data-fecha_nacimiento="{{$fecha_nacimiento}}" data-estado_civil="{{$estado_civil}}" data-sexo="{{$sexo}}"
 data-telefono="{{$telefono}}" data-direccion="{{$direccion}}" data-email="{{$email}}"
@@ -10,7 +10,7 @@ data-codigo="{{$codigo}}">
 @if ($deleted_at == null)
   <a type="button" class="btn btn-secondary btn-sm" id="editar_usuario" name="editar_usuario"
   title="Click para editar los detalles del usuario" data-toggle="modal" data-target="#modal-editar"
-  data-id="{{$id}}" data-imagen={{(($usuario->imagen)?url('imgPerfiles/'.$usuario->imagen):"null")}} data-rol="{{$rol_id}}" data-cedula="{{$cedula}}"
+  data-id="{{$id}}" data-imagen={{(($imagen)?url('imgPerfiles/'.$imagen):"null")}} data-rol="{{$rol_id}}" data-cedula="{{$cedula}}"
   data-nombre="{{$nombre}}" data-apellidos="{{$apellidos}}" data-nacionalidad="{{$nacionalidad}}"
   data-fecha_nacimiento="{{$fecha_nacimiento}}" data-estado_civil="{{$estado_civil}}" data-sexo="{{$sexo}}"
   data-telefono="{{$telefono}}" data-direccion="{{$direccion}}" data-email="{{$email}}"
@@ -19,7 +19,7 @@ data-codigo="{{$codigo}}">
 @else
   <a type="button" class="btn btn-default btn-sm disabled" id="editar_usuario" name="editar_usuario"
   title="Click para editar los detalles del usuario" data-toggle="modal" data-target="#modal-editar"
-  data-id="{{$id}}" data-imagen={{(($usuario->imagen)?url('imgPerfiles/'.$usuario->imagen):"null")}} data-rol="{{$rol_id}}" data-cedula="{{$cedula}}"
+  data-id="{{$id}}" data-imagen={{(($imagen)?url('imgPerfiles/'.$imagen):"null")}} data-rol="{{$rol_id}}" data-cedula="{{$cedula}}"
   data-nombre="{{$nombre}}" data-apellidos="{{$apellidos}}" data-nacionalidad="{{$nacionalidad}}"
   data-fecha_nacimiento="{{$fecha_nacimiento}}" data-estado_civil="{{$estado_civil}}" data-sexo="{{$sexo}}"
   data-telefono="{{$telefono}}" data-direccion="{{$direccion}}" data-email="{{$email}}"

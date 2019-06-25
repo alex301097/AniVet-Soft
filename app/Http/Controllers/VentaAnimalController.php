@@ -73,6 +73,7 @@ class VentaAnimalController extends Controller
       $animal->raza = $request->input('raza');
       $animal->fecha_nacimiento = $request->input('fecha_nacimiento');
       $animal->sexo = $request->input('sexo');
+      $animal->cantidad = $request->input('cantidad');
       $animal->precio = $request->input('precio');
       $animal->observaciones = $request->input('observaciones');
       $animal->condiciones = $request->input('condiciones');

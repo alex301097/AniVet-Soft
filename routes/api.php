@@ -29,9 +29,10 @@ Route::get('pacientes', function(){
 Route::get('usuarios', function(){
   return datatables()
   ->eloquent(User::query()->withTrashed())
+  ->addColumn('usuario', 'mantenimientos.usuarios.usuario')
   ->addColumn('estado', 'mantenimientos.usuarios.estado')
   ->addColumn('btn', 'mantenimientos.usuarios.actions')
-  ->rawColumns(['btn', 'estado'])
+  ->rawColumns(['btn', 'estado', 'usuario'])
   ->toJson();
 });
 

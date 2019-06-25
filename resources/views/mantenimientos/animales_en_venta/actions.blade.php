@@ -4,16 +4,16 @@ data-toggle="modal" data-target="#modal-añadir" data-id="{{$id}}">
 </a>
 
 <a type="button" class="btn btn-info btn-sm" title="Click para mostrar los detalles del animal"
-href="{{route('animales.get_detalle', $id)}}">
+href="{{route('animales_venta.get_detalle', $id)}}">
 &nbsp;<i class="fas fa-info-circle" style="color:black;"></i>&nbsp;</a>
 
 @if ($deleted_at == null)
   <a type="button" class="btn btn-secondary btn-sm"
-  title="Click para editar los detalles del paciente" href="{{route('animales.get_editar', $id)}}">
+  title="Click para editar los detalles del paciente" href="{{route('animales_venta.get_editar', $id)}}">
   &nbsp;<i class="far fa-edit" style="color:black;"></i>&nbsp;</a>
 @else
   <a type="button" class="btn btn-default btn-sm disabled"
-  title="Click para editar los detalles del animal" href="{{route('animales.get_editar', $id)}}">
+  title="Click para editar los detalles del animal" href="{{route('animales_venta.get_editar', $id)}}">
   &nbsp;<i class="far fa-edit" style="color:black;"></i>&nbsp;</a>
 @endif
 

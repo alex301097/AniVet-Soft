@@ -2,7 +2,6 @@
 @section('css')
   <!-- Dropzone.js css links -->
   <link rel="stylesheet" rel="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css"></script>
-  <link rel="stylesheet" rel="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css"></script>
   <link rel="stylesheet" rel="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 @endsection
 @section('contenido')
@@ -46,7 +45,6 @@
                             <tr>
                                 <th scope="col">Animal</th>
                                 <th scope="col">Edad</th>
-                                <th scope="col">Peso</th>
                                 <th scope="col">Tipo</th>
                                 <th scope="col">Raza</th>
                                 <th scope="col">Sexo</th>
@@ -132,11 +130,8 @@
 @section('scripts')
   <!-- Dropzone.js links -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
-  <!-- Dropzone.js links -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
 
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.2/js/dataTables.responsive.min.js"></script>
 
   <script type="text/javascript">
 
@@ -165,26 +160,26 @@
         maxFilesize: 8
       };
 
-      previewThumbailFromUrl({
-          selector: '1559902529_mascotas-en-el-trabajo',
-          fileName: '1559902529_mascotas-en-el-trabajo',
-          imageURL: 'imgPerfiles/1559902529_mascotas-en-el-trabajo.jpg'
-      });
-
-      function previewThumbailFromUrl(opts) {
-          var imgDropzone = Dropzone.forElement("#" + opts.selector);
-          var mockFile = {
-              name: opts.fileName,
-              size: 12345,
-              accepted: true,
-              kind: 'image'
-          };
-          imgDropzone.emit("addedfile", mockFile);
-          imgDropzone.files.push(mockFile);
-          imgDropzone.createThumbnailFromUrl(mockFile, opts.imageURL, function() {
-              imgDropzone.emit("complete", mockFile);
-          });
-      }
+      // previewThumbailFromUrl({
+      //     selector: '1559902529_mascotas-en-el-trabajo',
+      //     fileName: '1559902529_mascotas-en-el-trabajo',
+      //     imageURL: 'imgPerfiles/1559902529_mascotas-en-el-trabajo.jpg'
+      // });
+      //
+      // function previewThumbailFromUrl(opts) {
+      //     var imgDropzone = Dropzone.forElement("#" + opts.selector);
+      //     var mockFile = {
+      //         name: opts.fileName,
+      //         size: 12345,
+      //         accepted: true,
+      //         kind: 'image'
+      //     };
+      //     imgDropzone.emit("addedfile", mockFile);
+      //     imgDropzone.files.push(mockFile);
+      //     imgDropzone.createThumbnailFromUrl(mockFile, opts.imageURL, function() {
+      //         imgDropzone.emit("complete", mockFile);
+      //     });
+      // }
       $(document).ready(function() {
         $('#animales_en_venta').DataTable({
           "processing":true,
@@ -194,10 +189,10 @@
           [
             {data: 'nombre'},
             {data: 'edad'},
-            {data: 'peso'},
             {data: 'descripcionAnimal', orderable: false, searchable: false},
             {data: 'raza'},
             {data: 'sexo'},
+            {data: 'cantidad'},
             {data: 'estado'},
             {data: 'btn', orderable: false, searchable: false}
           ],
@@ -230,117 +225,6 @@
         $('#id_animal').val($(this).data('id'));
       });
 
-
-
-/**
-      //filtro
-      $('#filtro').change(function(){
-        var urlFiltro = "{{route('filtro.animales_venta', ['filtro'=>':estado'])}}";
-        urlFiltro = urlFiltro.replace(':estado', this.value);
-        $.ajax({
-        type: 'post',
-        url: urlFiltro,
-        data: {
-          '_token': $('input[name=_token]').val(),
-          'filtro': this.value
-        },
-        success: function(data) {
-          $('#lista-animales').empty();
-          $.each(data['data'], function(index, value){
-            var ruta_detalle = "{{route('animales_venta.get_detalle', ['id'=>':id'])}}";
-            ruta_detalle = ruta_detalle.replace(':id', value.id);
-            var ruta_editar = "{{route('animales_venta.get_editar', ['id'=>':id'])}}";
-            ruta_editar = ruta_editar.replace(':id', value.id);
-
-            if(value.deleted_at != null){
-    					icono = "<i class='bg-danger'></i> Inactivo";
-              acciones = "<div class='dropdown'>" +
-                  "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-                    "<i class='fas fa-ellipsis-v'></i>" +
-                  "</a>" +
-                  "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>" +
-                      "<a class='dropdown-item' href='#' id='añadir_imagenes' name='añadir_imagenes'" +
-                      "data-toggle='modal' data-target='#modal-añadir' data-id='" + value.id + "'>" +
-                        "<span><i class='ni ni-image'></i></span>" +
-                        "&nbsp;&nbsp;Imagenes" +
-                      "</a>" +
-                      "<a class='dropdown-item' href='" + ruta_detalle + "' id='detalle_animal' name='detalle_animal'>" +
-                        "<span><i class='ni ni-glasses-2'></i></span>" +
-                        "&nbsp;&nbsp;Detalle" +
-                      "</a>" +
-                      "<a class='dropdown-item' href='#' id='editar_animal' name='editar_animal'>" +
-                        "<span><i class='ni ni-ruler-pencil'></i></span>" +
-                        "&nbsp;&nbsp;Editar" +
-                      "</a>" +
-                      "<a class='dropdown-item' href='#' id='habilitar_animal' name='habilitar_animal'" +
-                      "data-id='" + value.id + "'>" +
-                        "<span><i class='ni ni-fat-remove'></i></span>" +
-                        "&nbsp;&nbsp;Habilitar" +
-                      "</a>" +
-                  "</div>" +
-              "</div>";
-    				}else{
-              icono = "<i class='bg-success'></i> Activo";
-              acciones = "<div class='dropdown'>" +
-                  "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-                    "<i class='fas fa-ellipsis-v'></i>" +
-                  "</a>" +
-                  "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>" +
-                      "<a class='dropdown-item' href='#' id='añadir_imagenes' name='añadir_imagenes'" +
-                      "data-toggle='modal' data-target='#modal-añadir' data-id='" + value.id + "'>" +
-                        "<span><i class='ni ni-image'></i></span>" +
-                        "&nbsp;&nbsp;Imagenes" +
-                      "</a>" +
-                      "<a class='dropdown-item' href='" + ruta_detalle + "' id='detalle_animal' name='detalle_animal'>" +
-                        "<span><i class='ni ni-glasses-2'></i></span>" +
-                        "&nbsp;&nbsp;Detalle" +
-                      "</a>" +
-                      "<a class='dropdown-item' href='" + ruta_editar + "' id='editar_animal' name='editar_animal'>" +
-                        "<span><i class='ni ni-ruler-pencil'></i></span>" +
-                        "&nbsp;&nbsp;Editar" +
-                      "</a>" +
-                      "<a class='dropdown-item' href='#' id='deshabilitar_animal' name='deshabilitar_animal'" +
-                      "data-id='" + value.id + "'>" +
-                        "<span><i class='ni ni-fat-remove'></i></span>" +
-                        "&nbsp;&nbsp;Deshabilitar" +
-                      "</a>" +
-                  "</div>" +
-              "</div>";
-    				}
-
-            $('#lista-animales').append("<tr id='animal_" + value.id + "' name='animal_" + value.id + "'>" +
-                "<th scope='row'>" +
-                    "#" + value.id + " " + value.nombre +
-                "</th>" +
-                "<td>" +
-                    value.edad +
-                "</td>" +
-                "<td>" +
-                    value.peso +
-                "</td>" +
-                "<td>" +
-                    value.tipo_animal.descripcion +
-                "</td>" +
-                "<td>" +
-                    value.raza +
-                "</td>" +
-                "<td>" +
-                    value.sexo +
-                "</td>" +
-                "<td>" +
-                    "<span class='badge badge-dot mr-4'>" +
-                      icono +
-                    "</span>" +
-                "</td>" +
-                "<td class='text-right'>" +
-                  acciones +
-                "</td>" +
-                "</tr>");
-            });
-          }
-        });
-      });
-*/
       //Habilitar
       $(document).on('click', '#habilitar_animal', function() {
         var id = $(this).data('id');

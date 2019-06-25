@@ -128,15 +128,6 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="descripcion"><h5>Descripción</h5></label>
-                      <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripción"></textarea>
-                      <p class="error-descripcion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
                       <label for="estado"><h5>Estado</h5></label>
                       <select class="form-control form-control-sm" id="estado" name="estado">
                         <option value="">Seleccione una opción</option>
@@ -184,7 +175,7 @@
 
       $.ajax({
         type: 'post',
-        url: '{{route('animales.añadir')}}',
+        url: '{{route('animales_venta.añadir')}}',
         data: {
           '_token': $('input[name=_token]').val(),
           'tipo_animal': $('#tipo_animal').val(),
@@ -194,6 +185,7 @@
           'raza': $('#raza').val(),
           'fecha_nacimiento': $('#fecha_nacimiento').val(),
           'sexo': $('input[name="sexo"]:checked').val(),
+          'cantidad': $('#cantidad').val(),
           'precio': $('#precio').val(),
           'observaciones': $('#observaciones').val(),
           'condiciones': $('#condiciones').val(),
@@ -260,7 +252,7 @@
             })
 
             setTimeout(function(){
-              var url = "{{route('animales')}}";
+              var url = "{{route('animales_venta')}}";
 									document.location.href=url;
             }, 2000);
         }

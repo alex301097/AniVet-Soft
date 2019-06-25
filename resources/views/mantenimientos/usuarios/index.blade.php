@@ -67,7 +67,7 @@
                     </button>
                   </div>
                 </div>
-                
+
                 <div class="row">
                   <div class="col-md-12">
                       <div class="table-responsive">
@@ -75,13 +75,14 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Usuario</th>
+                                <th scope="col">Nombre</th>
                                 <th scope="col">Cedula</th>
                                 <th scope="col">Telefono</th>
                                 <th scope="col">Rol</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
                             </tr>
-                        </thead>                            
+                        </thead>
                         <tbody style="color:black;">
 
                         </tbody>
@@ -687,6 +688,7 @@
           "ajax":"{{ url('api/usuarios') }}",
           "columns":
           [
+            {data: 'usuario', orderable: false, searchable: false},
             {data: 'nombre'},
             {data: 'cedula'},
             {data: 'telefono'},
@@ -718,138 +720,6 @@
 
       } );
 
-/**
-     filtro
-    $('#filtro').change(function(){
-      var urlFiltro = "{{route('filtro.usuarios', ['filtro'=>':estado'])}}";
-      urlFiltro = urlFiltro.replace(':estado', this.value);
-      $.ajax({
-      type: 'post',
-      url: urlFiltro,
-      data: {
-        '_token': $('input[name=_token]').val(),
-        'filtro': this.value
-      },
-      success: function(data) {
-        $('#lista-usuarios').empty();
-        $.each(data['data'], function(index, value){
-
-          if(value.deleted_at != null){
-  					icono = "<i class='bg-danger'></i> Inactivo";
-  					acciones = "<a class='dropdown-item' href='#' id='detalle_usuario' name='detalle_usuario'" +
-                "data-toggle='modal' data-target='#modal-detalle'" +
-                "data-id='" + value.id + "' data-rol='" + value.rol_id + "' data-cedula='" + value.cedula + "'" +
-                "data-nombre='" + value.nombre + "' data-apellidos='" + value.apellidos + "' data-nacionalidad='" + value.nacionalidad + "'" +
-                "data-fecha_nacimiento='" + value.fecha_nacimiento + "' data-estado_civil='" + value.estado_civil + "' data-sexo='" + value.sexo + "'" +
-                "data-telefono='" + value.telefono + "' data-direccion='" + value.direccion + "' data-email='" + value.email + "'" +
-                "data-codigo='" + value.codigo + "'>" +
-                  "<span><i class='ni ni-glasses-2'></i></span>" +
-                  "&nbsp;&nbsp;Detalle" +
-                "</a>" +
-                "<a class='dropdown-item' href='#' id='editar_usuario' name='editar_usuario'" +
-                "data-toggle='modal' data-target='#modal-editar'" +
-                "data-id='" + value.id + "' data-rol='" + value.rol_id + "' data-cedula='" + value.cedula + "'" +
-                "data-nombre='" + value.nombre + "' data-apellidos='" + value.apellidos + "' data-nacionalidad='" + value.nacionalidad + "'" +
-                "data-fecha_nacimiento='" + value.fecha_nacimiento + "' data-estado_civil='" + value.estado_civil + "' data-sexo='" + value.sexo + "'" +
-                "data-telefono='" + value.telefono + "' data-direccion='" + value.direccion + "' data-email='" + value.email + "'" +
-                "data-codigo='" + value.codigo + "'>" +
-                  "<span><i class='ni ni-ruler-pencil'></i></span>" +
-                  "&nbsp;&nbsp;Editar" +
-                "</a>" +
-                "<a class='dropdown-item' href='#' id='habilitar_usuario' name='habilitar_usuario'" +
-                "data-id='" + value.id + "'>" +
-                  "<span><i class='ni ni-fat-remove'></i></span>" +
-                  "&nbsp;&nbsp;Habilitar" +
-                "</a>";
-  				}else{
-            icono = "<i class='bg-success'></i> Activo";
-  					acciones = "<a class='dropdown-item' href='#' id='detalle_usuario' name='detalle_usuario'" +
-                "data-toggle='modal' data-target='#modal-detalle'" +
-                "data-id='" + value.id + "' data-rol='" + value.rol_id + "' data-cedula='" + value.cedula + "'" +
-                "data-nombre='" + value.nombre + "' data-apellidos='" + value.apellidos + "' data-nacionalidad='" + value.nacionalidad + "'" +
-                "data-fecha_nacimiento='" + value.fecha_nacimiento + "' data-estado_civil='" + value.estado_civil + "' data-sexo='" + value.sexo + "'" +
-                "data-telefono='" + value.telefono + "' data-direccion='" + value.direccion + "' data-email='" + value.email + "'" +
-                "data-codigo='" + value.codigo + "'>" +
-                  "<span><i class='ni ni-glasses-2'></i></span>" +
-                  "&nbsp;&nbsp;Detalle" +
-                "</a>" +
-                "<a class='dropdown-item' href='#' id='editar_usuario' name='editar_usuario'" +
-                "data-toggle='modal' data-target='#modal-editar'" +
-                "data-id='" + value.id + "' data-rol='" + value.id + "' data-cedula='" + value.id + "'" +
-                "data-nombre='" + value.id + "' data-apellidos='" + value.id + "' data-nacionalidad='" + value.id + "'" +
-                "data-fecha_nacimiento='" + value.id + "' data-estado_civil='" + value.id + "' data-sexo='" + value.id + "'" +
-                "data-telefono='" + value.id + "' data-direccion='" + value.id + "' data-email='" + value.id + "'" +
-                "data-codigo='" + value.id + "'>" +
-                  "<span><i class='ni ni-ruler-pencil'></i></span>" +
-                  "&nbsp;&nbsp;Editar" +
-                "</a>" +
-                "<a class='dropdown-item' href='#' id='deshabilitar_usuario' name='deshabilitar_usuario'" +
-                "data-id='" + value.id + "'>" +
-                  "<span><i class='ni ni-fat-remove'></i></span>" +
-                  "&nbsp;&nbsp;Deshabilitar" +
-                "</a>";
-  				}
-
-          if (value.imagen == null){
-            imagen = "<img src='http://ssl.gstatic.com/accounts/ui/avatar_2x.png' alt='User Avatar'>";
-          }else{
-            var imagen = "<img src='{{ url('imgPerfiles/:url') }}' alt='User Avatar'>";
-            imagen = imagen.replace(':url', {{auth()->user()->imagen}});
-          }
-
-          $('#lista-usuarios').append("<tr id='" + "usuario_" + value.id + "' name='" + "usuario_" + value.id + "'>" +
-              "<th scope='row'>" +
-                  "<div class='media align-items-center'>" +
-                      "<a href='#' class='avatar rounded-circle mr-3'>" +
-                        imagen +
-                      "</a>" +
-                      "<div class='media-body'>" +
-                          "<span class='mb-0 text-sm'>" + value.nombre + " " + value.apellidos + "</span>" +
-                      "</div>" +
-                  "</div>" +
-              "</th>" +
-              "<td>" +
-                  value.cedula +
-              "</td>" +
-              "<td>" +
-                  value.telefono +
-              "</td>" +
-              "<td>" +
-                  value.descripcionRol +
-              "</td>" +
-              "<td>" +
-                  "<span class='badge badge-dot mr-4'>" +
-                    icono +
-                  "</span>" +
-              "</td>" +
-              "<td class='text-right'>" +
-                  "<div class='dropdown'>" +
-                      "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-                        "<i class='fas fa-ellipsis-v'></i>" +
-                      "</a>" +
-                      "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>" +
-                        acciones +
-                      "</div>" +
-                  "</div>" +
-              "</td>" +
-          "</tr>");
-          });
-        }
-      });
-    });
-    <div class="media align-items-center">
-        <a href="#" class="avatar rounded-circle mr-3">
-          @if (empty($usuario->imagen))
-            <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar">
-          @else
-            <img src="{{ url('imgPerfiles/'.$usuario->imagen) }}" style="width:50px; height:50px; top:50px; left:50px;" alt="User Avatar">
-          @endif
-        </a>
-        <div class="media-body">
-            <span class="mb-0 text-sm">{{$usuario->nombre}} {{$usuario->apellidos}}</span>
-        </div>
-    </div>
-*/
     //Añadir
     $('#registrar').click(function(){
       var form_data = new FormData();
@@ -1025,6 +895,7 @@
       form_data.append('sexo_edicion', $('#sexo').val());
       form_data.append('telefono_edicion', $('#telefono_edicion').val());
       form_data.append('direccion_edicion', $('#direccion_edicion').val());
+
       $.ajax({
         type: 'post',
         url: '{{route('usuarios.editar')}}',
