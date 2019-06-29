@@ -49,19 +49,27 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'cedula' => ['required','unique:users,cedula'],
-            'nombre' => ['required'],
-            'apellidos' => ['required'],
-            'nacionalidad' => ['required'],
-            'fecha_nacimiento' => ['required'],
-            'estado_civil' => ['required'],
-            'sexo' => ['required'],
-            'telefono' => ['required'],
-            'direccion' => ['required'],
-            'email' => ['required','unique:users,email','email'],
-            'codigo' => ['required','unique:users,codigo'],
-            'password' => ['required','min:6','confirmed'],
-            'politicas' => ['accepted'],
+          'cedula' => 'required|unique:users,cedula|min:7|max:50|numeric',
+          'nombre' => 'required|string|max:255',
+          'apellidos' => 'required|string|max:255',
+          'nacionalidad' => 'required',
+          'fecha_nacimiento' => 'required',
+          'estado_civil' => 'required',
+          'sexo' => 'required',
+          'telefono' => 'required|numeric',
+          'direccion' => 'required|string|max:255',
+          'email' => 'required|unique:users,email|email|min:4|max:255',
+          'codigo' => 'required|unique:users,codigo|min:4|max:255',
+          'password' => ['required',
+                         'string',
+                         'min:10',             // must be at least 10 characters in length
+                         'max:50',
+                         'regex:/[a-z]/',      // must contain at least one lowercase letter
+                         'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                         'regex:/[0-9]/',      // must contain at least one digit
+                         'regex:/[@$!%*#?&-]/', // must contain a special character,
+                         'confirmed'],
+            'politicas' => ['accepted']
         ]);
     }
 

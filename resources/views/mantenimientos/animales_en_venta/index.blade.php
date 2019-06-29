@@ -12,7 +12,7 @@
               <div class="row align-items-center">
                 <div class="col">
                   <h6 class="text-uppercase text-light ls-1 mb-1">Mantenimiento</h6>
-                  <h2 class="text-white mb-0">Animales</h2>
+                  <h2 class="text-white mb-0">Animales en venta</h2>
                 </div>
               </div>
             </div>
@@ -20,21 +20,23 @@
               <form>
                 <div class="row">
                   <div class="col-md-7">
-                    <h6 class="heading-small text-muted mb-4">Lista de animales en venta/adopción</h6>
+                    <h6 class="heading-small text-muted mb-4">Lista de animales en venta</h6>
                   </div>
                   <div class="col-md-3 text-right">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                       <select class="form-control form-control-sm" id="filtro" name="filtro">
       									<option value="0">Animales habilitados</option>
       									<option value="1">Animales deshabilitados</option>
                       </select>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="col-md-2 text-left">
+                    @can('mant_animales_en_venta-crear')
                     <a class="btn btn-icon btn-primary btn-sm" type="button" href="{{route('animales_venta.get_añadir')}}">
                     	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
                       <span class="btn-inner--text">Añadir</span>
                     </a>
+                    @endcan
                   </div>
                 </div>
                 <div class="row">
@@ -84,9 +86,6 @@
                             id="my-awesome-dropzone">
                               {{csrf_field()}}
                               <input type="hidden" name="id_animal" id="id_animal" value="">
-                              {{-- <div class="fallback">
-                                <input name="file" type="files" multiple accept="image/jpeg, image/png, image/jpg" />
-                              </div> --}}
                             </form>
                           <p class="error-imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                         </div>

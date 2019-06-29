@@ -42,15 +42,15 @@
                 @endif
                 !
             </div>
-            <a href="#" class="dropdown-item">
+            <a  href="{{route('produccion')}}" class="dropdown-item">
               <i class="ni ni-single-02"></i>
               <span>Mi perfil</span>
             </a>
-            <a href="#" class="dropdown-item">
+            <a href="{{route('produccion')}}" class="dropdown-item">
               <i class="ni ni-settings-gear-65"></i>
               <span>Configuración</span>
             </a>
-            <a href="#" class="dropdown-item">
+            <a href="{{route('produccion')}}" class="dropdown-item">
               <i class="ni ni-support-16"></i>
               <span>Soporte</span>
             </a>
@@ -101,62 +101,91 @@
               <i class="ni ni-tv-2 text-primary"></i> Inicio
             </a>
           </li>
+          </ul>
+        </br>
+
+        @can('proc-index')
+        <h6 class="navbar-heading text-muted">Procesos</h6>
+        <ul class="navbar-nav">
+          @can('proc_adopcion_masc-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('adopciones')}}">
               <i class="ni ni-single-02 text-yellow"></i> Adopción de Mascotas
             </a>
+          </li>
+          @endcan
+          @can('proc_citas-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('home')}}">
               <i class="ni ni-key-25 text-info"></i> Citas medicas
             </a>
           </li>
+          @endcan
+          @can('proc_expediente-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('home')}}">
               <i class="ni ni-key-25 text-info"></i> Expediente medico
             </a>
           </li>
+          @endcan
         </ul>
+        @endcan
+
         <!-- Divider -->
         <hr class="my-3">
         <!-- Heading -->
         <h6 class="navbar-heading text-muted">Mantenimientos</h6>
         <!-- Navigation -->
         <ul class="navbar-nav">
+          @can('mant_usuarios-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('usuarios')}}">
               <i class="ni ni-planet text-blue"></i> Usuarios
             </a>
           </li>
+          @endcan
+          @can('mant_pacientes-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('pacientes')}}">
               <i class="ni ni-planet text-blue"></i> Pacientes
             </a>
           </li>
+          @endcan
+          @can('mant_tipos_animales-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('tipos_animales')}}">
               <i class="ni ni-pin-3 text-orange"></i> Tipos de animales
             </a>
           </li>
+          @endcan
+          @can('mant_tipos_servicios-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('tipos_servicios')}}">
-              <i class="ni ni-single-02 text-yellow"></i> Servicios
+              <i class="ni ni-single-02 text-yellow"></i> Tipos de servicios
             </a>
           </li>
+          @endcan
+          @can('mant_animales_en_venta-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('animales_venta')}}">
               <i class="ni ni-bullet-list-67 text-red"></i> Animales en venta
             </a>
           </li>
+          @endcan
+          @can('mant_animales_en_adopcion-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('animales_adopcion')}}">
               <i class="ni ni-bullet-list-67 text-red"></i> Animales en adopción
             </a>
           </li>
+          @endcan
+          @can('mant_citas-index')
           <li class="nav-item">
             <a class="nav-link" href="{{route('citas')}}">
               <i class="ni ni-single-02 text-yellow"></i> Citas
             </a>
           </li>
+          @endcan
         </ul>
         <!-- Divider -->
         <hr class="my-3">
@@ -164,11 +193,13 @@
         <h6 class="navbar-heading text-muted">Seguridad</h6>
         <!-- Navigation -->
         <ul class="navbar-nav">
+          @can('mant_roles-index')
           <li class="nav-item">
-            <a class="nav-link" href="{{route('accesos')}}">
-              <i class="ni ni-single-02 text-yellow"></i> Accesos
+            <a class="nav-link" href="{{route('roles')}}">
+              <i class="ni ni-single-02 text-yellow"></i> Roles/Accesos
             </a>
           </li>
+          @endcan
         </ul>
         <!-- Divider -->
         <hr class="my-3">
@@ -177,17 +208,17 @@
         <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('produccion')}}">
               <i class="ni ni-spaceship"></i> Información General
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('produccion')}}">
               <i class="ni ni-palette"></i> Acerca de..
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('produccion')}}">
               <i class="ni ni-ui-04"></i> Nosotros
             </a>
           </li>

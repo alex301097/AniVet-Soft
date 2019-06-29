@@ -62,13 +62,8 @@ class User extends Authenticatable
     }
 
     //Permisos
-    public function tieneAcceso(array $permissions){
-      // foreach($this->tipoUsuario as $tipoUsuario){
-      //   if($tipoUsuario->tieneAcceso($permissions)){
-      //     return true;
-      //   }
-      // }
-      if($this->rol->tieneAcceso($permissions)){
+    public function tieneAcceso(array $permisos){
+      if($this->rol->tieneAcceso($permisos)){
         return true;
       }
       return false;

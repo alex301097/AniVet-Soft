@@ -15,14 +15,14 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="nombre"><h5>Nombre</h5></label>
+                      <label for="nombre"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre</h5></label>
                       <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
                       <p class="error-nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="edad"><h5>Edad</h5></label>
+                      <label for="edad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Edad</h5></label>
                       <input type="number" class="form-control form-control-sm form-control-alternative" id="edad" name="edad" placeholder="Edad">
                       <p class="error-edad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
@@ -31,7 +31,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="tipo_animal"><h5>Tipo de animal</h5></label>
+                      <label for="tipo_animal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Tipo de animal</h5></label>
                       <select class="form-control form-control-sm" id="tipo_animal" name="tipo_animal">
                         <option value="">Seleccione una opción</option>
                         @foreach ($tipos_animales as $tipo_animal)
@@ -43,7 +43,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="raza"><h5>Raza</h5></label>
+                      <label for="raza"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Raza</h5></label>
                       <input type="text" class="form-control form-control-sm form-control-alternative" id="raza" name="raza" placeholder="Raza">
                       <p class="error-raza text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
@@ -52,7 +52,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="fecha_nacimiento"><h5>Fecha de nacimiento</h5></label>
+                      <label for="fecha_nacimiento"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
                         <div class="input-group">
                             <input type="date" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
                         </div>
@@ -62,7 +62,7 @@
                   <div class="col-md-6">
 
                         <div class="form-group">
-                          <label for="nacionalidad"><h5>Sexo</h5></label>
+                          <label for="sexo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
                           <div class="row">
                             <div class="col-md-6 text-center">
                               <div class="custom-control custom-radio mb-3">
@@ -89,14 +89,14 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="condiciones"><h5>Condiciones</h5></label>
+                      <label for="condiciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Condiciones</h5></label>
                       <textarea class="form-control" id="condiciones" name="condiciones" rows="3" placeholder="Condiciones"></textarea>
                       <p class="error-condiciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="observaciones"><h5>Observaciones</h5></label>
+                      <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
                       <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones"></textarea>
                       <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
@@ -105,36 +105,23 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="peso"><h5>Peso</h5></label>
+                      <label for="peso"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Peso</h5></label>
                       <input type="text" class="form-control form-control-sm form-control-alternative" id="peso" name="peso" placeholder="Peso">
                       <p class="error-peso text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="precio"><h5>Precio</h5></label>
+                      <label for="precio"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Precio</h5></label>
                       <input type="number" class="form-control form-control-sm form-control-alternative" id="precio" name="precio" placeholder="Precio">
                       <p class="error-precio text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="cantidad"><h5>Cantidad</h5></label>
+                      <label for="cantidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Cantidad</h5></label>
                       <input type="number" class="form-control form-control-sm form-control-alternative" id="cantidad" name="cantidad" placeholder="Cantidad">
                       <p class="error-cantidad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label for="estado"><h5>Estado</h5></label>
-                      <select class="form-control form-control-sm" id="estado" name="estado">
-                        <option value="">Seleccione una opción</option>
-                        <option value="En venta">En venta</option>
-                        <option value="En adopción">En adopción</option>
-                      </select>
-                      <p class="error-estado text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
                 </div>
@@ -189,7 +176,6 @@
           'precio': $('#precio').val(),
           'observaciones': $('#observaciones').val(),
           'condiciones': $('#condiciones').val(),
-          'estado': $('#estado').val(),
         },
         success: function(data){
           if((data.errors)){
@@ -238,9 +224,19 @@
               $('.error-precio').text(data.errors.precio);
             }
 
-            if(data.errors.estado){
-              $('.error-estado').removeClass('hidden');
-              $('.error-estado').text(data.errors.estado);
+            if(data.errors.condiciones){
+              $('.error-condiciones').removeClass('hidden');
+              $('.error-condiciones').text(data.errors.condiciones);
+            }
+
+            if(data.errors.observaciones){
+              $('.error-observaciones').removeClass('hidden');
+              $('.error-observaciones').text(data.errors.observaciones);
+            }
+
+            if(data.errors.cantidad){
+              $('.error-cantidad').removeClass('hidden');
+              $('.error-cantidad').text(data.errors.cantidad);
             }
           }else{
             Swal.fire({

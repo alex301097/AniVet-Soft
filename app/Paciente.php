@@ -33,6 +33,8 @@ class Paciente extends Model
       return $this->hasMany('App\PacienteImagen','paciente_id');
     }
 
-
+    public function citas(){
+      return $this->hasMany('App\Cita');
+    }
 
 }

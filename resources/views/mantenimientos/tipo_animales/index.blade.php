@@ -27,18 +27,20 @@
                     <h6 class="heading-small text-muted mb-4">Lista de Tipos de animales</h6>
                   </div>
                   <div class="col-md-3 text-right">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                       <select class="form-control form-control-sm" id="filtro" name="filtro">
       									<option value="0">Tipos de animales habilitados</option>
       									<option value="1">Tipos de animales deshabilitados</option>
                       </select>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="col-md-2 text-left">
+                    @can('mant_tipos_servicios-crear')
                     <button class="btn btn-icon btn-primary btn-sm" type="button" data-toggle="modal" data-target="#modal-añadir">
                     	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
                       <span class="btn-inner--text">Añadir</span>
                     </button>
+                    @endcan
                   </div>
                 </div>
                 <div class="row">
@@ -56,10 +58,7 @@
                         <tbody style="color:black;">
 
                         </tbody>
-
                       </table>
-
-
                     </div>
                   </div>
                 </div>
@@ -84,7 +83,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label for="descripcion"><h5>Descripción</h5></label>
+                          <label for="descripcion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Descripción</h5></label>
                           <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripción"></textarea>
                           <p class="error-descripcion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                         </div>
@@ -116,7 +115,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label for="descripcion_edicion"><h5>Descripción</h5></label>
+                        <label for="descripcion_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Descripción</h5></label>
                         <textarea class="form-control" id="descripcion_edicion" name="descripcion_edicion" rows="3" placeholder="Descripción"></textarea>
                         <p class="error-descripcion_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                       </div>
@@ -205,84 +204,7 @@
         });
 
       } );
-/**
-    //filtro
-   $('#filtro').change(function(){
-      var urlFiltro = "{{route('filtro.tipos_animales', ['filtro'=>':estado'])}}";
-      urlFiltro = urlFiltro.replace(':estado', this.value);
-      $.ajax({
-      type: 'post',
-      url: urlFiltro,
-      data: {
-        '_token': $('input[name=_token]').val(),
-        'filtro': this.value
-      },
-      success: function(data) {
-        $('#lista-tipos_animales').empty();
-        $.each(data['data'], function(index, value){
 
-          if(value.deleted_at != null){
-  					icono = "<i class='bg-danger'></i> Inactivo";
-            acciones = "<div class='dropdown'>"+
-                "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"+
-                  "<i class='fas fa-ellipsis-v'></i>"+
-                "</a>"+
-                "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>"+
-                    "<a class='dropdown-item' href='#' id='editar_tipo_animal' name='editar_tipo_animal'"+
-                    "data-id='" + value.id + "' data-descripcion='" + value.descripcion + "'>"+
-                      "<span><i class='ni ni-ruler-pencil'></i></span>"+
-                      "&nbsp;&nbsp;Editar"+
-                    "</a>"+
-                    "<a class='dropdown-item' href='#' id='habilitar_tipo_animal' name='habilitar_tipo_animal'"+
-                    "data-id='" + value.id + "'>"+
-                      "<span><i class='ni ni-fat-remove'></i></span>"+
-                      "&nbsp;&nbsp;Habilitar"+
-                    "</a>"+
-                "</div>"+
-            "</div>";
-  				}else{
-            icono = "<i class='bg-success'></i> Activo";
-  					acciones = "<div class='dropdown'>"+
-                "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"+
-                  "<i class='fas fa-ellipsis-v'></i>"+
-                "</a>"+
-                "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>"+
-                    "<a class='dropdown-item' href='#' id='editar_tipo_animal' name='editar_tipo_animal'"+
-                    "data-toggle='modal' data-target='#modal-editar'"+
-                    "data-id='" + value.id + "' data-descripcion='" + value.descripcion + "'>"+
-                      "<span><i class='ni ni-ruler-pencil'></i></span>"+
-                      "&nbsp;&nbsp;Editar"+
-                    "</a>"+
-                    "<a class='dropdown-item' href='#' id='deshabilitar_tipo_animal' name='deshabilitar_tipo_animal'"+
-                    "data-id='" + value.id + "'>"+
-                      "<span><i class='ni ni-fat-remove'></i></span>"+
-                      "&nbsp;&nbsp;Deshabilitar"+
-                    "</a>"+
-                "</div>"+
-            "</div>";
-  				}
-
-          $('#lista-tipos_animales').append("<tr id='tipo_animal_" + value.id + " name='tipo_animal_" + value.id + ">" +
-              "<th scope='row'>" +
-                "  # " + value.id +
-              "</th>" +
-              "<td>" +
-                  value.descripcion +
-              "</td>" +
-              "<td>" +
-                  "<span class='badge badge-dot mr-4'>" +
-                    icono +
-                  "</span>" +
-              "</td>" +
-              "<td class='text-right'>" +
-                  acciones +
-              "</td>" +
-          "</tr>");
-          });
-        }
-      });
-    });
-*/
     //Añadir
     $('#registrar').click(function(){
 

@@ -11,6 +11,7 @@
               </div>
               <form role="form" method="POST" action="{{ route('login') }}">
                 <div class="form-group mb-3">
+                  <span><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</span>
                   <div class="input-group input-group-alternative">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-email-83"></i></span>
@@ -24,13 +25,11 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                          {{-- <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span> --}}
                       @enderror
                   </div>
                 </div>
                 <div class="form-group">
+                  <span><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</span>
                   <div class="input-group input-group-alternative">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>

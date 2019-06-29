@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Permiso;
 
 class RolTableSeeder extends Seeder
 {
@@ -14,49 +15,22 @@ class RolTableSeeder extends Seeder
         //Rol administrador
         $rol = new \App\Rol();
         $rol->descripcion = 'Administrador';
-        $rol->permissions = json_encode([
-          'mantenimientos' => true,
-          'venta_productos' => true,
-          'inventario' => true,
-          'calendarizacion' => true,
-          'adopcion' => true,
-        ]);
         $rol->save();
+        $rol->permisos()->sync(Permiso::all());
 
         //Rol gerente
         $rol = new \App\Rol();
         $rol->descripcion = 'Gerente';
-        $rol->permissions = json_encode([
-          'mantenimientos' => true,
-          'venta_productos' => true,
-          'inventario' => true,
-          'calendarizacion' => true,
-          'adopcion' => true,
-        ]);
-        $rol->save();
-
-        //Rol empleado
-        $rol = new \App\Rol();
-        $rol->descripcion = 'Empleado';
-        $rol->permissions = json_encode([
-          'venta_productos' => true,
-          'adopcion' => true,
-        ]);
         $rol->save();
 
         //Rol veterinario
         $rol = new \App\Rol();
         $rol->descripcion = 'Veterinario';
-        $rol->permissions = json_encode([
-          'calendarizacion' => true,
-          'adopcion' => true,
-        ]);
         $rol->save();
 
         //Rol cliente
         $rol = new \App\Rol();
         $rol->descripcion = 'Cliente';
-        $rol->permissions = '';
         $rol->save();
 
     }

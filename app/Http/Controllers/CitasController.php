@@ -42,8 +42,8 @@ class CitasController extends Controller
       'fecha' => 'required',
       'horaInicio' => 'required',
       'horaFinal' => 'required',
-      'motivo' => 'required',
-      'observaciones' => 'required',
+      'motivo' => 'required|string|min:4|max:255',
+      'observaciones' => 'required|string|min:4|max:255',
       'estado' => 'required',
       'servicio' => 'required',
       'paciente' => 'required',
@@ -72,8 +72,8 @@ class CitasController extends Controller
       $cita->motivo = $request->input('motivo');
       $cita->observaciones = $request->input('observaciones');
       $cita->estado = $request->input('estado');
-      $cita->servicio()->associate(TipoServicio::find($request->input('servicio')));
-      $cita->paciente()->associate(Paciente::find($request->input('paciente')));
+      $cita->servicio()->associate($request->input('servicio'));
+      $cita->paciente()->associate($request->input('paciente'));
       $cita->user_create()->associate(Auth::user());
       $cita->save();
 
@@ -97,8 +97,8 @@ class CitasController extends Controller
       'fecha' => 'required',
       'horaInicio' => 'required',
       'horaFinal' => 'required',
-      'motivo' => 'required',
-      'observaciones' => 'required',
+      'motivo' => 'required|string|min:4|max:255',
+      'observaciones' => 'required|string|min:4|max:255',
       'estado' => 'required',
       'servicio' => 'required',
       'paciente' => 'required',
@@ -125,8 +125,8 @@ class CitasController extends Controller
       $cita->motivo = $request->input('motivo');
       $cita->observaciones = $request->input('observaciones');
       $cita->estado = $request->input('estado');
-      $cita->servicio()->associate(TipoServicio::find($request->input('servicio')));
-      $cita->paciente()->associate(Paciente::find($request->input('paciente')));
+      $cita->servicio()->associate($request->input('servicio'));
+      $cita->paciente()->associate($request->input('paciente'));
       $cita->user_create()->associate(Auth::user());
       $cita->save();
 
@@ -144,5 +144,30 @@ class CitasController extends Controller
       $cita->restore();
       return response()->json($cita);
     }
+  }
+
+  public function autocompletePacienteCita(Request $request){
+
+    $term = $request->term;
+    $results = array();
+
+    $queries= Paciente::leftJoin('tipo_animals', 'tipo_animals.id', '=', 'pacientes.tipo_animal_id')
+   ->where('pacientes.nombre', 'LIKE', '%'.$term.'%')
+   ->orWhere('pacientes.raza', 'LIKE', '%'.$term.'%')
+   ->orWhere('tipo_animals.descripcion', 'LIKE', '%'.$term.'%')
+   ->take(5)->get([
+        'pacientes.id as id',
+        'pacientes.nombre as nombre',
+        'pacientes.raza as raza',
+        'pacientes.sexo as sexo',
+        'tipo_animals.descripcion as tipo_animal_descripcion'
+    ]);
+
+    foreach ($queries as $key => $data)
+    {
+        $results[] = [ 'id' => $data->id, 'value' => $data->nombre.' - '.$data->tipo_animal_descripcion.' ~ '.$data->raza.' - '.$data->sexo];
+    }
+
+    return Response::json($results);
   }
 }

@@ -39,14 +39,16 @@ class VentaAnimalController extends Controller
   {
     $reglas = [
       'tipo_animal' => 'required',
-      'nombre' => 'required',
-      'edad' => 'required',
+      'nombre' => 'required|string|min:3|max:255',
+      'edad' => 'required|numeric',
       'peso' => 'required',
-      'raza' => 'required',
+      'raza' => 'required|string|min:3|max:255',
       'fecha_nacimiento' => 'required',
       'sexo' => 'required',
-      'precio' => 'required',
-      'estado' => 'required',
+      'precio' => 'required|numeric',
+      'observaciones' => 'required|string|min:3|max:255',
+      'condiciones' => 'required|string|min:3|max:255',
+      'cantidad' => 'required|numeric',
     ];
 
     $inputs = [
@@ -58,7 +60,9 @@ class VentaAnimalController extends Controller
       'fecha_nacimiento' => $request->fecha_nacimiento,
       'sexo' => $request->sexo,
       'precio' => $request->precio,
-      'estado' => $request->estado,
+      'observaciones' => $request->observaciones,
+      'condiciones' => $request->condiciones,
+      'cantidad' => $request->cantidad,
     ];
 
     $validator = Validator::make($inputs, $reglas);
@@ -77,7 +81,6 @@ class VentaAnimalController extends Controller
       $animal->precio = $request->input('precio');
       $animal->observaciones = $request->input('observaciones');
       $animal->condiciones = $request->input('condiciones');
-      $animal->estado = $request->input('estado');
       $animal->tipo_animal()->associate(TipoAnimal::find($request->input('tipo_animal')));
       $animal->save();
 
@@ -99,14 +102,16 @@ class VentaAnimalController extends Controller
 
     $reglas = [
       'tipo_animal' => 'required',
-      'nombre' => 'required',
-      'edad' => 'required',
+      'nombre' => 'required|string|min:3|max:255',
+      'edad' => 'required|numeric',
       'peso' => 'required',
-      'raza' => 'required',
+      'raza' => 'required|string|min:3|max:255',
       'fecha_nacimiento' => 'required',
       'sexo' => 'required',
-      'precio' => 'required',
-      'estado' => 'required',
+      'precio' => 'required|numeric',
+      'observaciones' => 'required|string|min:3|max:255',
+      'condiciones' => 'required|string|min:3|max:255',
+      'cantidad' => 'required|numeric',
     ];
 
     $inputs = [
@@ -118,7 +123,9 @@ class VentaAnimalController extends Controller
       'fecha_nacimiento' => $request->fecha_nacimiento,
       'sexo' => $request->sexo,
       'precio' => $request->precio,
-      'estado' => $request->estado,
+      'observaciones' => $request->observaciones,
+      'condiciones' => $request->condiciones,
+      'cantidad' => $request->cantidad,
     ];
 
     $validator = Validator::make($inputs, $reglas);
@@ -134,7 +141,7 @@ class VentaAnimalController extends Controller
       $animal->precio = $request->input('precio');
       $animal->observaciones = $request->input('observaciones');
       $animal->condiciones = $request->input('condiciones');
-      $animal->estado = $request->input('estado');
+      $animal->cantidad = $request->input('cantidad');
       $animal->tipo_animal()->associate(TipoAnimal::find($request->input('tipo_animal')));
       $animal->save();
 

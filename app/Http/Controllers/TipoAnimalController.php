@@ -34,7 +34,7 @@ class TipoAnimalController extends Controller
   public function añadir_tipos_animales(Request $request)
   {
     $reglas = [
-      'descripcion' => 'required',
+      'descripcion' => 'required|string|min:4|max:255',
     ];
 
     $inputs = [
@@ -58,7 +58,7 @@ class TipoAnimalController extends Controller
     $tipo_animal = TipoAnimal::find($request->input('id_edicion'));
 
     $reglas = [
-      'descripcion_edicion' => 'required',
+      'descripcion_edicion' => 'required|string|min:4|max:255',
     ];
 
     $inputs = [

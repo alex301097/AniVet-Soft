@@ -17,12 +17,28 @@ class Cita extends Model
    */
    protected $fillable = ['fecha','horaInicio','horaFinal','motivo','observaciones','estado'];
 
+   protected $appends = ['nombrePaciente','nombreDueño','descripcionServicio'];
+
+    public function getnombrePacienteAttribute()
+     {
+      return $this->paciente->nombre;
+     }
+
+   public function getnombreDueñoAttribute()
+    {
+     return $this->paciente->user->nombre." ".$this->paciente->user->apellidos;
+    }
+
+    public function getdescripcionServicioAttribute()
+     {
+      return $this->servicio->descripcion;
+     }
 
     /**
      * Metodos de relacion.
      */
     public function servicio(){
-      return $this->belongsTo('App\TipoServicio');
+      return $this->belongsTo('App\TipoServicio','tipo_servicio_id');
     }
 
     public function paciente(){

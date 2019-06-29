@@ -23,17 +23,19 @@
                     <h6 class="heading-small text-muted mb-4">Lista de pacientes</h6>
                   </div>
                   <div class="col-md-3 text-right">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                       <select class="form-control form-control-sm" id="filtro" name="filtro">
       									<option value="0">Pacientes habilitados</option>
       									<option value="1">Pacientes deshabilitados</option>
                       </select>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="col-md-2 text-left">
+                    @can('mant_pacientes-crear')
                     <a class="btn btn-primary btn-sm" type="button" href="{{route('pacientes.get_añadir')}}">
                     	<i class="fas fa-plus"></i>&nbsp;&nbsp;Añadir
                     </a>
+                    @endcan
                   </div>
                 </div>
                 <div class="row">
@@ -105,7 +107,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
 
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.2/js/dataTables.responsive.min.js"></script>
 
   <script type="text/javascript">
 
@@ -179,117 +180,6 @@
       $(document).on('click', '#añadir_imagenes', function() {
         $('#id_paciente').val($(this).data('id'));
       });
-
-      // //filtro
-      // $('#filtro').change(function(){
-      //   var urlFiltro = "{{route('filtro.pacientes', ['filtro'=>':estado'])}}";
-      //   urlFiltro = urlFiltro.replace(':estado', this.value);
-      //   $.ajax({
-      //   type: 'post',
-      //   url: urlFiltro,
-      //   data: {
-      //     '_token': $('input[name=_token]').val(),
-      //     'filtro': this.value
-      //   },
-      //   success: function(data) {
-      //     $('#lista-pacientes').empty();
-      //     $.each(data['data'], function(index, value){
-      //       var ruta_detalle = "{{route('pacientes.get_detalle', ['id'=>':id'])}}";
-      //       ruta_detalle = ruta_detalle.replace(':id', value.id);
-      //       var ruta_editar = "{{route('pacientes.get_editar', ['id'=>':id'])}}";
-      //       ruta_editar = ruta_editar.replace(':id', value.id);
-      //
-      //       if(value.deleted_at != null){
-    	// 				icono = "<i class='bg-danger'></i> Inactivo";
-      //         acciones = "<div class='dropdown'>" +
-      //             "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-      //               "<i class='fas fa-ellipsis-v'></i>" +
-      //             "</a>" +
-      //             "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>" +
-      //                 "<a class='dropdown-item' href='#' id='añadir_imagenes' name='añadir_imagenes'" +
-      //                 "data-toggle='modal' data-target='#modal-añadir' data-id='" + value.id + "'>" +
-      //                   "<span><i class='ni ni-image'></i></span>" +
-      //                   "&nbsp;&nbsp;Imagenes" +
-      //                 "</a>" +
-      //                 "<a class='dropdown-item' href='" + ruta_detalle + "' id='detalle_paciente' name='detalle_paciente'>" +
-      //                   "<span><i class='ni ni-glasses-2'></i></span>" +
-      //                   "&nbsp;&nbsp;Detalle" +
-      //                 "</a>" +
-      //                 "<a class='dropdown-item' href='#' id='editar_paciente' name='editar_paciente'>" +
-      //                   "<span><i class='ni ni-ruler-pencil'></i></span>" +
-      //                   "&nbsp;&nbsp;Editar" +
-      //                 "</a>" +
-      //                 "<a class='dropdown-item' href='#' id='habilitar_paciente' name='habilitar_paciente'" +
-      //                 "data-id='" + value.id + "'>" +
-      //                   "<span><i class='ni ni-fat-remove'></i></span>" +
-      //                   "&nbsp;&nbsp;Habilitar" +
-      //                 "</a>" +
-      //             "</div>" +
-      //         "</div>";
-    	// 			}else{
-      //         icono = "<i class='bg-success'></i> Activo";
-      //         acciones = "<div class='dropdown'>" +
-      //             "<a class='btn btn-sm btn-icon-only text-light' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-      //               "<i class='fas fa-ellipsis-v'></i>" +
-      //             "</a>" +
-      //             "<div class='dropdown-menu dropdown-menu-right dropdown-menu-arrow'>" +
-      //                 "<a class='dropdown-item' href='#' id='añadir_imagenes' name='añadir_imagenes'" +
-      //                 "data-toggle='modal' data-target='#modal-añadir' data-id='" + value.id + "'>" +
-      //                   "<span><i class='ni ni-image'></i></span>" +
-      //                   "&nbsp;&nbsp;Imagenes" +
-      //                 "</a>" +
-      //                 "<a class='dropdown-item' href='" + ruta_detalle + "' id='detalle_paciente' name='detalle_paciente'>" +
-      //                   "<span><i class='ni ni-glasses-2'></i></span>" +
-      //                   "&nbsp;&nbsp;Detalle" +
-      //                 "</a>" +
-      //                 "<a class='dropdown-item' href='" + ruta_editar + "' id='editar_paciente' name='editar_paciente'>" +
-      //                   "<span><i class='ni ni-ruler-pencil'></i></span>" +
-      //                   "&nbsp;&nbsp;Editar" +
-      //                 "</a>" +
-      //                 "<a class='dropdown-item' href='#' id='deshabilitar_paciente' name='deshabilitar_paciente'" +
-      //                 "data-id='" + value.id + "'>" +
-      //                   "<span><i class='ni ni-fat-remove'></i></span>" +
-      //                   "&nbsp;&nbsp;Deshabilitar" +
-      //                 "</a>" +
-      //             "</div>" +
-      //         "</div>";
-    	// 			}
-      //
-      //       $('#lista-pacientes').append("<tr style='color:gray;' id='paciente_" + value.id + "' name='paciente_" + value.id + "'>" +
-      //           "<th scope='row'>" +
-      //               "#" + value.id + " " + value.nombre +
-      //           "</th>" +
-      //           "<td>" +
-      //               value.edad +
-      //           "</td>" +
-      //           "<td>" +
-      //               value.peso +
-      //           "</td>" +
-      //           "<td>" +
-      //               value.tipo_animal.descripcion +
-      //           "</td>" +
-      //           "<td>" +
-      //               value.fecha_nacimiento +
-      //           "</td>" +
-      //           "<td>" +
-      //               value.sexo +
-      //           "</td>" +
-      //           "<td>" +
-      //               value.raza +
-      //           "</td>" +
-      //           "<td>" +
-      //               "<span class='badge badge-dot mr-4'>" +
-      //                 icono +
-      //               "</span>" +
-      //           "</td>" +
-      //           "<td class='text-right'>" +
-      //             acciones +
-      //           "</td>" +
-      //           "</tr>");
-      //       });
-      //     }
-      //   });
-      // });
 
       //Habilitar
       $(document).on('click', '#habilitar_paciente', function() {

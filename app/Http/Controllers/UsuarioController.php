@@ -38,19 +38,19 @@ class UsuarioController extends Controller
   public function añadir_usuarios(Request $request)
   {
     $reglas = [
-      'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+      'imagen' => 'nullable|sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
       'rol' => 'required',
-      'cedula' => 'required|unique:users,cedula',
-      'nombre' => 'required',
-      'apellidos' => 'required',
+      'cedula' => 'required|unique:users,cedula|min:7|numeric',
+      'nombre' => 'required|string|max:255',
+      'apellidos' => 'required|string|max:255',
       'nacionalidad' => 'required',
       'fecha_nacimiento' => 'required',
       'estado_civil' => 'required',
       'sexo' => 'required',
-      'telefono' => 'required',
-      'direccion' => 'required',
-      'email' => 'required|unique:users,email|email',
-      'codigo' => 'required|unique:users,codigo',
+      'telefono' => 'required|numeric',
+      'direccion' => 'required|string|max:255',
+      'email' => 'required|unique:users,email|email|min:4|max:255',
+      'codigo' => 'required|unique:users,codigo|min:4|max:255',
       'password' => ['required',
                      'string',
                      'min:10',             // must be at least 10 characters in length
@@ -116,20 +116,22 @@ class UsuarioController extends Controller
     $user = User::find($request->input('id_edicion'));
 
     $reglas = [
+      'imagen_edicion' => 'nullable|sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
       'rol_edicion' => 'required',
       'cedula_edicion' => Rule::unique('users', 'cedula')->ignore($user->id),
-      //'cedula_edicion' => 'required|unique:users,cedula,'.$user->cedula,
-      'nombre_edicion' => 'required',
-      'apellidos_edicion' => 'required',
+      //'cedula_edicion' => 'required|unique:users,cedula|min:7|max:50|numeric',
+      'nombre_edicion' => 'required|string|max:255',
+      'apellidos_edicion' => 'required|string|max:255',
       'nacionalidad_edicion' => 'required',
       'fecha_nacimiento_edicion' => 'required',
       'estado_civil_edicion' => 'required',
       'sexo_edicion' => 'required',
-      'telefono_edicion' => 'required',
-      'direccion_edicion' => 'required'
+      'telefono_edicion' => 'required|numeric',
+      'direccion_edicion' => 'required|string|max:255'
     ];
 
     $inputs = [
+      'imagen_edicion' =>  $request->imagen,
       'rol_edicion' => $request->rol_edicion,
       'cedula_edicion' => $request->cedula_edicion,
       'nombre_edicion' => $request->nombre_edicion,
@@ -147,8 +149,8 @@ class UsuarioController extends Controller
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
       $user->rol()->associate($request->input('rol_edicion'));
-      if($request->file('imagen') != null){
-      $img = $request->file('imagen');
+      if($request->file('imagen_edicion') != null){
+      $img = $request->file('imagen_edicion');
       $file_route = time().'_'.$img->getClientOriginalName();
 
       Storage::disk('imgPerfiles')->delete($user->imagen);

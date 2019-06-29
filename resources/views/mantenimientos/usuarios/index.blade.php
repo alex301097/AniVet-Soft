@@ -3,7 +3,7 @@
 <!-- datatable and dropzone css links -->
   <link rel="stylesheet" rel="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css"></script>
   <link rel="stylesheet" rel="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-  <style>
+  {{-- <style>
     .simple-form {
     padding-bottom: 1.25rem;
     }
@@ -32,7 +32,7 @@
     background: url("/img/icons/cancel.svg") no-repeat 95% 50%;
     background-size: 25px;
     }
-  </style>
+  </style> --}}
 @endsection
 @section('contenido')
     <div class="row">
@@ -53,18 +53,20 @@
                     <h6 class="heading-small text-muted mb-4">Lista de Usuarios</h6>
                   </div>
                   <div class="col-md-3 text-right">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                       <select class="form-control form-control-sm" id="filtro" name="filtro">
       									<option value="0">Usuarios habilitados</option>
       									<option value="1">Usuarios deshabilitados</option>
                       </select>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="col-md-2 text-left">
+                    @can('mant_usuarios-crear')
                     <button class="btn btn-icon btn-primary btn-sm" type="button" data-toggle="modal" data-target="#modal-añadir">
                     	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
                       <span class="btn-inner--text">Añadir</span>
                     </button>
+                    @endcan
                   </div>
                 </div>
 
@@ -134,7 +136,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="rol"><h5>Rol</h5></label>
+                              <label for="rol"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Rol</h5></label>
                               <select class="form-control form-control-sm" required id="rol" name="rol">
                                 <option value="">Seleccione una opción</option>
                                 @foreach ($roles as $rol)
@@ -146,8 +148,8 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="cedula"><h5>Cédula</h5></label>
-                              <input required type="text" class="form-control form-control-sm form-control-alternative" id="cedula" name="cedula" placeholder="Cédula">
+                              <label for="cedula"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Cédula</h5></label>
+                              <input type="number" class="form-control form-control-sm form-control-alternative" id="cedula" name="cedula" placeholder="Cédula">
                               <p class="error_cedula text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                             </div>
                           </div>
@@ -155,14 +157,14 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="nombre"><h5>Nombre</h5></label>
+                              <label for="nombre"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre</h5></label>
                               <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
                               <p class="error_nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="apellidos"><h5>Apellidos</h5></label>
+                              <label for="apellidos"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Apellidos</h5></label>
                               <input type="text" class="form-control form-control-sm form-control-alternative" id="apellidos" name="apellidos" placeholder="Apellidos">
                               <p class="error_apellidos text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                             </div>
@@ -171,7 +173,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="nacionalidad"><h5>País de nacimiento</h5></label>
+                              <label for="nacionalidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;País de nacimiento</h5></label>
       													<select name="nacionalidad" id="nacionalidad" class="form-control form-control-sm">
                                   <option value="">Seleccione una opción</option>
       	                          <option value="Costa Rica">Costa Rica</option>
@@ -186,7 +188,7 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="fecha_nacimiento"><h5>Fecha de nacimiento</h5></label>
+                              <label for="fecha_nacimiento"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
                                 <div class="input-group">
                                     <input type="date" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
                                 </div>
@@ -197,7 +199,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="estado_civil"><h5>Estado Civil</h5></label>
+                              <label for="estado_civil"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Estado Civil</h5></label>
                               <select class="form-control form-control-sm form-control-alternative" id="estado_civil" name="estado_civil">
                                   <option value="">Seleccione una opción</option>
       														<option value="Soltero(a)">Soltero(a)</option>
@@ -213,7 +215,7 @@
                           <div class="col-md-6">
 
                             <div class="form-group">
-                              <label for="nacionalidad"><h5>Sexo</h5></label>
+                              <label for="nacionalidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
                               <br>
                               <div class="custom-control custom-radio custom-control-inline mb-3">
                                 <input name="sexo" class="custom-control-input" id="masculino" value="Masculino" checked type="radio">
@@ -230,14 +232,14 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="telefono"><h5>Telefono</h5></label>
-                              <input type="text" class="form-control form-control-sm form-control-alternative" id="telefono" name="telefono" placeholder="Telefono">
+                              <label for="telefono"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Telefono</h5></label>
+                              <input type="number" class="form-control form-control-sm form-control-alternative" id="telefono" name="telefono" placeholder="Telefono">
                               <p class="error_telefono text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="direccion"><h5>Dirección</h5></label>
+                              <label for="direccion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Dirección</h5></label>
                               <textarea class="form-control" id="direccion" name="direccion" rows="3" placeholder="Dirección"></textarea>
                               <p class="error_direccion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                             </div>
@@ -252,6 +254,7 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <div class="input-group input-group-alternative mb-4">
+                                <label for=""><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;</label>
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                 </div>
@@ -263,6 +266,7 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <div class="input-group input-group-alternative mb-4">
+                                <label for=""><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;</label>
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
                                 </div>
@@ -276,21 +280,25 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <div class="input-group input-group-alternative mb-4">
+                                <label for=""><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;</label>
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="ni ni-key-25"></i></span>
                                 </div>
                                 <input class="form-control form-control-sm form-control-alternative" placeholder="Contraseña" type="password" id="password" name="password"></input>
-                                {{-- <small for="password" id="passwordHelpBlock" class="form-text text-muted">
-                                  Tu contraseña debe tener bla bla bla bla.
-                                </small> --}}
+
                                 <p class="error_password text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
 
                               </div>
                             </div>
+                            <small for="password" id="passwordHelpBlock" class="form-text text-muted">
+                              <label for=""><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</label>
+                              Tu contraseña debe tener al menos una mayúscula, una minúscula, un carácter, un número y 10 dígitos como mínimo.
+                            </small>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
                               <div class="input-group input-group-alternative mb-4">
+                                <label for=""><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;</label>
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="ni ni-key-25"></i></span>
                                 </div>
@@ -503,7 +511,7 @@
                           <div class="custom-file">
                             <input type="file" class="custom-file-input" id="imagen_edicion" name="imagen_edicion" aria-describedby="inputGroupFileAddon01" accept="image/*">
                             <label class="custom-file-label" for="imagen">Seleccione una imagen</label>
-                            <p class="error_imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                            <p class="error_imagen_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                           </div>
                         </div>
                       </div>
@@ -512,7 +520,7 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="rol_edicion"><h5>Rol</h5></label>
+                          <label for="rol_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Rol</h5></label>
                           <select class="form-control form-control-sm" id="rol_edicion" name="rol_edicion">
                             <option value="">Seleccione una opción</option>
                             @foreach ($roles as $rol)
@@ -524,8 +532,8 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="cedula_edicion"><h5>Cédula</h5></label>
-                          <input type="text" class="form-control form-control-sm form-control-alternative" id="cedula_edicion" name="cedula_edicion" placeholder="Cédula">
+                          <label for="cedula_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Cédula</h5></label>
+                          <input type="number" class="form-control form-control-sm form-control-alternative" id="cedula_edicion" name="cedula_edicion" placeholder="Cédula">
                           <p class="error_cedula_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                         </div>
                       </div>
@@ -533,14 +541,14 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="nombre_edicion"><h5>Nombre</h5></label>
+                          <label for="nombre_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre</h5></label>
                           <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre_edicion" name="nombre_edicion" placeholder="Nombre">
                           <p class="error_nombre_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="apellidos_edicion"><h5>Apellidos</h5></label>
+                          <label for="apellidos_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Apellidos</h5></label>
                           <input type="text" class="form-control form-control-sm form-control-alternative" id="apellidos_edicion" name="apellidos_edicion" placeholder="Apellidos">
                           <p class="error_apellidos_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                         </div>
@@ -549,7 +557,7 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="nacionalidad_edicion"><h5>País de nacimiento</h5></label>
+                          <label for="nacionalidad_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;País de nacimiento</h5></label>
                             <select name="nacionalidad_edicion" id="nacionalidad_edicion" class="form-control form-control-sm">
                               <option value="">Seleccione una opción</option>
                               <option value="Costa Rica">Costa Rica</option>
@@ -564,7 +572,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="fecha_nacimiento_edicion"><h5>Fecha de nacimiento</h5></label>
+                          <label for="fecha_nacimiento_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
                             <div class="input-group">
                                 <input type="date" class="form-control form-control-sm" id="fecha_nacimiento_edicion" name="fecha_nacimiento_edicion" placeholder="Fecha de nacimiento">
                             </div>
@@ -575,7 +583,7 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="estado_civil_edicion"><h5>Estado Civil</h5></label>
+                          <label for="estado_civil_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Estado Civil</h5></label>
                           <select class="form-control form-control-sm form-control-alternative" id="estado_civil_edicion" name="estado_civil_edicion">
                               <option value="">Seleccione una opción</option>
                               <option value="Soltero(a)">Soltero(a)</option>
@@ -590,7 +598,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="sexo_edicion"><h5>Sexo</h5></label>
+                          <label for="sexo_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
                           <div class="custom-control custom-radio mb-3">
                             <input name="sexo_edicion" class="custom-control-input" id="masculino_edicion" value="Masculino" type="radio">
                             <label class="custom-control-label" for="masculino_edicion">Masculino</label>
@@ -606,14 +614,14 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="telefono_edicion"><h5>Telefono</h5></label>
-                          <input type="text" class="form-control form-control-sm form-control-alternative" id="telefono_edicion" name="telefono_edicion" placeholder="Telefono">
+                          <label for="telefono_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Telefono</h5></label>
+                          <input type="number" class="form-control form-control-sm form-control-alternative" id="telefono_edicion" name="telefono_edicion" placeholder="Telefono">
                           <p class="error_telefono_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="direccion_edicion"><h5>Dirección</h5></label>
+                          <label for="direccion_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Dirección</h5></label>
                           <textarea class="form-control" id="direccion_edicion" name="direccion_edicion" rows="3" placeholder="Dirección"></textarea>
                           <p class="error_direccion_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                         </div>
@@ -657,7 +665,7 @@
         buttonsStyling: false,
       });
 
-      function filePreview(input){
+      function filePreview_crear(input){
         if(input.files && input.files[0]){
           var reader = new FileReader();
           reader.onload = function(e){
@@ -666,11 +674,25 @@
             reader.readAsDataURL(input.files[0]);
         }
       }
+
+      function filePreview_editar(input){
+        if(input.files && input.files[0]){
+          var reader = new FileReader();
+          reader.onload = function(e){
+            $('#avatar_edicion').html("<img src='"+e.target.result+"' class='avatar rounded-circle img-thumbnail' style='width:200px; height:200px; top:200px; left:200px;' alt='User Avatar'>");
+          }
+            reader.readAsDataURL(input.files[0]);
+        }
+      }
+
       $('#imagen').change(function(){
-        filePreview(this);
+        filePreview_crear(this);
       });
 
-    //filtro
+      $('#imagen_edicion').change(function(){
+        filePreview_editar(this);
+      });
+
       Dropzone.options.myAwesomeDropzone = {
         paramName: "Imagen",
         acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
@@ -724,7 +746,9 @@
     $('#registrar').click(function(){
       var form_data = new FormData();
       form_data.append('_token', $('input[name=_token]').val());
-      form_data.append('imagen', $('#imagen')[0].files[0]);
+      if($('#imagen')[0].files[0]){
+        form_data.append('imagen', $('#imagen')[0].files[0]);
+      }
       form_data.append('rol', $('#rol').val());
       form_data.append('cedula', $('#cedula').val());
       form_data.append('nombre', $('#nombre').val());
@@ -880,11 +904,14 @@
       $('#direccion_edicion').val($(this).data('direccion'));
     });
 
+    //Editar
     $('#editar').click(function(){
       var form_data = new FormData();
       form_data.append('_token', $('input[name=_token]').val());
       form_data.append('id_edicion', $('#id_edicion').val());
-      form_data.append('imagen_edicion', $('#imagen_edicion')[0].files[0]);
+      if($('#imagen_edicion')[0].files[0]){
+        form_data.append('imagen_edicion', $('#imagen_edicion')[0].files[0]);
+      }
       form_data.append('rol_edicion', $('#rol_edicion').val());
       form_data.append('cedula_edicion', $('#cedula_edicion').val());
       form_data.append('nombre_edicion', $('#nombre_edicion').val());
@@ -892,7 +919,7 @@
       form_data.append('nacionalidad_edicion', $('#nacionalidad_edicion').val());
       form_data.append('fecha_nacimiento_edicion', $('#fecha_nacimiento_edicion').val());
       form_data.append('estado_civil_edicion', $('#estado_civil_edicion').val());
-      form_data.append('sexo_edicion', $('#sexo').val());
+      form_data.append('sexo_edicion', $('#sexo_edicion').val());
       form_data.append('telefono_edicion', $('#telefono_edicion').val());
       form_data.append('direccion_edicion', $('#direccion_edicion').val());
 
@@ -900,6 +927,8 @@
         type: 'post',
         url: '{{route('usuarios.editar')}}',
         data: form_data,
+        processData: false,
+        contentType: false,
         success: function(data){
           if((data.errors)){
             Toast.fire({
@@ -920,7 +949,7 @@
               $('.error_nombre_edicion').text(data.errors.nombre_edicion);
             }
             if(data.errors.apellidos_edicion){
-              $('.error_apellidos_edicion').removeClass('hidden');
+              $('.error_apellido_edicions').removeClass('hidden');
               $('.error_apellidos_edicion').text(data.errors.apellidos_edicion);
             }
             if(data.errors.nacionalidad_edicion){

@@ -18,6 +18,9 @@
     <!-- Font awesome -->
     <script src="https://kit.fontawesome.com/3297d5584a.js"></script>
 
+    <!-- breadcrumb -->
+    <link type="text/css" href="{{ URL::to('css/breadcrumb.css') }}" rel="stylesheet">
+
     <meta name="_token" content="{{ csrf_token() }}">
     <style>.hidden { display: none; visibility: hidden; } </style>
     @yield('css')
@@ -36,6 +39,10 @@
     </div>
       <!-- SweetAlert2 -->
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+      <!-- Prefixfree -->
+      <script src="http://thecodeplayer.com/uploads/js/prefixfree-1.0.7.js" type="text/javascript"></script>
+
       <!-- AJAX and Jquery -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
 

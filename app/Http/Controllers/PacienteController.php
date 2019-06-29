@@ -27,7 +27,7 @@ class PacienteController extends Controller
   {
     $paciente = Paciente::find($id);
     $tipos_animales = TipoAnimal::all();
-  
+
     return view('mantenimientos.pacientes.detalle', ['paciente'=>$paciente, 'tipos_animales'=>$tipos_animales]);
   }
 
@@ -52,15 +52,15 @@ class PacienteController extends Controller
   public function añadir_pacientes(Request $request)
   {
     $reglas = [
-      'nombre' => 'required',
-      'edad' => 'required',
+      'nombre' => 'required|string|min:4|max:255',
+      'edad' => 'required|numeric',
       'peso' => 'required',
       'fecha_nacimiento' => 'required',
       'sexo' => 'required',
-      'observaciones' => 'required',
+      'observaciones' => 'required|string|min:4|max:255',
       'tipo_animal' => 'required',
-      'raza' => 'required',
-      'idUser' => 'required',
+      'raza' => 'required|string|min:4|max:255',
+      'dueño' => 'required',
     ];
 
     $inputs = [
@@ -72,7 +72,7 @@ class PacienteController extends Controller
       'observaciones' => $request->observaciones,
       'tipo_animal' => $request->tipo_animal,
       'raza' => $request->raza,
-      'idUser' => $request->idUser,
+      'dueño' => $request->dueño,
     ];
 
     $validator = Validator::make($inputs, $reglas);
@@ -89,7 +89,7 @@ class PacienteController extends Controller
       $paciente->observaciones = $request->input('observaciones');
       $paciente->tipo_animal()->associate(TipoAnimal::find($request->input('tipo_animal')));
       $paciente->raza = $request->input('raza');
-      $paciente->user()->associate($request->input('idUser'));
+      $paciente->user()->associate($request->input('dueño'));
       $paciente->save();
 
       return response()->json($paciente);
@@ -108,14 +108,15 @@ class PacienteController extends Controller
     $paciente = Paciente::find($request->input('id_edicion'));
 
     $reglas = [
-      'nombre' => 'required',
+      'nombre' => 'required|string|min:4|max:255',
       'edad' => 'required',
       'peso' => 'required',
       'fecha_nacimiento' => 'required',
       'sexo' => 'required',
-      'observaciones' => 'required',
+      'observaciones' => 'required|string|min:4|max:255',
       'tipo_animal' => 'required',
-      'raza' => 'required',
+      'raza' => 'required|string|min:4|max:255',
+      'dueño' => 'required',
     ];
 
     $inputs = [
@@ -127,6 +128,7 @@ class PacienteController extends Controller
       'observaciones' => $request->observaciones,
       'tipo_animal' => $request->tipo_animal,
       'raza' => $request->raza,
+      'dueño' => $request->dueño,
     ];
 
     $validator = Validator::make($inputs, $reglas);
@@ -139,9 +141,9 @@ class PacienteController extends Controller
       $paciente->fecha_nacimiento = $request->input('fecha_nacimiento');
       $paciente->sexo = $request->input('sexo');
       $paciente->observaciones = $request->input('observaciones');
-      $paciente->tipo_animal()->associate(TipoAnimal::find($request->input('tipo_animal')));
+      $paciente->tipo_animal()->associate($request->input('tipo_animal'));
       $paciente->raza = $request->input('raza');
-
+      $paciente->user()->associate($request->input('dueño'));
       $paciente->save();
 
       return response()->json($paciente);
@@ -184,10 +186,17 @@ class PacienteController extends Controller
     	$term = $request->term;
     	$results = array();
 
-    	$queries = User::where('rol_id', 5)
-      ->where('nombre', 'LIKE', '%'.$term.'%')
-      ->orWhere('cedula', 'LIKE', '%'.$term.'%')
-      ->take(5)->get();
+      $queries= User::leftJoin('rols', 'rols.id', '=', 'users.rol_id')
+      ->where('rols.descripcion', 'Cliente')
+      ->where('users.nombre', 'LIKE', '%'.$term.'%')
+      ->orWhere('users.cedula', 'LIKE', '%'.$term.'%')
+      ->take(5)->get([
+        'users.id as id',
+        'users.nombre as nombre',
+        'users.apellidos as apellidos',
+        'users.cedula as cedula'
+      ]);
+
 
     	foreach ($queries as $key => $data)
     	{

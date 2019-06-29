@@ -4,7 +4,6 @@
   <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/css/lightgallery.min.css" />
   <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/css/lg-transitions.min.css" />
   <link type="text/css" href="{{ URL::to('css/lightgallery.css') }}" rel="stylesheet">
-
 @endsection
 @section('contenido')
     <div class="row">
@@ -49,7 +48,7 @@
                   <label style="color:white;"><b><i class="ni ni-bold-right"></i>Observaciones:</b><span style="color:gray;">&nbsp;{{$paciente->observaciones}}</span></label>
                 </div>
               </div>
-              @if (!empty($paciente->imagenes))
+              @if (count($paciente->imagenes))
               <h1 style="color:white;"><i class="ni ni-bold-right"></i> Imagenes</h1>
                 <div class="demo-gallery">
                   <ul id="lightgallery">

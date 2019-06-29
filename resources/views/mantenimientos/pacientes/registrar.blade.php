@@ -18,16 +18,16 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="nombre"><h5>Nombre</h5></label>
+                      <label for="nombre"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre</h5></label>
                       <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
                       <p class="error-nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="duenno"><h5>Dueño</h5></label>
+                      <label for="duenno"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Dueño</h5></label>
                       <input type="hidden" name="idUser" id="idUser" value="">
-                      <input type="text" class="form-control" name="duenno" id="duenno" value="" placeholder="Ingrese el nombre o cedula del dueño" >
+                      <input type="text" class="form-control form-control-sm form-control-alternative" name="duenno" id="duenno" value="" placeholder="Ingrese el nombre o cedula del dueño" >
                       <p class="error-duenno text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
@@ -35,7 +35,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="tipo_animal"><h5>Tipo de animal</h5></label>
+                      <label for="tipo_animal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Tipo de animal</h5></label>
                       <select class="form-control form-control-sm" id="tipo_animal" name="tipo_animal">
                         <option value="">Seleccione una opción</option>
                         @foreach ($tipos_animales as $tipo_animal)
@@ -47,7 +47,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="raza"><h5>Raza</h5></label>
+                      <label for="raza"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Raza</h5></label>
                       <input type="text" class="form-control form-control-sm form-control-alternative" id="raza" name="raza" placeholder="Raza">
                       <p class="error-raza text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
@@ -56,7 +56,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="fecha_nacimiento"><h5>Fecha de nacimiento</h5></label>
+                      <label for="fecha_nacimiento"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
                         <div class="input-group">
                             <input type="date" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
                         </div>
@@ -66,7 +66,7 @@
                   <div class="col-md-6">
 
                         <div class="form-group">
-                          <label for="nacionalidad"><h5>Sexo</h5></label>
+                          <label for="nacionalidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
                           <div class="row">
                             <div class="col-md-6 text-center">
                               <div class="custom-control custom-radio mb-3">
@@ -93,14 +93,14 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="edad"><h5>Edad</h5></label>
+                      <label for="edad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Edad</h5></label>
                       <input type="number" class="form-control form-control-sm form-control-alternative" id="edad" name="edad" placeholder="Edad">
                       <p class="error-edad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="peso"><h5>Peso</h5></label>
+                      <label for="peso"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Peso</h5></label>
                       <input type="text" class="form-control form-control-sm form-control-alternative" id="peso" name="peso" placeholder="Peso">
                       <p class="error-peso text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
@@ -109,7 +109,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="observaciones"><h5>Observaciones</h5></label>
+                      <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
                       <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones"></textarea>
                       <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
@@ -148,7 +148,7 @@
       $('#idUser').val(ui.item.id);
     }
     });
-  });
+   });
 
     const Toast = Swal.mixin({
       toast: true,
@@ -172,7 +172,7 @@
         url: '{{route('pacientes.añadir')}}',
         data: {
           '_token': $('input[name=_token]').val(),
-          'idUser': $('#idUser').val(),
+          'dueño': $('#idUser').val(),
           'tipo_animal': $('#tipo_animal').val(),
           'nombre': $('#nombre').val(),
           'edad': $('#edad').val(),
@@ -229,9 +229,9 @@
               $('.error-observaciones').text(data.errors.observaciones);
             }
 
-            if(data.errors.idUser){
+            if(data.errors.dueño){
               $('.error-duenno').removeClass('hidden');
-              $('.error-duenno').text(data.errors.idUser);
+              $('.error-duenno').text(data.errors.dueño);
             }
           }else{
             Swal.fire({

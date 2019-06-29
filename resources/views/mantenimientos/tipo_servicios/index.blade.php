@@ -17,28 +17,25 @@
               </div>
             </div>
             <div class="card-body">
-              <form>
-                {{-- <div class="row">
-                  <div class="col-md-12">
-                  </div>
-                </div> --}}
                 <div class="row">
                   <div class="col-md-7">
                     <h6 class="heading-small text-muted mb-4">Lista de Tipos de servicios</h6>
                   </div>
                   <div class="col-md-3 text-right">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                       <select class="form-control form-control-sm" id="filtro" name="filtro">
       									<option value="0">Tipos de servicios habilitados</option>
       									<option value="1">Tipos de servicios deshabilitados</option>
                       </select>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="col-md-2 text-left">
+                    @can('mant_tipos_animales-crear')
                     <button class="btn btn-icon btn-primary btn-sm" type="button" data-toggle="modal" data-target="#modal-añadir">
                     	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
                       <span class="btn-inner--text">Añadir</span>
                     </button>
+                    @endcan
                   </div>
                 </div>
                 <div class="row">
@@ -57,12 +54,9 @@
 
                         </tbody>
                       </table>
-
-
                     </div>
                   </div>
                 </div>
-              </form>
             </div>
           </div>
         </div>
@@ -83,7 +77,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label for="descripcion"><h5>Descripción</h5></label>
+                          <label for="descripcion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Descripción</h5></label>
                           <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripción"></textarea>
                           <p class="error-descripcion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                         </div>
@@ -115,7 +109,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label for="descripcion_edicion"><h5>Descripción</h5></label>
+                        <label for="descripcion_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Descripción</h5></label>
                         <textarea class="form-control" id="descripcion_edicion" name="descripcion_edicion" rows="3" placeholder="Descripción"></textarea>
                         <p class="error-descripcion_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                       </div>
