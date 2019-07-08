@@ -1,31 +1,59 @@
 @extends('layouts.master')
 @section('css')
-  <link type="text/css" href="{{ URL::to('css/slider_swiper.css') }}" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700">
 @endsection
 @section('contenido')
-    <div class="row">
-      <div class="col-md-12">
-          <div class="card bg-gradient-default">
-            <div class="card-header bg-transparent">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-uppercase text-light ls-1 mb-1">Inicio</h6>
-                  <h2 class="text-white mb-0">Información</h2>
-                </div>
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Tipos de animales
+      <small>Mantenimiento</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="#">Mantenimientos</a></li>
+      <li><a href="#">Pacientes</a></li>
+      <li class="active">Registro</li>
+    </ol>
+  </section>
 
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="container">
+  <!-- Main content -->
+  <section class="content">
 
+    <!-- Default box -->
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Title</h3>
 
-              </div>
-            </div>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                  title="Collapse">
+            <i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        Pace loading works automatically on page. You can still implement it with ajax requests by adding this js:
+        <br/><code>$(document).ajaxStart(function() { Pace.restart(); });</code>
+        <br/>
+        <div class="row">
+          <div class="col-xs-12 text-center">
+            <button type="button" class="btn btn-default btn-lrg ajax" title="Ajax Request">
+              <i class="fa fa-spin fa-refresh"></i>&nbsp; Get External Content
+            </button>
           </div>
         </div>
+        <div class="ajax-content">
+        </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        Footer
+      </div>
+      <!-- /.box-footer-->
     </div>
+    <!-- /.box -->
+
+  </section>
+  <!-- /.content -->
 @endsection
 @section('scripts')
 @endsection

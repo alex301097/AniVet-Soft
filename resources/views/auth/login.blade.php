@@ -1,148 +1,106 @@
-@extends('layouts.master_invite')
-@section('contenido')
-  <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-7">
-          <div class="card bg-secondary shadow border-0">
-            <div class="card-header">
-            </div>
-            <div class="card-body px-lg-3 py-lg-3">
-              <div class="text-center text-muted mb-4">
-                <small>Ingrese con sus credenciales</small>
-              </div>
-              <form role="form" method="POST" action="{{ route('login') }}">
-                <div class="form-group mb-3">
-                  <span><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</span>
-                  <div class="input-group input-group-alternative">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="ni ni-email-83"></i></span>
-                    </div>
-                    <input class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Correo" type="email" value="{{ old('name') }}" required autocomplete="email" autofocus>
-                      @error('email')
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-                            <span class="alert-inner--text"><strong>Adverencia!</strong>&nbsp;&nbsp; {{ $message }}</span>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                      @enderror
-                  </div>
-                </div>
-                <div class="form-group">
-                  <span><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</span>
-                  <div class="input-group input-group-alternative">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
-                    </div>
-                    <input class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Contraseña" type="password">
-                      @error('password')
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-                            <span class="alert-inner--text"><strong>Adverencia!</strong>&nbsp;&nbsp; {{ $message }}</span>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                      @enderror
-                  </div>
-                </div>
-                <div class="custom-control custom-control-alternative custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                  <label class="custom-control-label" for="remember">
-                    <span class="text-muted">Recuerdame</span>
-                  </label>
-                </div>
-                <div class="text-center">
-                  @csrf
-                  <button type="submit" class="btn btn-primary my-4">Ingresar</button>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-6">
-              <a href="{{route('password.request')}}" class="text-light"><small>Olvidaste la contraseña?</small></a>
-            </div>
-            <div class="col-6 text-right">
-              <a href="{{route('register')}}" class="text-light"><small>Crear nuevo usuario</small></a>
-            </div>
-          </div>
-        </div>
-      </div>
-{{-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>AniVet-Soft | Ingreso</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{{ URL::to('ingreso/images/icons/favicon.ico') }}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ URL::to('ingreso/vendor/bootstrap/css/bootstrap.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ URL::to('ingreso/fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ URL::to('ingreso/vendor/animate/animate.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ URL::to('ingreso/vendor/css-hamburgers/hamburgers.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ URL::to('ingreso/vendor/select2/select2.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ URL::to('ingreso/css/util.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ URL::to('ingreso/css/main.css') }}">
+<!--===============================================================================================-->
+</head>
+<body>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="{{ URL::to('img/brand/yugo.png') }}" alt="IMG">
+				</div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+				<form class="login100-form validate-form" action="{{route('login')}}" method="post">
+					<span class="login100-form-title">
+						Ingreso de usuarios
+					</span>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+					<div class="wrap-input100 validate-input" data-validate = "Un email valido es requerido: ex@abc.xyz">
+						<input class="input100 {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Correo" value="{{ old('email') }}" type="email" id="email" name="email">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+          @if ($errors->has('email'))
+            <p class="alert alert-danger text-center" style="padding-top:4px; padding-bottom:4px; font-size:14px;">
+              {{ $errors->first('email') }}
+            </p>
+          @endif
+					<div class="wrap-input100 validate-input" data-validate = "La contraseña en requerida">
+            <input class="input100 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Contraseña" type="password" id="password" name="password">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+          @if ($errors->has('password'))
+            <p class="alert alert-danger text-center" style="padding-top:4px; padding-bottom:4px; font-size:14px;">
+              {{ $errors->first('password') }}
+            </p>
+          @endif
+					<div class="container-login100-form-btn">
+            @csrf
+            <button type="submit" class="login100-form-btn">
+							Ingresar
+						</button>
+					</div>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+					<div class="text-center p-t-12">
+						<span class="txt1">
+							¿Olvidaste tu
+						</span>
+						<a class="txt2" href="#">
+							contraseña?
+						</a>
+					</div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+					<div class="text-center p-t-90">
+						<a class="txt2" href="{{route('register')}}">
+							Crea tu cuenta.
+							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+<!--===============================================================================================-->
+	<script src="{{ URL::to('ingreso/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ URL::to('ingreso/vendor/bootstrap/js/popper.js') }}"></script>
+	<script src="{{ URL::to('ingreso/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ URL::to('ingreso/vendor/select2/select2.min.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ URL::to('ingreso/vendor/tilt/tilt.jquery.min.js') }}"></script>
+	<script >
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
+	</script>
+<!--===============================================================================================-->
+	<script src="{{ URL::to('ingreso/js/main.js') }}"></script>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
-@endsection
-@section('scripts')
-  <script>
-    // $('#prueba').click(function(){
-    //   swal.fire('Hello world!');
-    // });
-  </script>
-@endsection
+</body>
+</html>

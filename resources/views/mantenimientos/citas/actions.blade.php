@@ -1,13 +1,13 @@
 <a type="button" class="btn btn-info btn-sm" title="Click para mostrar los detalles de la cita"
 href="{{route('citas.get_detalle', $id)}}">
-&nbsp;<i class="fas fa-info-circle" style="color:black;"></i>&nbsp;</a>
+&nbsp;<i class="fas fa-info-circle"></i>&nbsp;</a>
 
 @if ($deleted_at == null)
-  <a type="button" class="btn btn-secondary btn-sm"
+  <a type="button" class="btn btn-sm bg-orange"
   title="Click para editar los detalles de la cita" href="{{route('citas.get_editar', $id)}}">
   &nbsp;<i class="far fa-edit"></i>&nbsp;</a>
 @else
-  <a type="button" class="btn btn-default btn-sm disabled"
+  <a type="button" class="btn btn-sm bg-orange disabled"
   title="Click para editar los detalles de la cita" href="{{route('citas.get_editar', $id)}}">
   &nbsp;<i class="far fa-edit"></i>&nbsp;</a>
 @endif

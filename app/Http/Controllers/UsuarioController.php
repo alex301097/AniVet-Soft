@@ -35,6 +35,81 @@ class UsuarioController extends Controller
     return response()->json($usuarios);
   }
 
+  public function get_editar_perfil($id)
+  {
+    $usuario = User::where('id',$id)->first();
+    $roles = Rol::all();
+    return view('mantenimientos.usuarios.perfil', ['usuario'=>$usuario,'roles'=>$roles]);
+  }
+
+  public function editar_perfil(Request $request)
+  {
+    $user = User::find($request->input('id_edicion'));
+
+    $reglas = [
+      'imagen' => 'nullable|sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+      'cedula' => ['nullable','sometimes','min:7','numeric',Rule::unique('users', 'cedula')->ignore($user->id)],
+      'nombre' => 'nullable|sometimes|string|max:255',
+      'apellidos' => 'nullable|sometimes|string|max:255',
+      'fecha_nacimiento' => 'nullable|sometimes|date',
+      'telefono' => 'nullable|sometimes|numeric',
+      'direccion' => 'nullable|sometimes|string|max:255',
+      'cedula' => ['nullable','sometimes','min:3','numeric',Rule::unique('users', 'codigo')->ignore($user->id)],
+      'password' => ['nullable','sometimes',
+                     'string',
+                     'min:10',             // must be at least 10 characters in length
+                     'regex:/[a-z]/',      // must contain at least one lowercase letter
+                     'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                     'regex:/[0-9]/',      // must contain at least one digit
+                     'regex:/[@$!%*#?&-]/', // must contain a special character,
+                     'confirmed'],
+        'politicas' => ['nullable','sometimes','accepted']
+
+    ];
+
+    $inputs = [
+      'imagen' => $request->imagen,
+      'cedula' => $request->cedula,
+      'nombre' => $request->nombre,
+      'apellidos' => $request->apellidos,
+      'fecha_nacimiento' => $request->fecha_nacimiento,
+      'telefono' => $request->telefono,
+      'direccion' => $request->direccion,
+      'codigo' => $request->codigo,
+      'password' => $request->password,
+      'password_confirmation' => $request->password_confirmation,
+      'politicas' => $request->condiciones,
+    ];
+
+    $validator = Validator::make($inputs, $reglas);
+    if($validator->fails()){
+      return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
+    }else{
+      if($request->file('imagen') != null){
+      $img = $request->file('imagen');
+      $file_route = time().'_'.$img->getClientOriginalName();
+
+      Storage::disk('imgPerfiles')->put($file_route,file_get_contents($img->getRealPath()));
+
+      $user->imagen = $file_route;
+      }
+      $user->cedula = $request->input('cedula');
+      $user->nombre = $request->input('nombre');
+      $user->apellidos = $request->input('apellidos');
+      $user->nacionalidad = $request->input('nacionalidad');
+      $user->fecha_nacimiento = $request->input('fecha_nacimiento');
+      $user->estado_civil = $request->input('estado_civil');
+      $user->sexo = $request->input('sexo');
+      $user->telefono = $request->input('telefono');
+      $user->direccion = $request->input('direccion');
+      $user->codigo = $request->input('codigo');
+      $user->password = Hash::make($request->input('password'));
+      $user->save();
+
+      return response()->json($user);
+    }
+  }
+
   public function añadir_usuarios(Request $request)
   {
     $reglas = [

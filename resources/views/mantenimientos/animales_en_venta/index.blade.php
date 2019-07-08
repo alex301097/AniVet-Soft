@@ -5,126 +5,140 @@
   <link rel="stylesheet" rel="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 @endsection
 @section('contenido')
-    <div class="row">
-      <div class="col-md-12">
-          <div class="card bg-gradient-default">
-            <div class="card-header bg-transparent">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-uppercase text-light ls-1 mb-1">Mantenimiento</h6>
-                  <h2 class="text-white mb-0">Animales en venta</h2>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <form>
-                <div class="row">
-                  <div class="col-md-7">
-                    <h6 class="heading-small text-muted mb-4">Lista de animales en venta</h6>
-                  </div>
-                  <div class="col-md-3 text-right">
-                    {{-- <div class="form-group">
-                      <select class="form-control form-control-sm" id="filtro" name="filtro">
-      									<option value="0">Animales habilitados</option>
-      									<option value="1">Animales deshabilitados</option>
-                      </select>
-                    </div> --}}
-                  </div>
-                  <div class="col-md-2 text-left">
-                    @can('mant_animales_en_venta-crear')
-                    <a class="btn btn-icon btn-primary btn-sm" type="button" href="{{route('animales_venta.get_añadir')}}">
-                    	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
-                      <span class="btn-inner--text">Añadir</span>
-                    </a>
-                    @endcan
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                      <div class="table-responsive">
-                        <table class="table align-items-center table-dark" id="animales_en_venta" name="animales_en_venta">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Animal</th>
-                                <th scope="col">Edad</th>
-                                <th scope="col">Tipo</th>
-                                <th scope="col">Raza</th>
-                                <th scope="col">Sexo</th>
-                                <th scope="col">Cantidad</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody style="color:black;">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Animales en venta
+      <small>Mantenimiento</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="#">Mantenimientos</a></li>
+      <li class="active">Animales en venta</li>
+    </ol>
+  </section>
 
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </form>
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Lista de animales en venta</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                  title="Collapse">
+            <i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="row" style="padding-bottom:25px;">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-3">
+            {{-- <div class="form-group">
+              <select class="form-control form-control-sm" id="filtro" name="filtro">
+                <option value="0">Animales habilitados</option>
+                <option value="1">Animales deshabilitados</option>
+              </select>
+            </div> --}}
+          </div>
+          <div class="col-md-3">
+            @can('mant_animales_en_venta-crear')
+            <a class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" href="{{route('animales_venta.get_añadir')}}">
+              <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Añadir
+            </a>
+            @endcan
           </div>
         </div>
-    </div>
-
-    <div class="modal fade" id="modal-añadir" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
-        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h2 class="modal-title" id="modal-title-default">Añadir Imagenes para el animal</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group" id="div_imagen" name="div_imagen">
-                            <form action="{{route('file-upload.animales_venta')}}" method="post"
-                            class="dropzone" enctype="multipart/form-data"
-                            id="my-awesome-dropzone">
-                              {{csrf_field()}}
-                              <input type="hidden" name="id_animal" id="id_animal" value="">
-                            </form>
-                          <p class="error-imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          {{-- <div class="demo-gallery">
-                            <ul id="lightgallery">
-                              @foreach ($animal->imagenes as $imagen)
-                                <li  data-src="{{ url('imgPerfiles/'.$imagen->imagen) }}"
-                                data-sub-html="<h4>Nombre: {{$animal->nombre}}</h4>
-                                <p>
-                                  Especie: {{$animal->tipo_animal->descripcion}} - Raza: {{$animal->raza}} - Edad: {{$animal->edad}} años
-                                  <br>
-                                  Condiciones: {{$animal->condiciones}}
-                                  <br>
-                                  Observaciones: {{$animal->observaciones}}
-                                </p>">
-                                  <a href="">
-                                    <img class="img-responsive" src="{{ url('imgPerfiles/'.$imagen->imagen) }}" alt="{{$animal->nombre}}">
-                                    <div class="demo-gallery-poster">
-                                      <img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
-                                    </div>
-                                  </a>
-                                </li>
-                              @endforeach
-                            </ul>
-                          </div> --}}
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-primary" id="registrar" name="registrar">Añadir</button> --}}
-                    <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
+        <div class="row">
+          <div class="col-md-12">
+                <table class="table table-bordered table-striped" id="animales_en_venta" name="animales_en_venta">
+                <thead>
+                    <tr>
+                        <th scope="col">Animal</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Raza</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+              </table>
+          </div>
         </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        Footer
+      </div>
+      <!-- /.box-footer-->
     </div>
+    <!-- /.box -->
+
+  </section>
+  <!-- /.content -->
+  <div class="modal fade" id="modal-añadir" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Añadir imagenes al animal en venta</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group" id="div_imagen" name="div_imagen">
+                  <form action="{{route('file-upload.animales_venta')}}" method="post"
+                  class="dropzone" enctype="multipart/form-data"
+                  id="my-awesome-dropzone">
+                    {{csrf_field()}}
+                    <input type="hidden" name="id_animal" id="id_animal" value="">
+                  </form>
+                <p class="error-imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{-- <div class="demo-gallery">
+                  <ul id="lightgallery">
+                    @foreach ($animal->imagenes as $imagen)
+                      <li  data-src="{{ url('imgPerfiles/'.$imagen->imagen) }}"
+                      data-sub-html="<h4>Nombre: {{$animal->nombre}}</h4>
+                      <p>
+                        Especie: {{$animal->tipo_animal->descripcion}} - Raza: {{$animal->raza}} - Edad: {{$animal->edad}} años
+                        <br>
+                        Condiciones: {{$animal->condiciones}}
+                        <br>
+                        Observaciones: {{$animal->observaciones}}
+                      </p>">
+                        <a href="">
+                          <img class="img-responsive" src="{{ url('imgPerfiles/'.$imagen->imagen) }}" alt="{{$animal->nombre}}">
+                          <div class="demo-gallery-poster">
+                            <img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
+                          </div>
+                        </a>
+                      </li>
+                    @endforeach
+                  </ul>
+                </div> --}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+          {{-- <button type="button" class="btn btn-primary" id="registrar" name="registrar">Añadir</button> --}}
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 @endsection
 @section('scripts')
   <!-- Dropzone.js links -->
@@ -196,22 +210,22 @@
             {data: 'btn', orderable: false, searchable: false}
           ],
           "language":{
-            "info": "<span style='color:white;'>Mostrando total registros</span>",
-            "search": "<span style='color:white;'>Buscar</span>",
+            "info": "Mostrando total registros",
+            "search": "Buscar",
             "paginate": {
-                "next": "<span style='color:white;'>Siguiente</span>",
-              "previous": "<span style='color:white;'>Anterior</span>",
+                "next": "Siguiente",
+              "previous": "Anterior",
             },
             "lengthMenu":
-            '<span style="color:white;">Mostrar&nbsp;</span><select>' +
+            'Mostrar <select>' +
             '<option value="10">10</option>' +
             '<option value="30">30</option>' +
             '<option value="-1">Todos</option>' +
-            '</select> <span style="color:white;">&nbsp;registros</span>' ,
-            "loadingRecords": "<span style='color:black;'>Cargando..</span>",
-            "processing": "<span style='color:black;'>Procesando..</span>",
-            "emptyTable": "<span style='color:black;'>No hay datos</span>",
-            "zeroRecords": "<span style='color:black;'>No hay coincidencias</span>",
+            '</select> registros' ,
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando..",
+            "emptyTable": "No hay datos",
+            "zeroRecords": "No hay coincidencias",
             "infoEmpty": "",
             "infoFiltered": "",
           }

@@ -1,109 +1,168 @@
 @extends('layouts.master')
 @section('css')
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ URL::to('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+  <!-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.css') }}">
 @endsection
 @section('contenido')
-    <div class="row">
-      <div class="col-md-12">
-          <div class="card shadow">
-            <div class="card-header bg-transparent">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-uppercase text-muted ls-1 mb-1">Edición</h6>
-                  <h2 class="mb-0">Citas</h2>
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Citas
+      <small>Mantenimiento</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="#">Mantenimientos</a></li>
+      <li><a href="#">Citas</a></li>
+      <li class="active">Edición</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Edición de citas</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                  title="Collapse">
+            <i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="fecha"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha</h5></label>
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
                 </div>
+                <input type="text" class="form-control form-control-sm pull-right" id="fecha" name="fecha" placeholder="Fecha" value="{{$cita->fecha}}">
               </div>
+              <p class="error-fecha text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
-            <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="fecha"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha</h5></label>
-                      <input type="date" class="form-control form-control-sm form-control-alternative" id="fecha" name="fecha" placeholder="Fecha" value="{{$cita->fecha}}">
-                      <p class="error-fecha text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="paciente"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Paciente</h5></label>
-                      <input type="hidden" name="idPaciente" id="idPaciente" value="{{$cita->paciente->id}}">
-                      <input type="text" class="form-control form-control-sm form-control-alternative" name="paciente" id="paciente" value="{{$cita->paciente->nombre.' - '.$cita->paciente->tipo_animal->descripcion.' ~ '.$cita->paciente->raza.' - '.$cita->paciente->sexo}}" placeholder="Ingrese el nombre, especie o raza del paciente" >
-                      <p class="error-paciente text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="horaInicio"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Hora Inicial</h5></label>
-                      <input type="time" class="form-control form-control-sm form-control-alternative" id="horaInicio" name="horaInicio" placeholder="Hora Inicial" value="{{$cita->horaInicio}}">
-                      <p class="error-horaInicio text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="horaFinal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Hora final</h5></label>
-                      <input type="time" class="form-control form-control-sm form-control-alternative" id="horaFinal" name="horaFinal" placeholder="Hora final" value="{{$cita->horaFinal}}">
-                      <p class="error-horaFinal text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="motivo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Motivo</h5></label>
-                      <input type="text" class="form-control" id="motivo" name="motivo" rows="3" placeholder="Motivo" value="{{$cita->motivo}}">
-                      <p class="error-motivo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
-                      <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones">{{$cita->observaciones}}</textarea>
-                      <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="tipo_animal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Tipo de servicio</h5></label>
-                      <select class="form-control form-control-sm" id="servicio" name="servicio">
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($servicios as $servicio)
-                          <option value="{{$servicio->id}}" {{($servicio->id == $cita->servicio->id)?"selected":""}}>{{$servicio->descripcion}}</option>
-                        @endforeach
-                      </select>
-                      <p class="error-servicio text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="estado"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Estado</h5></label>
-                      <select class="form-control form-control-sm" id="estado" name="estado">
-                        <option value="">Seleccione una opción</option>
-                        <option value="Activa" {{($cita->estado == "Activa")?"selected":""}}>Activa</option>
-                        <option value="Pendiente" {{($cita->estado == "Pendiente")?"selected":""}}>Pendiente</option>
-                        <option value="Inactiva" {{($cita->estado == "Inactiva")?"selected":""}}>Inactiva</option>
-                      </select>
-                      <p class="error-estado text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col text-right">
-                    <input type="hidden" name="id_edicion" id="id_edicion" value="{{$cita->id}}">
-                    @csrf
-                    <button class="btn btn-icon btn-3 btn-primary" type="button" id="registrar" name="registrar">
-                    	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
-                      <span class="btn-inner--text">Editar Cita</span>
-                    </button>
-                  </div>
-                </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="paciente"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Paciente</h5></label>
+              <input type="hidden" name="idPaciente" id="idPaciente" value="{{$cita->paciente->id}}">
+              <input type="text" class="form-control form-control-sm form-control-alternative" name="paciente" id="paciente" value="{{$cita->paciente->nombre.' - '.$cita->paciente->tipo_animal->descripcion.' ~ '.$cita->paciente->raza.' - '.$cita->paciente->sexo}}" placeholder="Ingrese el nombre, especie o raza del paciente" >
+              <p class="error-paciente text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+              <small for="paciente" id="passwordHelpBlock" class="form-text text-muted">
+                <label for=""><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</label>
+                Puedes buscar por especie, raza y nombre del animal en cuestión.
+              </small>
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="bootstrap-timepicker">
+                <div class="form-group">
+                  <label for="horaInicio"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Hora Inicial</h5></label>
+
+                  <div class="input-group">
+                    <input type="text" class="form-control timepicker" id="horaInicio" name="horaInicio" placeholder="Hora Inicial" value="{{$cita->horaInicio}}">
+
+                    <div class="input-group-addon">
+                      <i class="fa fa-clock-o"></i>
+                    </div>
+                  </div>
+                  <p class="error-horaInicio text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                  <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+              </div>
+          </div>
+          <div class="col-md-6">
+            <div class="bootstrap-timepicker">
+                <div class="form-group">
+                  <label for="horaFinal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Hora Final</h5></label>
+
+                  <div class="input-group">
+                    <input type="text" class="form-control timepicker" id="horaFinal" name="horaFinal" placeholder="Hora Final" value="{{$cita->horaFinal}}">
+
+                    <div class="input-group-addon">
+                      <i class="fa fa-clock-o"></i>
+                    </div>
+                  </div>
+                  <p class="error-horaFinal text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                  <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+              </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="motivo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Motivo</h5></label>
+              <input type="text" class="form-control" id="motivo" name="motivo" rows="3" placeholder="Motivo" value="{{$cita->motivo}}">
+              <p class="error-motivo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
+              <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones">{{$cita->observaciones}}</textarea>
+              <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="tipo_animal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Tipo de servicio</h5></label>
+              <select class="form-control form-control-sm" id="servicio" name="servicio">
+                <option value="">Seleccione una opción</option>
+                @foreach ($servicios as $servicio)
+                  <option value="{{$servicio->id}}" {{($servicio->id == $cita->servicio->id)?"selected":""}}>{{$servicio->descripcion}}</option>
+                @endforeach
+              </select>
+              <p class="error-servicio text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="estado"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Estado</h5></label>
+              <select class="form-control form-control-sm" id="estado" name="estado">
+                <option value="">Seleccione una opción</option>
+                <option value="Activa" {{($cita->estado == "Activa")?"selected":""}}>Activa</option>
+                <option value="Pendiente" {{($cita->estado == "Pendiente")?"selected":""}}>Pendiente</option>
+                <option value="Inactiva" {{($cita->estado == "Inactiva")?"selected":""}}>Inactiva</option>
+              </select>
+              <p class="error-estado text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <input type="hidden" name="id_edicion" id="id_edicion" value="{{$cita->id}}">
+            @csrf
+            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" id="editar" name="editar">
+              <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Editar cita
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        Footer
+      </div>
+      <!-- /.box-footer-->
     </div>
+    <!-- /.box -->
+
+  </section>
+  <!-- /.content -->
 @endsection
 @section('scripts')
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
@@ -112,7 +171,25 @@
   integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
   crossorigin="anonymous"></script>
 
+  <!-- bootstrap datepicker -->
+  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+  <!-- bootstrap time picker -->
+  <script src="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
+
   <script type="text/javascript">
+    //Date picker
+    $('#fecha').datepicker({
+      autoclose: true
+    })
+
+    //Timepicker
+    $('#horaInicio').timepicker({
+      showInputs: false
+    })
+
+    $('#horaFinal').timepicker({
+      showInputs: false
+    })
 
     const Toast = Swal.mixin({
       toast: true,
@@ -142,7 +219,7 @@
     });
 
     //Editar
-    $('#registrar').click(function(){
+    $('#editar').click(function(){
 
       $.ajax({
         type: 'post',

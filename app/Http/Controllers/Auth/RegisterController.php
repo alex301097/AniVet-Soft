@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Rol;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -49,21 +50,13 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-          'cedula' => 'required|unique:users,cedula|min:7|max:50|numeric',
+          'cedula' => 'required|unique:users,cedula|min:7|numeric',
           'nombre' => 'required|string|max:255',
           'apellidos' => 'required|string|max:255',
-          'nacionalidad' => 'required',
-          'fecha_nacimiento' => 'required',
-          'estado_civil' => 'required',
-          'sexo' => 'required',
-          'telefono' => 'required|numeric',
-          'direccion' => 'required|string|max:255',
           'email' => 'required|unique:users,email|email|min:4|max:255',
-          'codigo' => 'required|unique:users,codigo|min:4|max:255',
           'password' => ['required',
                          'string',
                          'min:10',             // must be at least 10 characters in length
-                         'max:50',
                          'regex:/[a-z]/',      // must contain at least one lowercase letter
                          'regex:/[A-Z]/',      // must contain at least one uppercase letter
                          'regex:/[0-9]/',      // must contain at least one digit
@@ -81,19 +74,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $rol = Rol::where('descripcion','Cliente')->first();
         return User::create([
-          'rol_id' => 5,
+          'rol_id' => $rol->id,
           'cedula' => $data['cedula'],
           'nombre' => $data['nombre'],
           'apellidos' => $data['apellidos'],
-          'nacionalidad' => $data['nacionalidad'],
-          'fecha_nacimiento' => $data['fecha_nacimiento'],
-          'estado_civil' => $data['estado_civil'],
-          'sexo' => $data['sexo'],
-          'telefono' => $data['telefono'],
-          'direccion' => $data['direccion'],
           'email' => $data['email'],
-          'codigo' => $data['codigo'],
           'password' => Hash::make($data['password']),
         ]);
     }

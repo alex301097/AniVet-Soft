@@ -3,131 +3,154 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @endsection
 @section('contenido')
-    <div class="row">
-      <div class="col-md-12">
-          <div class="card shadow">
-            <div class="card-header bg-transparent">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-uppercase text-muted ls-1 mb-1">Registro</h6>
-                  <h2 class="mb-0">Pacientes</h2>
-                </div>
-              </div>
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Pacientes
+      <small>Mantenimiento</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="#">Mantenimientos</a></li>
+      <li><a href="#">Pacientes</a></li>
+      <li class="active">Registro</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Registro de pacientes</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                  title="Collapse">
+            <i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="nombre"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre</h5></label>
+              <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
+              <p class="error-nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
-            <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="nombre"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
-                      <p class="error-nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="duenno"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Dueño</h5></label>
-                      <input type="hidden" name="idUser" id="idUser" value="">
-                      <input type="text" class="form-control form-control-sm form-control-alternative" name="duenno" id="duenno" value="" placeholder="Ingrese el nombre o cedula del dueño" >
-                      <p class="error-duenno text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="duenno"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Dueño</h5></label>
+              <input type="hidden" name="idUser" id="idUser" value="">
+              <input type="text" class="form-control form-control-sm form-control-alternative" name="duenno" id="duenno" value="" placeholder="Ingrese el nombre o cedula del dueño" >
+              <p class="error-duenno text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="tipo_animal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Tipo de animal</h5></label>
+              <select class="form-control form-control-sm" id="tipo_animal" name="tipo_animal">
+                <option value="">Seleccione una opción</option>
+                @foreach ($tipos_animales as $tipo_animal)
+                  <option value="{{$tipo_animal->id}}">{{$tipo_animal->descripcion}}</option>
+                @endforeach
+              </select>
+              <p class="error-tipo_animal text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="raza"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Raza</h5></label>
+              <input type="text" class="form-control form-control-sm form-control-alternative" id="raza" name="raza" placeholder="Raza">
+              <p class="error-raza text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="fecha_nacimiento"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
+                <div class="input-group">
+                    <input type="date" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
                 </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="tipo_animal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Tipo de animal</h5></label>
-                      <select class="form-control form-control-sm" id="tipo_animal" name="tipo_animal">
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($tipos_animales as $tipo_animal)
-                          <option value="{{$tipo_animal->id}}">{{$tipo_animal->descripcion}}</option>
-                        @endforeach
-                      </select>
-                      <p class="error-tipo_animal text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="raza"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Raza</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" id="raza" name="raza" placeholder="Raza">
-                      <p class="error-raza text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="fecha_nacimiento"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
-                        <div class="input-group">
-                            <input type="date" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
-                        </div>
-                        <p class="error-fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
+                <p class="error-fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+          <div class="col-md-6">
 
-                        <div class="form-group">
-                          <label for="nacionalidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
-                          <div class="row">
-                            <div class="col-md-6 text-center">
-                              <div class="custom-control custom-radio mb-3">
-                                <input name="sexo" class="custom-control-input" id="macho" value="Macho" checked type="radio">
-                                <label class="custom-control-label" for="macho">Macho</label>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="custom-control custom-radio mb-3">
-                                <input name="sexo" class="custom-control-input" id="hembra" value="Hembra" type="radio">
-                                <label class="custom-control-label" for="hembra">Hembra</label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                    <div class="row">
-                      <div class="col-md-12">
-                        <p class="error-sexo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                <div class="form-group">
+                  <label for="nacionalidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
+                  <div class="row">
+                    <div class="col-md-6 text-center">
+                      <div class="custom-control custom-radio mb-3">
+                        <input name="sexo" class="custom-control-input" id="macho" value="Macho" checked type="radio">
+                        <label class="custom-control-label" for="macho">Macho</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="custom-control custom-radio mb-3">
+                        <input name="sexo" class="custom-control-input" id="hembra" value="Hembra" type="radio">
+                        <label class="custom-control-label" for="hembra">Hembra</label>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="edad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Edad</h5></label>
-                      <input type="number" class="form-control form-control-sm form-control-alternative" id="edad" name="edad" placeholder="Edad">
-                      <p class="error-edad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="peso"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Peso</h5></label>
-                      <input type="text" class="form-control form-control-sm form-control-alternative" id="peso" name="peso" placeholder="Peso">
-                      <p class="error-peso text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
-                      <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones"></textarea>
-                      <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col text-right">
-                    @csrf
-                    <button class="btn btn-icon btn-3 btn-primary" type="button" id="registrar" name="registrar">
-                    	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
-                      <span class="btn-inner--text">Añadir paciente</span>
-                    </button>
-                  </div>
-                </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <p class="error-sexo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+              </div>
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="edad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Edad</h5></label>
+              <input type="number" class="form-control form-control-sm form-control-alternative" id="edad" name="edad" placeholder="Edad">
+              <p class="error-edad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="peso"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Peso</h5></label>
+              <input type="text" class="form-control form-control-sm form-control-alternative" id="peso" name="peso" placeholder="Peso">
+              <p class="error-peso text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
+              <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones"></textarea>
+              <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-right">
+            @csrf
+            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" id="registrar" name="registrar">
+              <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Registrar paciente
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        Footer
+      </div>
+      <!-- /.box-footer-->
     </div>
+    <!-- /.box -->
+
+  </section>
+  <!-- /.content -->
 @endsection
 @section('scripts')
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>

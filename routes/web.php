@@ -30,6 +30,11 @@ Route::group(['prefix'=>'mantenimiento/usuarios', 'middleware'=>'auth'], functio
   Route::post('eliminar', 'UsuarioController@eliminar_usuarios')->name('usuarios.eliminar')->middleware('can:mant_usuarios-eliminar');
 
   Route::post('filtro/{estado}', 'UsuarioController@filtrar_usuarios')->name('filtro.usuarios')->middleware('can:mant_usuarios-index');
+
+  Route::get('perfil/{id}', 'UsuarioController@get_editar_perfil')->name('usuarios.get_editar_perfil');
+
+  Route::post('perfil', 'UsuarioController@editar_perfil')->name('usuarios.editar_perfil');
+
 });
 
 Route::group(['prefix'=>'mantenimiento/tipos_animales', 'middleware'=>'auth'], function(){

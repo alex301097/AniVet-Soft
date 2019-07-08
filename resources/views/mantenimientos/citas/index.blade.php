@@ -3,60 +3,76 @@
   <link rel="stylesheet" rel="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 @endsection
 @section('contenido')
-    <div class="row">
-      <div class="col-md-12">
-          <div class="card bg-gradient-default">
-            <div class="card-header bg-transparent">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-uppercase text-light ls-1 mb-1">Mantenimiento</h6>
-                  <h2 class="text-white mb-0">Citas</h2>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <form>
-                <div class="row">
-                  <div class="col-md-10">
-                    <h6 class="heading-small text-muted mb-4">Lista de citas</h6>
-                  </div>
-                  <div class="col-md-2">
-                    @can('mant_citas-crear')
-                    <a class="btn btn-icon btn-primary btn-sm" type="button" href="{{route('citas.get_añadir')}}">
-                    	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
-                      <span class="btn-inner--text">Añadir</span>
-                    </a>
-                    @endcan
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                      <div class="table-responsive">
-                        <table class="table align-items-center table-dark" id="citas" name="citas">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Encargado</th>
-                                <th scope="col">Paciente</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Hora Inicio</th>
-                                <th scope="col">Hora Final</th>
-                                <th scope="col">Servicio</th>
-                                <th scope="col">Motivo</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody style="color:black;">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Citas
+      <small>Mantenimiento</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="#">Mantenimientos</a></li>
+      <li class="active">Citas</li>
+    </ol>
+  </section>
 
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </form>
-          </div>
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Lista de citas</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                  title="Collapse">
+            <i class="fa fa-minus"></i></button>
         </div>
+      </div>
+      <div class="box-body">
+          <div class="row" style="padding-bottom:25px;">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
+              @can('mant_citas-crear')
+              <a class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" href="{{route('citas.get_añadir')}}">
+                <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Añadir
+              </a>
+              @endcan
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+                  <table class="table table-bordered table-striped" id="citas" name="citas">
+                  <thead>
+                      <tr>
+                          <th scope="col">Encargado</th>
+                          <th scope="col">Paciente</th>
+                          <th scope="col">Fecha</th>
+                          <th scope="col">Hora Inicio</th>
+                          <th scope="col">Hora Final</th>
+                          <th scope="col">Servicio</th>
+                          <th scope="col">Motivo</th>
+                          <th scope="col">Estado</th>
+                          <th scope="col">Acciones</th>
+                      </tr>
+                  </thead>
+                </table>
+            </div>
+          </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        Footer
+      </div>
+      <!-- /.box-footer-->
     </div>
+    <!-- /.box -->
+
+  </section>
+  <!-- /.content -->
+
 @endsection
 @section('scripts')
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -95,22 +111,22 @@
             {data: 'btn', orderable: false, searchable: false}
           ],
           "language":{
-            "info": "<span style='color:white;'>Mostrando total registros</span>",
-            "search": "<span style='color:white;'>Buscar</span>",
+            "info": "Mostrando total registros",
+            "search": "Buscar",
             "paginate": {
-                "next": "<span style='color:white;'>Siguiente</span>",
-              "previous": "<span style='color:white;'>Anterior</span>",
+                "next": "Siguiente",
+              "previous": "Anterior",
             },
             "lengthMenu":
-            '<span style="color:white;">Mostrar&nbsp;</span><select>' +
+            'Mostrar <select>' +
             '<option value="10">10</option>' +
             '<option value="30">30</option>' +
             '<option value="-1">Todos</option>' +
-            '</select> <span style="color:white;">&nbsp;registros</span>' ,
-            "loadingRecords": "<span style='color:black;'>Cargando..</span>",
-            "processing": "<span style='color:black;'>Procesando..</span>",
-            "emptyTable": "<span style='color:black;'>No hay datos</span>",
-            "zeroRecords": "<span style='color:black;'>No hay coincidencias</span>",
+            '</select> registros' ,
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando..",
+            "emptyTable": "No hay datos",
+            "zeroRecords": "No hay coincidencias",
             "infoEmpty": "",
             "infoFiltered": "",
           }

@@ -25,12 +25,12 @@ class CreateUsersTable extends Migration
           $table->string('cedula')->unique();
           $table->string('nombre', 150);
           $table->string('apellidos', 150);
-          $table->string('nacionalidad', 50);
-          $table->date('fecha_nacimiento');
-          $table->string('sexo', 15);
-          $table->string('estado_civil', 25);
+          $table->string('nacionalidad', 50)->nullable();
+          $table->date('fecha_nacimiento')->nullable();
+          $table->string('sexo', 15)->nullable();
+          $table->string('estado_civil', 25)->nullable();
           $table->string('telefono', 50)->nullable();
-          $table->text('direccion');
+          $table->text('direccion')->nullable();
           $table->text('imagen')->nullable();
           $table->softDeletes();
           $table->timestamps();
