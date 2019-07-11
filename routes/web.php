@@ -172,4 +172,28 @@ Route::group(['prefix'=>'mantenimiento/roles', 'middleware'=>'auth'], function()
   Route::post('filtro/{estado}', 'RolController@filtrar_roles')->name('filtro.roles')->middleware('can:mant_roles-index');
 });
 
+Route::group(['prefix'=>'proceso/calendarizacion', 'middleware'=>'auth'], function(){
+  Route::get('citas',
+  [
+    'uses'=>'CalendarizacionController@index',
+    'as'=>'calendarizacion'
+  ]);
+
+  //Registra y edita una cita
+  Route::post('registrar-cita',
+  [
+    'uses'=>'CalendarizacionController@postRegistrarCita',
+    'as'=>'calendarizacion.registrar-cita'
+  ]);
+
+  Route::get('autocompletePacientes', 'CalendarizacionController@autocompletePacientes')->name('autocompletePacientes');
+
+  //Deshabilitar cita
+  Route::post('deshabilitar-cita',
+  [
+    'uses'=>'CalendarizacionController@deshabilitarCita',
+    'as'=>'calendarizacion.deshabilitar-cita'
+  ]);
+});
+
 // Route::get('registro', 'HomeController@index')->name('home');

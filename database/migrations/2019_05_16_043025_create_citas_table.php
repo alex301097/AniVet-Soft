@@ -26,6 +26,7 @@ class CreateCitasTable extends Migration
             $table->foreign('paciente_id')->references('id')->on('pacientes');
             $table->integer('user_create_id')->unsigned();
             $table->foreign('user_create_id')->references('id')->on('users');
+            $table->string('coordinado');
             $table->string('estado');
             $table->softDeletes();
             $table->timestamps();

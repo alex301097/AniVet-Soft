@@ -15,7 +15,7 @@ class Cita extends Model
    *
    * @var array
    */
-   protected $fillable = ['fecha','horaInicio','horaFinal','motivo','observaciones','estado'];
+   protected $fillable = ['fecha','horaInicio','horaFinal','motivo','observaciones','estado', 'coordinado'];
 
    protected $appends = ['nombrePaciente','nombreDueño','descripcionServicio'];
 

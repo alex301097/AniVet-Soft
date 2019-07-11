@@ -45,9 +45,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li id="side_bar_option-adopcion_mascotas" name="side_bar_option-adopcion_mascotas"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Usuarios</a></li>
-            <li id="side_bar_option-citas_medicas" name="side_bar_option-citas_medicas"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Pacientes</a></li>
-            <li id="side_bar_option-expediente_medico" name="side_bar_option-expediente_medico"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Tipos de animales</a></li>
+            <li id="side_bar_option-adopcion_mascotas" name="side_bar_option-adopcion_mascotas"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Adopción de mascotas</a></li>
+            <li id="side_bar_option-citas_medicas" name="side_bar_option-citas_medicas"><a href="{{route('calendarizacion')}}"><i class="fa fa-circle-o"></i>Calendarización</a></li>
+            <li id="side_bar_option-expediente_medico" name="side_bar_option-expediente_medico"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Expediente medico</a></li>
           </ul>
         </li>
         <li class="treeview" id="side_bar-mantenimientos" name="side_bar-mantenimientos">
