@@ -14,10 +14,10 @@
         <div class="pull-left info">
           @if (auth()->user())
             <p>{{auth()->user()->nombre}} {{auth()->user()->apellidos}}</p>
-            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            <a href="#"><i class="fa fa-circle text-success"></i> En linea</a>
           @else
             <p>Usuario invitado</p>
-            <a href="#"><i class="fa fa-circle text-danger"></i> Online</a>
+            <a href="#"><i class="fa fa-circle text-danger"></i> En linea</a>
           @endif
         </div>
       </div>
@@ -45,9 +45,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li id="side_bar_option-adopcion_mascotas" name="side_bar_option-adopcion_mascotas"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Usuarios</a></li>
-            <li id="side_bar_option-citas_medicas" name="side_bar_option-citas_medicas"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Pacientes</a></li>
-            <li id="side_bar_option-expediente_medico" name="side_bar_option-expediente_medico"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Tipos de animales</a></li>
+            <li id="side_bar_option-adopcion_mascotas" name="side_bar_option-adopcion_mascotas"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Adopción de animales</a></li>
+            <li id="side_bar_option-venta_animales" name="side_bar_option-venta_animales"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Venta de animales</a></li>
+            <li id="side_bar_option-citas_medicas" name="side_bar_option-citas_medicas"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Calendarización</a></li>
+            <li id="side_bar_option-expediente_medico" name="side_bar_option-expediente_medico"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Expediente medico</a></li>
           </ul>
         </li>
         <li class="treeview" id="side_bar-mantenimientos" name="side_bar-mantenimientos">
@@ -63,7 +64,6 @@
             <li id="side_bar_option-tipos_animales" name="side_bar_option-tipos_animales"><a href="{{route('tipos_animales')}}"><i class="fa fa-circle-o"></i>Tipos de animales</a></li>
             <li id="side_bar_option-tipos_servicios" name="side_bar_option-tipos_servicios"><a href="{{route('tipos_servicios')}}"><i class="fa fa-circle-o"></i>Tipos de servicios</a></li>
             <li id="side_bar_option-animales_venta" name="side_bar_option-animales_venta"><a href="{{route('animales_venta')}}"><i class="fa fa-circle-o"></i>Animales en venta</a></li>
-            <li id="side_bar_option-animales_adopcion" name="side_bar_option-animales_adopcion"><a href="{{route('animales_adopcion')}}"><i class="fa fa-circle-o"></i>Animales en adopción</a></li>
             <li id="side_bar_option-citas" name="side_bar_option-citas"><a href="{{route('citas')}}"><i class="fa fa-circle-o"></i>Citas</a></li>
           </ul>
         </li>
