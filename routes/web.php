@@ -90,17 +90,26 @@ Route::group(['prefix'=>'mantenimiento/animales_adopcion', 'middleware'=>'auth']
 });
 
 Route::group(['prefix'=>'adopcion', 'middleware'=>'auth'], function(){
-  Route::get('/', 'AdopcionController@index')->name('adopciones')->middleware('auth');
 
-  Route::get('detalle/{id}', 'AdopcionController@get_detalle_adopciones')->name('adopciones.get_detalle')->middleware('auth');
+  Route::get('registrar', 'AdopcionController@get_registrar_adopciones')->name('adopciones.get_registrar')->middleware('auth');
 
-  Route::get('añadir', 'AdopcionController@get_añadir_adopciones')->name('adopciones.get_añadir')->middleware('auth');
+  Route::post('registrar', 'AdopcionController@registrar_adopciones')->name('adopciones.registrar')->middleware('auth');
 
-  Route::post('añadir', 'AdopcionController@añadir_adopciones')->name('adopciones.añadir')->middleware('auth');
+  Route::post('registrar.limpiar_todo', 'AdopcionController@registrar_limpiar_todo')->name('adopciones.registrar.limpiar_todo')->middleware('auth');
 
-  Route::get('editar/{id}', 'AdopcionController@get_editar_adopciones')->name('adopciones.get_editar')->middleware('auth');
+  Route::post('registrar.limpiar_individual', 'AdopcionController@registrar_limpiar_individual')->name('adopciones.registrar.limpiar_individual')->middleware('auth');
 
-  Route::post('editar', 'AdopcionController@editar_adopciones')->name('adopciones.editar')->middleware('auth');
+  Route::post('registrar.finalizar', 'AdopcionController@finalizar_registrar_adopciones')->name('adopciones.registrar.finalizar')->middleware('auth');
+
+  Route::get('solicitar', 'AdopcionController@get_solicitar_adopciones')->name('adopciones.get_solicitar')->middleware('auth');
+
+  Route::post('solicitar', 'AdopcionController@solicitar_adopciones')->name('adopciones.solicitar')->middleware('auth');
+
+  Route::post('solicitar.limpiar_todo', 'AdopcionController@solicitar_limpiar_todo')->name('adopciones.solicitar.limpiar_todo')->middleware('auth');
+
+  Route::post('solicitar.limpiar_individual', 'AdopcionController@solicitar_limpiar_individual')->name('adopciones.solicitar.limpiar_individual')->middleware('auth');
+
+  Route::post('solicitar.finalizar', 'AdopcionController@finalizar_solicitar_adopciones')->name('adopciones.solicitar.finalizar')->middleware('auth');
 
   Route::post('eliminar', 'AdopcionController@eliminar_adopciones')->name('adopciones.eliminar')->middleware('auth');
 });

@@ -32,7 +32,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -147,7 +147,7 @@
           <div class="col-md-12 text-right">
             <input type="hidden" name="id_edicion" id="id_edicion" value="{{$cita->id}}">
             @csrf
-            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" id="editar" name="editar">
+            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:100px;" type="button" id="editar" name="editar">
               <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Editar cita
             </button>
           </div>
@@ -216,6 +216,11 @@
         $('#idPaciente').val(ui.item.id);
       }
       });
+    });
+
+    $(document).ready(function(){
+      $('#side_bar-mantenimientos').addClass('active');
+      $('#side_bar_option-citas').addClass('active');
     });
 
     //Editar

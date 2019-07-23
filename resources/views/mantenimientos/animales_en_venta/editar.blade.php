@@ -24,7 +24,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -137,7 +137,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="cantidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Cantidad</h5></label>
-              <input type="number" class="form-control form-control-sm form-control-alternative" id="cantidad" name="cantidad" placeholder="Cantidad">
+              <input type="number" class="form-control form-control-sm form-control-alternative" id="cantidad" name="cantidad" placeholder="Cantidad" value="{{$animal->cantidad}}">
               <p class="error-cantidad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
           </div>
@@ -146,7 +146,7 @@
           <div class="col-md-12 text-right">
             <input type="hidden" name="id_edicion" id="id_edicion" value="{{$animal->id}}">
             @csrf
-            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" id="editar" name="editar">
+            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:150px;" type="button" id="editar" name="editar">
               <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Editar animal
             </button>
           </div>
@@ -179,6 +179,11 @@
         cancelButton: 'btn btn-danger'
       },
       buttonsStyling: false,
+    });
+
+    $(document).ready(function(){
+      $('#side_bar-mantenimientos').addClass('active');
+      $('#side_bar_option-animales_venta').addClass('active');
     });
 
     //Editar

@@ -27,7 +27,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -135,8 +135,8 @@
         <div class="row">
           <div class="col-md-12 text-right">
             @csrf
-            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" id="registrar" name="registrar">
-              <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Registrar paciente
+            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:175px;" type="button" id="registrar" name="registrar">
+              <span><i class="fas fa-plus"></i></span>&nbsp;Registrar paciente
             </button>
           </div>
         </div>
@@ -188,6 +188,11 @@
       buttonsStyling: false,
     });
 
+    $(document).ready(function(){
+      $('#side_bar-mantenimientos').addClass('active');
+      $('#side_bar_option-pacientes').addClass('active');
+    });
+    
     //Añadir
     $('#registrar').click(function(){
       $.ajax({

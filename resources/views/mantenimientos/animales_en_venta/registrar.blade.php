@@ -24,7 +24,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -78,23 +78,23 @@
           </div>
           <div class="col-md-6">
 
-                <div class="form-group">
-                  <label for="sexo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
-                  <div class="row">
-                    <div class="col-md-6 text-center">
-                      <div class="custom-control custom-radio mb-3">
-                        <input name="sexo" class="custom-control-input" id="macho" value="Macho" checked type="radio">
-                        <label class="custom-control-label" for="macho">Macho</label>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="custom-control custom-radio mb-3">
-                        <input name="sexo" class="custom-control-input" id="hembra" value="Hembra" type="radio">
-                        <label class="custom-control-label" for="hembra">Hembra</label>
-                      </div>
-                    </div>
+            <div class="form-group">
+              <label for="sexo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
+              <div class="row">
+                <div class="col-md-6 text-center">
+                  <div class="custom-control custom-radio mb-3">
+                    <input name="sexo" class="custom-control-input" id="macho" value="Macho" checked type="radio">
+                    <label class="custom-control-label" for="macho">Macho</label>
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="custom-control custom-radio mb-3">
+                    <input name="sexo" class="custom-control-input" id="hembra" value="Hembra" type="radio">
+                    <label class="custom-control-label" for="hembra">Hembra</label>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div class="row">
               <div class="col-md-12">
@@ -145,7 +145,7 @@
         <div class="row">
           <div class="col-md-12 text-right">
             @csrf
-            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" id="registrar" name="registrar">
+            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:150px;" type="button" id="registrar" name="registrar">
               <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Registrar animal
             </button>
           </div>
@@ -178,6 +178,11 @@
         cancelButton: 'btn btn-danger'
       },
       buttonsStyling: false,
+    });
+
+    $(document).ready(function(){
+      $('#side_bar-mantenimientos').addClass('active');
+      $('#side_bar_option-animales_venta').addClass('active');
     });
 
     //Añadir
