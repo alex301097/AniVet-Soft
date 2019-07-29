@@ -78,6 +78,17 @@
             <li id="side_bar_option-roles" name="side_bar_option-roles"><a href="{{route('roles')}}"><i class="fa fa-circle-o"></i>Roles</a></li>
           </ul>
         </li>
+        <li class="treeview" id="side_bar-reportes" name="side_bar-reportes">
+          <a href="#">
+            <i class="fa fa-folder"></i> <span>Reportes</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li id="side_bar_option-citas" name="side_bar_option-citas"><a href="{{route('reportes.citas')}}"><i class="fa fa-circle-o"></i>Citas</a></li>
+          </ul>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->

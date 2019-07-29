@@ -13,6 +13,7 @@ use App\Cita;
 use App\TipoServicio;
 use App\Paciente;
 use Session;
+use PDF;
 
 class CitasController extends Controller
 {
