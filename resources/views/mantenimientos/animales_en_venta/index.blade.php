@@ -57,13 +57,12 @@
                 <table class="table table-bordered table-striped text-center" id="animales_en_venta" name="animales_en_venta">
                 <thead>
                     <tr>
-                        <th scope="col">Animal</th>
-                        <th scope="col">Edad</th>
                         <th scope="col">Tipo</th>
                         <th scope="col">Raza</th>
                         <th scope="col">Sexo</th>
+                        <th scope="col">Edad</th>
                         <th scope="col">Cantidad</th>
-                        <th scope="col">Estado</th>
+                        <th scope="col">Precio</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -180,7 +179,7 @@
         $('#side_bar-mantenimientos').addClass('active');
         $('#side_bar_option-animales_venta').addClass('active');
       });
-      
+
       // previewThumbailFromUrl({
       //     selector: '1559902529_mascotas-en-el-trabajo',
       //     fileName: '1559902529_mascotas-en-el-trabajo',
@@ -208,13 +207,12 @@
           "ajax":"{{ url('api/animales_en_venta') }}",
           "columns":
           [
-            {data: 'nombre'},
-            {data: 'edad'},
             {data: 'descripcionAnimal', orderable: false, searchable: false},
             {data: 'raza'},
             {data: 'sexo'},
+            {data: 'edad'},
             {data: 'cantidad'},
-            {data: 'estado'},
+            {data: 'precio'},
             {data: 'btn', orderable: false, searchable: false}
           ],
           "language":{

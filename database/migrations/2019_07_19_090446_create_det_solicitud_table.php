@@ -13,13 +13,13 @@ class CreateDetSolicitudTable extends Migration
      */
     public function up()
     {
-        Schema::create('det_solicitud', function (Blueprint $table) {
+        Schema::create('det_solicituds', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->unsignedBigInteger('enc_solicitud_id');
           $table->foreign('enc_solicitud_id')->references('id')->on('enc_solicituds');
           $table->unsignedBigInteger('det_adopcion_id');
           $table->foreign('det_adopcion_id')->references('id')->on('det_adopcions');
-          $table->softDeletes();  
+          $table->softDeletes();
           $table->timestamps();
         });
     }

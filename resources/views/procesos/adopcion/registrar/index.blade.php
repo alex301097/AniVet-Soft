@@ -580,7 +580,7 @@
             type: 'warning',
             title: '¡Errores de validación!'
           })
-          
+
           if(data.errors.error_vacio){
             $('.error_vacio_div').removeClass('hidden');
             $('.error_vacio').removeClass('hidden');

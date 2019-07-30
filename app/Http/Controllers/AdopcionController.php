@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SolicitudAdopcionGerente;
+use App\Mail\SolicitudAdopcionDueño;
+use App\Mail\SolicitudAdopcionAdoptante;
 use App\EncAdopcion;
 use App\DetAdopcion;
 use App\EncSolicitud;
@@ -142,6 +146,9 @@ class AdopcionController extends Controller
           $request->session()->forget('detalles_adopcion');
         }
 
+        Mail::to($enc_adopcion->correo_dueño)->send(new SolicitudAdopcionDueño($enc_solicitud));
+        Mail::to("alexandervillalobos50@gmail.com")->send(new SolicitudAdopcionGerente($enc_solicitud));
+
         return response()->json($enc_adopcion);
       }
     }
@@ -150,11 +157,11 @@ class AdopcionController extends Controller
   public function get_solicitar_adopciones()
   {
     $adopciones = DetAdopcion::orderBy('created_at', 'desc')->paginate();
-    Session::forget("detalles_solicitud");
-    Session::forget("detalles_solicitud_descripcion");
-    Session::put("detalles_solicitud",[]);
-    Session::put("detalles_solicitud_descripcion",[]);
     if (!Session::has('detalles_solicitud') || !Session::has('detalles_solicitud_descripcion')) {
+      Session::forget("detalles_solicitud");
+      Session::forget("detalles_solicitud_descripcion");
+      Session::put("detalles_solicitud",[]);
+      Session::put("detalles_solicitud_descripcion",[]);
     }
 
     $detalles = Session::get('detalles_solicitud_descripcion');
@@ -227,9 +234,6 @@ class AdopcionController extends Controller
 
   public function finalizar_solicitar_adopciones(Request $request)
   {
-    if (!Session::has('detalles_adopcion') || empty(Session::get('detalles_adopcion'))) {
-      return Response::json(array('errors'=>array('error_vacio'=>'Para efectuar esta operación debes de agregar los animales que quieres adoptar a la lista.')));
-    } else {
       $reglas = [
         'cedula' => 'required|numeric|min:7',
         'sexo' => 'required',
@@ -266,11 +270,16 @@ class AdopcionController extends Controller
           }
           $request->session()->forget('detalles_solicitud');
           $request->session()->forget('detalles_solicitud_descripcion');
+          $encabezados_adopcion = EncAdopcion::find($detalles->pluck('enc_adopcion_id'));
+
+          Mail::to($encabezados_adopcion)->send(new SolicitudAdopcionDueño($enc_solicitud));
         }
+
+        Mail::to($enc_solicitud->correo)->send(new SolicitudAdopcionAdoptante($enc_solicitud));
+        Mail::to("alexandervillalobos50@gmail.com")->send(new SolicitudAdopcionGerente($enc_solicitud));
 
         return response()->json($enc_solicitud);
       }
-    }
   }
 
   public function eliminar_adopciones(Request $request)

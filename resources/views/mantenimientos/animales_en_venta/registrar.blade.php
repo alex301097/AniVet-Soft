@@ -1,4 +1,8 @@
 @extends('layouts.master')
+@section('css')
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="{{ URL::to('plugins/iCheck/all.css') }}">
+@endsection
 @section('contenido')
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -30,23 +34,7 @@
       </div>
       <div class="box-body">
         <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="nombre"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre</h5></label>
-              <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
-              <p class="error-nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="edad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Edad</h5></label>
-              <input type="number" class="form-control form-control-sm form-control-alternative" id="edad" name="edad" placeholder="Edad">
-              <p class="error-edad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
               <label for="tipo_animal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Tipo de animal</h5></label>
               <select class="form-control form-control-sm" id="tipo_animal" name="tipo_animal">
@@ -58,11 +46,18 @@
               <p class="error-tipo_animal text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
               <label for="raza"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Raza</h5></label>
               <input type="text" class="form-control form-control-sm form-control-alternative" id="raza" name="raza" placeholder="Raza">
               <p class="error-raza text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="edad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Edad</h5></label>
+              <input type="text" class="form-control form-control-sm form-control-alternative" id="edad" name="edad" placeholder="Edad">
+              <p class="error-edad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
           </div>
         </div>
@@ -83,13 +78,13 @@
               <div class="row">
                 <div class="col-md-6 text-center">
                   <div class="custom-control custom-radio mb-3">
-                    <input name="sexo" class="custom-control-input" id="macho" value="Macho" checked type="radio">
+                    <input name="sexo" class="minimal" id="macho" value="Macho" checked type="radio">
                     <label class="custom-control-label" for="macho">Macho</label>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="custom-control custom-radio mb-3">
-                    <input name="sexo" class="custom-control-input" id="hembra" value="Hembra" type="radio">
+                    <input name="sexo" class="minimal" id="hembra" value="Hembra" type="radio">
                     <label class="custom-control-label" for="hembra">Hembra</label>
                   </div>
                 </div>
@@ -163,7 +158,15 @@
   <!-- /.content -->
 @endsection
 @section('scripts')
+  <!-- iCheck 1.0.1 -->
+  <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
   <script type="text/javascript">
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass   : 'iradio_minimal-blue'
+    });
 
     const Toast = Swal.mixin({
       toast: true,
@@ -194,7 +197,6 @@
         data: {
           '_token': $('input[name=_token]').val(),
           'tipo_animal': $('#tipo_animal').val(),
-          'nombre': $('#nombre').val(),
           'edad': $('#edad').val(),
           'peso': $('#peso').val(),
           'raza': $('#raza').val(),
@@ -215,11 +217,6 @@
             if(data.errors.tipo_animal){
               $('.error-tipo_animal').removeClass('hidden');
               $('.error-tipo_animal').text(data.errors.tipo_animal);
-            }
-
-            if(data.errors.nombre){
-              $('.error-nombre').removeClass('hidden');
-              $('.error-nombre').text(data.errors.nombre);
             }
 
             if(data.errors.edad){

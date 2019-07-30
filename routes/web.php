@@ -89,7 +89,7 @@ Route::group(['prefix'=>'mantenimiento/animales_adopcion', 'middleware'=>'auth']
   Route::post('file-upload', 'AdopcionAnimalController@upload_file')->name('file-upload.animales_adopcion')->middleware('auth');
 });
 
-Route::group(['prefix'=>'adopcion', 'middleware'=>'auth'], function(){
+Route::group(['prefix'=>'proceso/adopcion', 'middleware'=>'auth'], function(){
 
   Route::get('registrar', 'AdopcionController@get_registrar_adopciones')->name('adopciones.get_registrar')->middleware('auth');
 
@@ -112,6 +112,19 @@ Route::group(['prefix'=>'adopcion', 'middleware'=>'auth'], function(){
   Route::post('solicitar.finalizar', 'AdopcionController@finalizar_solicitar_adopciones')->name('adopciones.solicitar.finalizar')->middleware('auth');
 
   Route::post('eliminar', 'AdopcionController@eliminar_adopciones')->name('adopciones.eliminar')->middleware('auth');
+});
+
+Route::group(['prefix'=>'proceso/venta_animales', 'middleware'=>'auth'], function(){
+
+  Route::get('/', 'VentaAnimalController@get_solicitar_ventas')->name('venta_animales')->middleware('auth');
+
+  Route::post('solicitar', 'VentaAnimalController@solicitar_ventas')->name('venta_animales.solicitar')->middleware('auth');
+
+  Route::post('solicitar.limpiar_todo', 'VentaAnimalController@solicitar_limpiar_todo')->name('venta_animales.solicitar.limpiar_todo')->middleware('auth');
+
+  Route::post('solicitar.limpiar_individual', 'VentaAnimalController@solicitar_limpiar_individual')->name('venta_animales.solicitar.limpiar_individual')->middleware('auth');
+
+  Route::post('solicitar.finalizar', 'VentaAnimalController@finalizar_solicitar_ventas')->name('venta_animales.solicitar.finalizar')->middleware('auth');
 });
 
 Route::group(['prefix'=>'mantenimiento/tipos_servicios', 'middleware'=>'auth'], function(){

@@ -14,8 +14,13 @@ class CreateDetVentaTable extends Migration
     public function up()
     {
         Schema::create('det_ventas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+          $table->bigIncrements('id');
+          $table->unsignedBigInteger('enc_venta_id');
+          $table->foreign('enc_venta_id')->references('id')->on('enc_ventas');
+          $table->unsignedBigInteger('animal_venta_id');
+          $table->foreign('animal_venta_id')->references('id')->on('animal_ventas');
+          $table->softDeletes();
+          $table->timestamps();
         });
     }
 

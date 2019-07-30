@@ -47,7 +47,7 @@
           <ul class="treeview-menu">
             <li id="side_bar_option-expediente_medico" name="side_bar_option-expediente_medico"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Expediente medico</a></li>
             <li id="side_bar_option-calendarizacion" name="side_bar_option-calendarizacion"><a href="{{route('calendarizacion')}}"><i class="fa fa-circle-o"></i>Calendarización</a></li>
-            <li id="side_bar_option-venta_animales" name="side_bar_option-venta_animales"><a href="{{route('home')}}"><i class="fa fa-circle-o"></i>Venta de animales</a></li>
+            <li id="side_bar_option-venta_animales" name="side_bar_option-venta_animales"><a href="{{route('venta_animales')}}"><i class="fa fa-circle-o"></i>Venta de animales</a></li>
             <li class="treeview" id="side_bar_option-adopcion_mascotas" name="side_bar_option-adopcion_mascotas">
               <a href="#"><i class="fa fa-circle-o"></i> Adopción de animales
                 <span class="pull-right-container">

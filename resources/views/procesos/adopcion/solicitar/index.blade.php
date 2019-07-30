@@ -2,19 +2,8 @@
 @section('css')
   <link type="text/css" href="{{ URL::to('css/cards_image_expander.css') }}" rel="stylesheet">
   <link type="text/css" href="{{ URL::to('css/accordeon_head.css') }}" rel="stylesheet">
-  <style>
-  /* Style the close button (span) */
-.cerrar {
-cursor: pointer;
-position: absolute;
-top: 50%;
-right: 0%;
-padding: 12px 4px;
-transform: translate(0%, -50%);
-}
-
-.cerrar:hover {background: #bbb;}
-  </style>
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="{{ URL::to('plugins/iCheck/all.css') }}">
 @endsection
 @section('contenido')
   <!-- Content Header (Page header) -->
@@ -278,10 +267,10 @@ transform: translate(0%, -50%);
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-          <button type="button" id="limpiar_formulario_dueño disabled hidden" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario de datos del adoptante de los animales">
+          <button type="button" id="limpiar_formulario_dueño" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario de datos del adoptante de los animales.">
            &nbsp;<i class="fa fa-eraser"></i>&nbsp;
           </button>
-          <button type="button" class="btn btn-sm btn-primary disabled hidden" id="efectuar_adopcion" name="efectuar_adopcion">Efectuar registro</button>
+          <button type="button" class="btn btn-sm btn-primary" id="efectuar_adopcion" name="efectuar_adopcion" data-toggle="tooltip" title="Click para finalizar el proceso de adopción.">Efectuar solicitud</button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -292,7 +281,15 @@ transform: translate(0%, -50%);
 @section('scripts')
   <script src="{{ URL::to('js/cards_image_expander.js') }}"></script>
   <script src="{{ URL::to('js/accordeon_head.js') }}"></script>
+  <!-- iCheck 1.0.1 -->
+  <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
+
   <script type="text/javascript">
+  //iCheck for checkbox and radio inputs
+  $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+    checkboxClass: 'icheckbox_minimal-blue',
+    radioClass   : 'iradio_minimal-blue'
+  });
 
   const Toast = Swal.mixin({
     toast: true,
@@ -453,7 +450,7 @@ transform: translate(0%, -50%);
   });
 
   //Finalizar
-  $('#finalizar_adopcion').click(function(){
+  $('#efectuar_adopcion').click(function(){
     $.ajax({
       type: 'post',
       url: '{{route('adopciones.solicitar.finalizar')}}',

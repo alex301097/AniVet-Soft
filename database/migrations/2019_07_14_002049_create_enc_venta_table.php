@@ -14,8 +14,17 @@ class CreateEncVentaTable extends Migration
     public function up()
     {
         Schema::create('enc_ventas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+          $table->bigIncrements('id');
+          $table->string('cedula');
+          $table->string('nombre');
+          $table->string('apellidos');
+          $table->string('direccion');
+          $table->string('telefono');
+          $table->string('correo');
+          $table->string('sexo', 15);
+          $table->string('observaciones')->nullable();
+          $table->softDeletes();
+          $table->timestamps();
         });
     }
 
