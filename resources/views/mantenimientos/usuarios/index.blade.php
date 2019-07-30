@@ -33,7 +33,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -61,7 +61,7 @@
         <div class="row">
           <div class="col-md-12">
               <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="usuarios" name="usuarios">
+                <table class="table table-bordered table-striped text-center" id="usuarios" name="usuarios">
                 <thead>
                     <tr>
                         <th scope="col">Usuario</th>
@@ -73,6 +73,9 @@
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
+                <tbody class="text-center">
+
+                </tbody>
               </table>
             </div>
           </div>
@@ -496,7 +499,6 @@
                             </div>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -678,6 +680,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+            <input type="hidden" name="id_edicion" id="id_edicion" value="">
             <button type="button" class="btn btn-primary" id="editar" name="editar">Editar</button>
           </div>
         </div>
@@ -698,6 +701,8 @@
   <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <!-- iCheck 1.0.1 -->
   <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
   <script type="text/javascript">
 
@@ -739,7 +744,7 @@
       $(document).ready(function(){
         $('#side_bar-mantenimientos').addClass('active');
         $('#side_bar_option-usuarios').addClass('active');
-      })
+      });
 
       function filePreview_crear(input){
         if(input.files && input.files[0]){
@@ -830,9 +835,9 @@
       form_data.append('nombre', $('#nombre').val());
       form_data.append('apellidos', $('#apellidos').val());
       form_data.append('nacionalidad', $('#nacionalidad').val());
-      form_data.append('fecha_nacimiento', $('#fecha_nacimiento').val());
+      form_data.append('fecha_nacimiento', moment($('#fecha_nacimiento').val()).format('YYYY-MM-DD'));
       form_data.append('estado_civil', $('#estado_civil').val());
-      form_data.append('sexo', $('#sexo').val());
+      form_data.append('sexo', $('input[name="sexo"]:checked').val());
       form_data.append('telefono', $('#telefono').val());
       form_data.append('direccion', $('#direccion').val());
       form_data.append('email', $('#email').val());
@@ -940,7 +945,9 @@
       $('#nombre_detalle').val($(this).data('nombre'));
       $('#apellidos_detalle').val($(this).data('apellidos'));
       $('#nacionalidad_detalle').val($(this).data('nacionalidad'));
-      $('#fecha_nacimiento_detalle').val($(this).data('fecha_nacimiento'));
+      if ($(this).data('fecha_nacimiento')) {
+        $('#fecha_nacimiento_detalle').val(moment($(this).data('fecha_nacimiento')).format('DD/MM/YYYY'));
+      }
       $('#estado_civil_detalle').val($(this).data('estado_civil'));
       if($(this).data('sexo') == "Masculino"){
         $("#masculino_detalle").prop("checked", true);
@@ -969,8 +976,9 @@
       $('#nombre_edicion').val($(this).data('nombre'));
       $('#apellidos_edicion').val($(this).data('apellidos'));
       $('#nacionalidad_edicion').val($(this).data('nacionalidad'));
-      $('#fecha_nacimiento_edicion').val($(this).data('fecha_nacimiento'));
-      $('#estado_civil_edicion').val($(this).data('estado_civil'));
+      if ($(this).data('fecha_nacimiento')) {
+        $('#fecha_nacimiento_edicion').val(moment($(this).data('fecha_nacimiento')).format('DD/MM/YYYY'));
+      }      $('#estado_civil_edicion').val($(this).data('estado_civil'));
       if($(this).data('sexo') == "Masculino"){
         $("#masculino_edicion").prop("checked", true);
       }else{
@@ -995,7 +1003,7 @@
       form_data.append('nacionalidad_edicion', $('#nacionalidad_edicion').val());
       form_data.append('fecha_nacimiento_edicion', $('#fecha_nacimiento_edicion').val());
       form_data.append('estado_civil_edicion', $('#estado_civil_edicion').val());
-      form_data.append('sexo_edicion', $('#sexo_edicion').val());
+      form_data.append('sexo_edicion', $('input[name="sexo_edicion"]:checked').val());
       form_data.append('telefono_edicion', $('#telefono_edicion').val());
       form_data.append('direccion_edicion', $('#direccion_edicion').val());
 

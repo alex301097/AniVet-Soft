@@ -30,7 +30,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -39,7 +39,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="fecha"><h5>Fecha</h5></label>
-              <input type="date" class="form-control form-control-sm disabled" id="fecha" name="fecha" placeholder="Fecha" value="{{$cita->fecha}}">
+              <input type="text" class="form-control form-control-sm disabled" id="fecha" name="fecha" placeholder="Fecha" readonly value="{{date("d/m/Y", strtotime($cita->fecha))}}">
             </div>
           </div>
           <div class="col-md-6">
@@ -53,13 +53,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="horaInicio"><h5>Hora Inicial</h5></label>
-              <input type="time" class="form-control form-control-sm disabled" id="horaInicio" name="horaInicio" placeholder="Hora Inicial" value="{{$cita->horaInicio}}">
+              <input type="text" class="form-control form-control-sm disabled" id="horaInicio" readonly name="horaInicio" placeholder="Hora Inicial" value="{{$cita->horaInicio}}">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="horaFinal"><h5>Hora final</h5></label>
-              <input type="time" class="form-control form-control-sm disabled" id="horaFinal" name="horaFinal" placeholder="Hora final" value="{{$cita->horaFinal}}">
+              <input type="text" class="form-control form-control-sm disabled" id="horaFinal" readonly name="horaFinal" placeholder="Hora final" value="{{$cita->horaFinal}}">
             </div>
           </div>
         </div>
@@ -81,7 +81,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="tipo_animal"><h5>Tipo de servicio</h5></label>
-              <select class="form-control form-control-sm disabled" id="servicio" name="servicio">
+              <select class="form-control form-control-sm disabled" disabled id="servicio" name="servicio">
                 <option value="" disabled>Seleccione una opción</option>
                 @foreach ($servicios as $servicio)
                   <option value="{{$servicio->id}}" {{($servicio->id == $cita->servicio->id)?"selected":"disabled"}}>{{$servicio->descripcion}}</option>
@@ -92,7 +92,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="estado"><h5>Estado</h5></label>
-              <select class="form-control form-control-sm disabled" id="estado" name="estado">
+              <select class="form-control form-control-sm disabled" disabled id="estado" name="estado">
                 <option value="" disabled>Seleccione una opción</option>
                 <option value="Activa" {{($cita->estado == "Activa")?"selected":"disabled"}}>Activa</option>
                 <option value="Pendiente" {{($cita->estado == "Pendiente")?"selected":"disabled"}}>Pendiente</option>
@@ -101,11 +101,30 @@
             </div>
           </div>
         </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        Footer
+      </div>
+      <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+    <!-- Paciente imagen box -->
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">Imagenes del paciente</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                  title="Colapsar">
+            <i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        @if (!empty($cita->paciente->imagenes))
           <div class="row">
             <div class="col-md-12">
-              @if (!empty($cita->paciente->imagenes))
-              <hr>
-              <h1 style="color:black;"><i class="ni ni-bold-right"></i> Imagenes del paciente</h1>
                 <div class="demo-gallery">
                   <ul id="lightgallery">
                     @foreach ($cita->paciente->imagenes as $imagen)
@@ -126,11 +145,19 @@
                     @endforeach
                   </ul>
                 </div>
-              @else
-                <h3 style="color:white;"><i class="ni ni-fat-delete"></i> No hay imagenes añadidas del paciente.</h3>
-              @endif
             </div>
           </div>
+        @else
+          <div class="row">
+            <div class="col-md-12">
+              <div class="callout callout-warning text-center" style="width:70%;">
+                <h4>¡No hay imagenes agregadas al paaciente!</h4>
+
+                <p>Por favor agrega algunas.</p>
+              </div>
+            </div>
+          </div>
+        @endif
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
@@ -139,7 +166,6 @@
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
-
   </section>
   <!-- /.content -->
 @endsection
@@ -159,6 +185,11 @@
   <script type="text/javascript">
       $(document).ready(function() {
           $("#lightgallery").lightGallery();
+      });
+
+      $(document).ready(function(){
+        $('#side_bar-mantenimientos').addClass('active');
+        $('#side_bar_option-citas').addClass('active');
       });
   </script>
 @endsection

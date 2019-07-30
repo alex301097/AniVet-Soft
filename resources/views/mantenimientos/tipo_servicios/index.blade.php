@@ -26,7 +26,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -43,7 +43,7 @@
             </div> --}}
           </div>
           <div class="col-md-3 text-left">
-            @can('mant_tipos_animales-crear')
+            @can('mant_tipos_servicios-crear')
             <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" data-toggle="modal" data-target="#modal-añadir">
               <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Añadir
             </button>
@@ -52,7 +52,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-                <table class="table table-bordered table-striped" id="tipos_servicios" name="tipos_servicios">
+                <table class="table table-bordered table-striped text-center" id="tipos_servicios" name="tipos_servicios" >
                 <thead>
                     <tr>
                         <th scope="col">Id</th>
@@ -60,6 +60,9 @@
                         <th scope="col">Estado</th>
                         <th scope="col">Acciones</th>
                     </tr>
+                    <tbody class="text-center">
+
+                    </tbody>
                 </thead>
               </table>
           </div>
@@ -158,7 +161,7 @@
       $(document).ready(function(){
         $('#side_bar-mantenimientos').addClass('active');
         $('#side_bar_option-tipos_servicios').addClass('active');
-      })
+      });
 
       $(document).ready(function() {
         $('#tipos_servicios').DataTable({

@@ -28,7 +28,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -54,7 +54,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-                <table class="table table-bordered table-striped"  id="pacientes" name="pacientes">
+                <table class="table table-bordered table-striped text-center"  id="pacientes" name="pacientes">
                 <thead>
                     <tr>
                         <th scope="col">Paciente</th>
@@ -67,6 +67,9 @@
                         <th scope="col" class="text-center">Acciones</th>
                     </tr>
                 </thead>
+                <tbody class="text-center">
+
+                </tbody>
               </table>
           </div>
         </div>
@@ -107,7 +110,6 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="registrar" name="registrar">Añadir</button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -148,6 +150,11 @@
         dictRemoveFile: "Eliminar",
         maxFilesize: 8
       };
+
+      $(document).ready(function(){
+        $('#side_bar-mantenimientos').addClass('active');
+        $('#side_bar_option-pacientes').addClass('active');
+      });
 
       $(document).ready(function() {
         $('#pacientes').DataTable({

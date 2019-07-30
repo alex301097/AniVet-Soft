@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Cita extends Model
 {
   use SoftDeletes;
+  protected $dateFormat = 'Y-m-d H:i:s';
   protected $dates = ['deleted_at'];
 
   /**
@@ -18,6 +20,11 @@ class Cita extends Model
    protected $fillable = ['fecha','horaInicio','horaFinal','motivo','observaciones','estado', 'coordinado'];
 
    protected $appends = ['nombrePaciente','nombreDueño','descripcionServicio'];
+
+    public function getDeletedAtAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value) : NULL;
+    }
 
     public function getnombrePacienteAttribute()
      {

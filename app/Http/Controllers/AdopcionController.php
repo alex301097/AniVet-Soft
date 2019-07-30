@@ -6,90 +6,280 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use Carbon\Carbon;
 use Auth;
-use App\AnimalVenta;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SolicitudAdopcionGerente;
+use App\Mail\SolicitudAdopcionDueño;
+use App\Mail\SolicitudAdopcionAdoptante;
+use App\EncAdopcion;
+use App\DetAdopcion;
+use App\EncSolicitud;
+use App\DetSolicitud;
 use App\TipoAnimal;
-use App\Adopcion;
 use Session;
 
 class AdopcionController extends Controller
 {
-  public function index()
+  public function get_registrar_adopciones()
   {
-    $animales = AnimalVenta::orderBy('created_at', 'desc')->paginate();
-    $tipos_animales = TipoAnimal::all();
-    return view('procesos.adopcion.index', ['animales'=>$animales,'tipos_animales'=>$tipos_animales]);
+    if (!Session::has('detalles_adopcion')) {
+      Session::forget("detalles_adopcion");
+      Session::put("detalles_adopcion",[]);
+    }
+
+    $detalles = Session::get('detalles_adopcion');
+    return view('procesos.adopcion.registrar.index',['detalles'=>$detalles]);
   }
 
-  public function get_detalle_animales($id)
-  {
-    $adopcion = Adopcion::find($id);
-    $tipos_animales = TipoAnimal::all();
-    return view('procesos.adopcion.detalle', ['adopcion'=>$adopcion,'tipos_animales'=>$tipos_animales]);
-  }
-
-  public function get_añadir_animales()
-  {
-    $tipos_animales = TipoAnimal::all();
-    return view('procesos.adopcion.registrar', ['tipos_animales'=>$tipos_animales]);
-  }
-
-  public function añadir_animales(Request $request)
+  public function registrar_adopciones(Request $request)
   {
     $reglas = [
+      'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+      'nombre' => 'nullable|sometimes|string|min:3|max:255',
+      'edad' => 'required',
+      'peso' => 'required',
       'tipo_animal' => 'required',
+      'raza' => 'required|string|min:3|max:255',
+      'sexo' => 'required',
+      'color' => 'required|string',
+      'observaciones' => 'required|string|min:3|max:255',
+      'condiciones' => 'required|string|min:3|max:255',
     ];
 
-    $inputs = [
-      'tipo_animal' => $request->tipo_animal,
-    ];
-
-    $validator = Validator::make($inputs, $reglas);
+    $validator = Validator::make($request->all(), $reglas);
     if($validator->fails()){
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
-      $animal = new AnimalVenta();
+      $det_adopcion = new DetAdopcion();
+      if($request->file('imagen') != null){
+      $img = $request->file('imagen');
+      $file_route = time().'_'.$img->getClientOriginalName();
 
-      $animal->nombre = $request->input('nombre');
-      $animal->tipo_animal()->associate(TipoAnimal::find($request->input('tipo_animal')));
-      $animal->save();
+      Storage::disk('imgPerfiles')->put($file_route,file_get_contents($img->getRealPath()));
 
-      return response()->json($animal);
+      $det_adopcion->imagen = $file_route;
+      }
+      $det_adopcion->nombre = $request->input('nombre');
+      $det_adopcion->edad = $request->input('edad');
+      $det_adopcion->peso = $request->input('peso');
+      $det_adopcion->tipo_animal = $request->input('tipo_animal');
+      $det_adopcion->raza = $request->input('raza');
+      $det_adopcion->sexo = $request->input('sexo');
+      $det_adopcion->color = $request->input('color');
+      $det_adopcion->condiciones = $request->input('condiciones');
+      $det_adopcion->observaciones = $request->input('observaciones');
+
+
+      $detalle = Session::get("detalles_adopcion");
+      $conteo = count($detalle) + 1;
+      Session::push("detalles_adopcion",[$conteo=>$det_adopcion]);
+
+      return response()->json(Session::get("detalles_adopcion"));
     }
   }
 
-  public function get_editar_adopciones($id)
+  public function registrar_limpiar_todo()
   {
-    $adopcion = Adopcion::find($id);
-    $tipos_animales = TipoAnimal::all();
-    return view('procesos.adopcion.editar', ['adopcion'=>$adopcion,'tipos_animales'=>$tipos_animales]);
+    $resultado = false;
+
+    if (Session::has('detalles_adopcion')) {
+      Session::forget("detalles_adopcion");
+      $resultado = true;
+
+    }
+
+    return response()->json($resultado);
   }
 
-  public function editar_adopciones(Request $request)
+  public function registrar_limpiar_individual()
   {
+    $resultado = false;
 
-    $animal = AnimalVenta::find($request->input('id_edicion'));
+    if (Session::has('detalles_adopcion')) {
+      Session::forget("detalles_adopcion");
+      $resultado = true;
 
-    $reglas = [
-      'tipo_animal' => 'required',
-    ];
-
-    $inputs = [
-      'tipo_animal' => $request->tipo_animal,
-    ];
-
-    $validator = Validator::make($inputs, $reglas);
-    if($validator->fails()){
-      return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
-    }else{
-      $animal->nombre = $request->input('nombre');
-      $animal->tipo_animal()->associate(TipoAnimal::find($request->input('tipo_animal')));
-      $animal->save();
-
-      return response()->json($animal);
     }
+
+    return response()->json($resultado);
+  }
+
+  public function finalizar_registrar_adopciones(Request $request)
+  {
+    if (!Session::has('detalles_adopcion') || empty(Session::get('detalles_adopcion'))) {
+      return Response::json(array('errors'=>array('error_vacio'=>'Para efectuar esta operación debes de agregar los animales que quieres dar en adopción a la lista.')));
+    } else {
+      $reglas = [
+        'cedula_dueño' => 'required|numeric|min:7',
+        'sexo_dueño' => 'required',
+        'nombre_dueño' => 'required|string|min:3|max:255',
+        'apellidos_dueño' => 'required|string|min:3|max:255',
+        'telefono_dueño' => 'required|string|min:3|max:255',
+        'correo_dueño' => 'required|email',
+        'direccion_dueño' => 'required|string|min:3|max:255',
+        'observaciones_dueño' => 'nullable|sometimes|string|min:3|max:255',
+      ];
+
+      $validator = Validator::make($request->all(), $reglas);
+      if($validator->fails()){
+        return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
+      }else{
+        $enc_adopcion = new EncAdopcion();
+        $enc_adopcion->cedula_dueño = $request->input('cedula_dueño');
+        $enc_adopcion->sexo_dueño = $request->input('sexo_dueño');
+        $enc_adopcion->nombre_dueño = $request->input('nombre_dueño');
+        $enc_adopcion->apellidos_dueño = $request->input('apellidos_dueño');
+        $enc_adopcion->telefono_dueño = $request->input('telefono_dueño');
+        $enc_adopcion->correo_dueño = $request->input('correo_dueño');
+        $enc_adopcion->direccion_dueño = $request->input('direccion_dueño');
+        $enc_adopcion->observaciones = $request->input('observaciones_dueño');
+        $enc_adopcion->save();
+
+        if (Session::has('detalles_adopcion')) {
+          $detalles = Session::get('detalles_adopcion');
+          foreach ($detalles as $arreglo_detalles) {
+            foreach ($arreglo_detalles as $detalle) {
+              $detalle->enc_adopcion()->associate($enc_adopcion);
+              $detalle->save();
+            }
+          }
+          $request->session()->forget('detalles_adopcion');
+        }
+
+        Mail::to($enc_adopcion->correo_dueño)->send(new SolicitudAdopcionDueño($enc_solicitud));
+        Mail::to("alexandervillalobos50@gmail.com")->send(new SolicitudAdopcionGerente($enc_solicitud));
+
+        return response()->json($enc_adopcion);
+      }
+    }
+  }
+
+  public function get_solicitar_adopciones()
+  {
+    $adopciones = DetAdopcion::orderBy('created_at', 'desc')->paginate();
+    if (!Session::has('detalles_solicitud') || !Session::has('detalles_solicitud_descripcion')) {
+      Session::forget("detalles_solicitud");
+      Session::forget("detalles_solicitud_descripcion");
+      Session::put("detalles_solicitud",[]);
+      Session::put("detalles_solicitud_descripcion",[]);
+    }
+
+    $detalles = Session::get('detalles_solicitud_descripcion');
+    return view('procesos.adopcion.solicitar.index',['adopciones'=>$adopciones,'detalles'=>$detalles]);
+  }
+
+  public function solicitar_adopciones(Request $request)
+  {
+      $det_solicitud = new DetSolicitud();
+
+      $det_solicitud->det_adopcion()->associate($request->input('adopcion_id'));
+
+      $detalle = Session::get("detalles_solicitud");
+      $detalle_descripcion = Session::get("detalles_solicitud_descripcion");
+
+      $conteo = count($detalle) + 1;
+      $conteo2 = count($detalle_descripcion) + 1;
+
+      Session::push("detalles_solicitud",[$conteo=>$det_solicitud]);
+      Session::push("detalles_solicitud_descripcion",[$conteo2=>$det_solicitud->det_adopcion]);
+
+
+      return response()->json(Session::get("detalles_solicitud_descripcion"));
+
+  }
+
+  public function solicitar_limpiar_todo()
+  {
+    $resultado = false;
+
+    if (Session::has('detalles_solicitud') || Session::has('detalles_solicitud_descripcion')) {
+      Session::forget("detalles_solicitud");
+      Session::forget("detalles_solicitud_descripcion");
+
+      $resultado = true;
+
+    }
+
+    return response()->json($resultado);
+  }
+
+  public function solicitar_limpiar_individual(Request $request)
+  {
+    $id_detalle = $request->input('detalle_solicitud_id');
+
+    $detalle = Session::get("detalles_solicitud");
+    $detalle_descripcion = Session::get("detalles_solicitud_descripcion");
+    Session::forget("detalles_solicitud");
+    Session::forget("detalles_solicitud_descripcion");
+    Session::put("detalles_solicitud",[]);
+    Session::put("detalles_solicitud_descripcion",[]);
+    foreach ($detalle_descripcion as $id => $arreglo_detalles_descripcion) {
+      foreach ($arreglo_detalles_descripcion as $key => $detalle) {
+        if($key != $id_detalle) {
+          Session::push("detalles_solicitud_descripcion",[$key=>$detalle]);
+        }
+      }
+    }
+
+    foreach ($detalle as $id => $arreglo_detalles) {
+      foreach ($arreglo_detalles as $key => $detalle) {
+        if($key != $id_detalle) {
+          Session::push("detalles_solicitud",[$key=>$detalle]);
+        }
+      }
+    }
+
+    return response()->json(Session::get("detalles_solicitud_descripcion"));
+  }
+
+  public function finalizar_solicitar_adopciones(Request $request)
+  {
+      $reglas = [
+        'cedula' => 'required|numeric|min:7',
+        'sexo' => 'required',
+        'nombre' => 'required|string|min:3|max:255',
+        'apellidos' => 'required|string|min:3|max:255',
+        'telefono' => 'required|string|min:3|max:255',
+        'correo' => 'required|email',
+        'direccion' => 'required|string|min:3|max:255',
+        'observaciones' => 'nullable|sometimes|string|min:3|max:255',
+      ];
+
+      $validator = Validator::make($request->all(), $reglas);
+      if($validator->fails()){
+        return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
+      }else{
+        $enc_solicitud = new EncSolicitud();
+        $enc_solicitud->cedula = $request->input('cedula');
+        $enc_solicitud->sexo = $request->input('sexo');
+        $enc_solicitud->nombre = $request->input('nombre');
+        $enc_solicitud->apellidos = $request->input('apellidos');
+        $enc_solicitud->telefono = $request->input('telefono');
+        $enc_solicitud->correo = $request->input('correo');
+        $enc_solicitud->direccion = $request->input('direccion');
+        $enc_solicitud->observaciones = $request->input('observaciones');
+        $enc_solicitud->save();
+
+        if (Session::has('detalles_solicitud') && Session::has('detalles_solicitud_descripcion')) {
+          $detalles = Session::get('detalles_solicitud');
+          foreach ($detalles as $arreglo_detalles) {
+            foreach ($arreglo_detalles as $detalle) {
+              $detalle->enc_solicitud()->associate($enc_solicitud);
+              $detalle->save();
+            }
+          }
+          $request->session()->forget('detalles_solicitud');
+          $request->session()->forget('detalles_solicitud_descripcion');
+          $encabezados_adopcion = EncAdopcion::find($detalles->pluck('enc_adopcion_id'));
+
+          Mail::to($encabezados_adopcion)->send(new SolicitudAdopcionDueño($enc_solicitud));
+        }
+
+        Mail::to($enc_solicitud->correo)->send(new SolicitudAdopcionAdoptante($enc_solicitud));
+        Mail::to("alexandervillalobos50@gmail.com")->send(new SolicitudAdopcionGerente($enc_solicitud));
+
+        return response()->json($enc_solicitud);
+      }
   }
 
   public function eliminar_adopciones(Request $request)
