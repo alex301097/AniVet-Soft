@@ -32,7 +32,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -217,12 +217,18 @@
       });
     });
 
+    $(document).ready(function(){
+      $('#side_bar-mantenimientos').addClass('active');
+      $('#side_bar_option-citas').addClass('active');
+    });
+
     //Añadir
     $('#registrar').click(function(){
       $.ajax({
         type: 'post',
         url: '{{route('citas.añadir')}}',
         data: {
+
           '_token': $('input[name=_token]').val(),
           'fecha': $('#fecha').val(),
           'horaInicio': $('#horaInicio').val(),

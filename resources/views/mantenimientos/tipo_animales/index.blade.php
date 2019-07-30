@@ -26,7 +26,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -43,7 +43,7 @@
             </div> --}}
           </div>
           <div class="col-md-3">
-            @can('mant_tipos_servicios-crear')
+            @can('mant_tipos_animales-crear')
               <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:75px;" type="button" data-toggle="modal" data-target="#modal-añadir">
                 <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Añadir
               </button>
@@ -52,7 +52,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-                <table class="table table-bordered table-striped" id="tipos_animales" name="tipos_animales">
+                <table class="table table-bordered table-striped text-center" id="tipos_animales" name="tipos_animales">
                 <thead>
                     <tr>
                         <th scope="col">Id</th>
@@ -61,6 +61,9 @@
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
+                <tbody class="text-center">
+
+                </tbody>
               </table>
           </div>
         </div>
@@ -83,7 +86,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Añadir tipo de servicio</h4>
+          <h4 class="modal-title">Añadir tipo de animal</h4>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -112,7 +115,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Editar tipo de servicio</h4>
+          <h4 class="modal-title">Editar tipo de animal</h4>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -154,16 +157,6 @@
         },
         buttonsStyling: false,
       });
-
-      Dropzone.options.myAwesomeDropzone = {
-        paramName: "Imagen",
-        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
-        addRemoveLinks: true,
-        dictCancelUpload: "Cancelar",
-        dictCancelUploadConfirmation: "Cancelado.",
-        dictRemoveFile: "Eliminar",
-        maxFilesize: 8
-      };
 
       $(document).ready(function(){
         $('#side_bar-mantenimientos').addClass('active');

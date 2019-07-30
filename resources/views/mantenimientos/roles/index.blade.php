@@ -26,7 +26,7 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
@@ -53,7 +53,7 @@
         <div class="row">
           <div class="col-md-12">
               <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="roles" name="roles">
+                <table class="table table-bordered table-striped text-center" id="roles" name="roles">
                 <thead>
                     <tr>
                         <th scope="col">Id</th>
@@ -62,6 +62,9 @@
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
+                <tbody class="text-center">
+
+                </tbody>
               </table>
             </div>
           </div>
@@ -130,7 +133,7 @@
       $(document).ready(function(){
         $('#side_bar-seguridad').addClass('active');
         $('#side_bar_option-roles').addClass('active');
-      })
+      });
 
       $(document).ready(function() {
         $('#roles').DataTable({

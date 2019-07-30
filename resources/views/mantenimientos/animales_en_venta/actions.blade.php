@@ -13,7 +13,7 @@
   @if ($deleted_at == null)
     <a type="button" class="btn btn-sm bg-orange"
     title="Click para editar los detalles del paciente" href="{{route('animales_venta.get_editar', $id)}}">
-    &nbsp;<i class="far fa-edit" style="color:black;"></i>&nbsp;</a>
+    &nbsp;<i class="far fa-edit"></i>&nbsp;</a>
   @else
     <a type="button" class="btn btn-sm bg-orange disabled"
     title="Click para editar los detalles del animal" href="{{route('animales_venta.get_editar', $id)}}">

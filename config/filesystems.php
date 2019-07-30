@@ -53,6 +53,16 @@ return [
             'root' => public_path('imgPacientes'),
           ],
 
+        'imgVentaAnimales' => [
+            'driver' => 'local',
+            'root' => public_path('imgVentaAnimales'),
+          ],
+
+        'imgAdopcionAnimales' => [
+            'driver' => 'local',
+            'root' => public_path('imgAdopcionAnimales'),
+          ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),

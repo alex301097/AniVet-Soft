@@ -31,43 +31,63 @@
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
       <div class="box-body">
         <div class="row">
           <div class="col-md-4">
-            <label style="color:white;"><b><i class="ni ni-bold-right"></i>Nombre:</b><span style="color:gray;">&nbsp;{{$animal->nombre}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Nombre:</b><span style="color:gray;">&nbsp;{{$animal->nombre}}</span></label>
           </div>
           <div class="col-md-4">
-            <label style="color:white;"><b><i class="ni ni-bold-right"></i>Edad:</b><span style="color:gray;">&nbsp;{{$animal->edad}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Edad:</b><span style="color:gray;">&nbsp;{{$animal->edad}}</span></label>
           </div>
           <div class="col-md-4">
-            <label style="color:white;"><b><i class="ni ni-bold-right"></i>Peso:</b><span style="color:gray;">&nbsp;{{$animal->peso}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Peso:</b><span style="color:gray;">&nbsp;{{$animal->peso}}</span></label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-4">
-            <label style="color:white;"><b><i class="ni ni-bold-right"></i>Especie:</b><span style="color:gray;">&nbsp;{{$animal->tipo_animal->descripcion}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Especie:</b><span style="color:gray;">&nbsp;{{$animal->tipo_animal->descripcion}}</span></label>
           </div>
           <div class="col-md-4">
-            <label style="color:white;"><b><i class="ni ni-bold-right"></i>Raza:</b><span style="color:gray;">&nbsp;{{$animal->raza}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Raza:</b><span style="color:gray;">&nbsp;{{$animal->raza}}</span></label>
           </div>
           <div class="col-md-4">
-            <label style="color:white;"><b><i class="ni ni-bold-right"></i>Sexo:</b><span style="color:gray;">&nbsp;{{$animal->sexo}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Sexo:</b><span style="color:gray;">&nbsp;{{$animal->sexo}}</span></label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <label style="color:white;"><b><i class="ni ni-bold-right"></i>Condiciones:</b><span style="color:gray;">&nbsp;{{$animal->condiciones}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Condiciones:</b><span style="color:gray;">&nbsp;{{$animal->condiciones}}</span></label>
           </div>
           <div class="col-md-6">
-            <label style="color:white;"><b><i class="ni ni-bold-right"></i>Observaciones:</b><span style="color:gray;">&nbsp;{{$animal->observaciones}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Observaciones:</b><span style="color:gray;">&nbsp;{{$animal->observaciones}}</span></label>
           </div>
         </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        Footer
+      </div>
+      <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+    <!-- Paciente imagen box -->
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">Imagenes</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                  title="Colapsar">
+            <i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
         @if (!empty($animal->imagenes))
-        <h1 style="color:white;"><i class="ni ni-bold-right"></i> Imagenes</h1>
           <div class="demo-gallery">
             <ul id="lightgallery">
               @foreach ($animal->imagenes as $imagen)
@@ -91,7 +111,15 @@
             </ul>
           </div>
         @else
-          <h3 style="color:white;"><i class="ni ni-fat-delete"></i> No tienes imagenes añadidas al animal. Por favor agregalas.</h3>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="callout callout-warning text-center" style="width:70%;">
+                <h4>¡No hay imagenes agregadas al paaciente!</h4>
+
+                <p>Por favor agrega algunas.</p>
+              </div>
+            </div>
+          </div>
         @endif
       </div>
       <!-- /.box-body -->
@@ -99,30 +127,10 @@
         Footer
       </div>
       <!-- /.box-footer-->
-    </div>
-    <!-- /.box -->
-
+      </div>
+      <!-- /.box -->
   </section>
   <!-- /.content -->
-
-
-    <div class="row">
-      <div class="col-md-12">
-          <div class="card bg-gradient-default">
-            <div class="card-header bg-transparent">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-uppercase text-light ls-1 mb-1">Detalle</h6>
-                  <h2 class="text-white mb-0">Animal en {{$animal->estado}} - Existencias: {{$animal->cantidad}}</h2>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-
-            </div>
-          </div>
-        </div>
-    </div>
 @endsection
 @section('scripts')
   <!-- lightgallery js links -->
@@ -140,6 +148,11 @@
   <script type="text/javascript">
       $(document).ready(function() {
           $("#lightgallery").lightGallery();
+      });
+
+      $(document).ready(function(){
+        $('#side_bar-mantenimientos').addClass('active');
+        $('#side_bar_option-animales_venta').addClass('active');
       });
   </script>
 @endsection

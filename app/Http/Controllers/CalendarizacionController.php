@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-use Response;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 use App\Cita;
 use App\Paciente;
 use Calendar;
 use App\User;
 use App\TipoServicio;
 use Auth;
+use Session;
 
 class CalendarizacionController extends Controller
 {
@@ -22,26 +24,34 @@ class CalendarizacionController extends Controller
 }
 
 public function index(){
-              $events = [];
-              $data = Cita::all();
-              if($data->count()) {
-                  foreach ($data as $key => $value) {
-                      $events[] = Calendar::event(
-                          $value->user->nombre . ' ' . $value->user->apellidos,
-                          true,
-                          new \DateTime($value->fecha),
-                          new \DateTime($value->fecha),
-                          $value->id,
-                          [
-                            'color' =>  ($value->coordinado)?'#0f9f97':'rgb(220, 53, 69)',
-                            'textColor' => '#ffff',
-                            'cita' => $value,
+  $events = [];
+  $data = Cita::withTrashed()->get();
+  if($data->count()) {
+      foreach ($data as $key => $value) {
+        $color = "";
+        $deleted_at = $value->getDeletedAtAttribute($value->deleted_at);
+        if($value->estado == "Pendiente" && new Carbon($value->fecha) > Carbon::now() || $deleted_at == null && new Carbon($value->fecha) > Carbon::now() || $value->estado == "Activa" && new Carbon($value->fecha) > Carbon::now()){
+          $color = "rgb(53, 114, 220)";
+        }
 
-                          ]
-                        );
+        if($value->estado == "Inactiva" || $deleted_at  =! null || new Carbon($value->fecha) < Carbon::now()){
+          $color = "rgb(220, 53, 69)";
+        }
 
-                  }
-              }
+        $events[] = Calendar::event(
+            $value->paciente->nombre. ' - ' .$value->paciente->tipo_animal->descripcion. ' - ' .$value->paciente->raza,
+            true,
+            new \DateTime($value->fecha),
+            new \DateTime($value->fecha),
+            $value->id,
+            [
+              'color' =>  $color,
+              'textColor' => '#ffff',
+              'cita' => $value,
+            ]
+          );
+      }
+  }
 
   $calendar = Calendar::addEvents($events)
   ->setCallbacks([
@@ -52,56 +62,48 @@ public function index(){
   return view('procesos.calendarizacion.index', compact(['calendar','servicios']));
 }
 
-public function postRegistrarCita(Request $request){
-  $this->validate($request,[
-        'fecha' => 'required',
-        'horaInicio' => 'required',
-        'horaFinal' => 'required',
-        'motivo' => 'required',
-        'observaciones' => 'required',
-        'tipo_servicio' => 'required',
-        'paciente' => 'required',
-        'estado' => 'required',
-  ]);
-  $paciente = Paciente::Where('id',$request->paciente)->first();
-  if($request->idCita == null){
-    if($request->fecha < date('Y-m-d')){
-      //Alert::error('No se puede registrar una cita en una fecha menor a la actual','Error!')->autoclose(3500);
-    }else{
-      $cita = new Cita();
-      $cita->fecha = $request->fecha;
-      $cita->horaInicio = $request->horaInicio;
-      $cita->horaFinal = $request->horaFinal;
-      $cita->coordinado = ($request->coordinado == "1")?true:false;
-      $cita->user_create_id = Auth::user()->id;
-      $cita->motivo = $request->motivo;
-      $cita->observaciones = $request->observaciones;
-      $cita->estado = $request->estado;
-      $cita->paciente()->associate($paciente);
-      $cita->save();
+public function postRegistrarCita(Request $request)
+{
+  $reglas = [
+    'fecha' => 'required|after:'.Carbon::now(),
+    'horaInicio' => 'required',
+    'horaFinal' => 'required',
+    'motivo' => 'required|string|min:4|max:255',
+    'observaciones' => 'required|string|min:4|max:255',
+    'servicio' => 'required',
+    'paciente' => 'required',
+  ];
 
-      //Alert::success('Cita registrada correctamente!','Éxito')->autoclose(3500);
-    }
+  $inputs = [
+    'fecha' => $request->fecha,
+    'horaInicio' => $request->horaInicio,
+    'horaFinal' => $request->horaFinal,
+    'motivo' => $request->motivo,
+    'observaciones' => $request->observaciones,
+    'servicio' => $request->servicio,
+    'paciente' => $request->paciente,
+  ];
+
+  $validator = Validator::make($inputs, $reglas);
+  if($validator->fails()){
+    return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
   }else{
-    if($request->fecha < date('Y-m-d')){
-      //Alert::error('No se puede registrar una cita en una fecha menor a la actual','Error!')->autoclose(3500);
-    }else{
-      $cita = new Cita();
-      $cita->fecha = $request->fecha;
-      $cita->horaInicio = $request->horaInicio;
-      $cita->horaFinal = $request->horaFinal;
-      $cita->coordinado = ($request->coordinado == "1")?true:false;
-      $cita->user_create_id = Auth::user()->id;
-      $cita->motivo = $request->motivo;
-      $cita->observaciones = $request->observaciones;
-      $cita->estado = $request->estado;
-      $cita->paciente()->associate($paciente);
-      $cita->save();
-    }
-  }
-  return redirect('calendarizacion/index');
-}
 
+    $cita = ($request->id_cita == null)?new Cita():Cita::find($request->id_cita);
+    $cita->fecha = $request->input('fecha');
+    $cita->horaInicio = $request->input('horaInicio');
+    $cita->horaFinal = $request->input('horaFinal');
+    $cita->motivo = $request->input('motivo');
+    $cita->observaciones = $request->input('observaciones');
+    $cita->estado = "Activa";
+    $cita->servicio()->associate($request->input('servicio'));
+    $cita->paciente()->associate($request->input('paciente'));
+    $cita->user_create()->associate(Auth::user());
+    $cita->save();
+
+    return response()->json($cita);
+  }
+}
 
 public function autocompletePacientes(Request $request){
 
@@ -129,7 +131,7 @@ public function autocompletePacientes(Request $request){
 }
 
 public function deshabilitarCita(Request $request){
-  $cita = Cita::find($request->idCita);
+  $cita = Cita::find($request->id);
   $cita->delete();
 
   return Response::json($cita);

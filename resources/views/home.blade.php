@@ -1,18 +1,13 @@
 @extends('layouts.master')
-@section('css')
-@endsection
 @section('contenido')
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Tipos de animales
-      <small>Mantenimiento</small>
+      Veterinaria El Yugo
+      <small>Información</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-      <li><a href="#">Mantenimientos</a></li>
-      <li><a href="#">Pacientes</a></li>
-      <li class="active">Registro</li>
     </ol>
   </section>
 
@@ -22,27 +17,16 @@
     <!-- Default box -->
     <div class="box">
       <div class="box-header with-border">
-        <h3 class="box-title">Title</h3>
+        <h3 class="box-title">Inicio</h3>
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                  title="Collapse">
+                  title="Colapsar">
             <i class="fa fa-minus"></i></button>
         </div>
       </div>
       <div class="box-body">
-        Pace loading works automatically on page. You can still implement it with ajax requests by adding this js:
-        <br/><code>$(document).ajaxStart(function() { Pace.restart(); });</code>
-        <br/>
-        <div class="row">
-          <div class="col-xs-12 text-center">
-            <button type="button" class="btn btn-default btn-lrg ajax" title="Ajax Request">
-              <i class="fa fa-spin fa-refresh"></i>&nbsp; Get External Content
-            </button>
-          </div>
-        </div>
-        <div class="ajax-content">
-        </div>
+    
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
