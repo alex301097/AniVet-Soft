@@ -83,6 +83,12 @@ Route::get('animales_en_venta', function(){
   ->toJson();
 });
 
+Route::get('reporte_citas', function(){
+  return datatables()
+  ->eloquent(Cita::query()->orderBy('created_at', 'desc')->withTrashed())
+  ->toJson();
+});
+
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

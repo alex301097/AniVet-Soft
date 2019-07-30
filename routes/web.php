@@ -196,4 +196,10 @@ Route::group(['prefix'=>'proceso/calendarizacion', 'middleware'=>'auth'], functi
   ]);
 });
 
+Route::group(['prefix'=>'reportes', 'middleware'=>'auth'], function(){
+  Route::get('citas', 'ReportesController@reporte_citas')->name('reportes.citas');
+  Route::get('generar-reporte-citas', 'ReportesController@mostrar_pdf')->name('citas-pdf');
+});
+
+
 // Route::get('registro', 'HomeController@index')->name('home');
