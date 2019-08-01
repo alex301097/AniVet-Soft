@@ -30,12 +30,16 @@ public function index(){
       foreach ($data as $key => $value) {
         $color = "";
         $deleted_at = $value->getDeletedAtAttribute($value->deleted_at);
-        if($value->estado == "Pendiente" && new Carbon($value->fecha) > Carbon::now() || $deleted_at == null && new Carbon($value->fecha) > Carbon::now() || $value->estado == "Activa" && new Carbon($value->fecha) > Carbon::now()){
-          $color = "rgb(53, 114, 220)";
+        if(empty($value->deleted_at) || new Carbon($value->fecha) <= Carbon::now()){
+          $color = "rgb(128, 176, 93)";
         }
 
-        if($value->estado == "Inactiva" || $deleted_at  =! null || new Carbon($value->fecha) < Carbon::now()){
+        if(!empty($value->deleted_at) || new Carbon($value->fecha) > Carbon::now()){
           $color = "rgb(220, 53, 69)";
+        }
+
+        if(!empty($value->deleted_at) || new Carbon($value->fecha) <= Carbon::now() && new Carbon($value->fecha) >= Carbon::now()->subDays(4)){
+          $color = "rgb(209, 111, 19)";
         }
 
         $events[] = Calendar::event(

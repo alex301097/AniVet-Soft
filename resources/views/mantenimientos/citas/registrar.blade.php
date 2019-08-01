@@ -15,7 +15,7 @@
       <small>Mantenimiento</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
       <li><a href="#">Citas</a></li>
       <li class="active">Registro</li>
@@ -104,22 +104,6 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="motivo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Motivo</h5></label>
-              <input type="text" class="form-control" id="motivo" name="motivo" rows="3" placeholder="Motivo">
-              <p class="error-motivo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
-              <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones"></textarea>
-              <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
               <label for="tipo_animal"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Tipo de servicio</h5></label>
               <select class="form-control form-control-sm" id="servicio" name="servicio">
                 <option value="">Seleccione una opción</option>
@@ -132,14 +116,18 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="estado"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Estado</h5></label>
-              <select class="form-control form-control-sm" id="estado" name="estado">
-                <option value="">Seleccione una opción</option>
-                <option value="Activa">Activa</option>
-                <option value="Pendiente">Pendiente</option>
-                <option value="Inactiva">Inactiva</option>
-              </select>
-              <p class="error-estado text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+              <label for="motivo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Motivo</h5></label>
+              <input type="text" class="form-control" id="motivo" name="motivo" rows="3" placeholder="Motivo">
+              <p class="error-motivo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
+              <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones"></textarea>
+              <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
           </div>
         </div>
@@ -174,6 +162,7 @@
   <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <!-- bootstrap time picker -->
   <script src="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
   <script type="text/javascript">
     //Date picker
@@ -230,12 +219,11 @@
         data: {
 
           '_token': $('input[name=_token]').val(),
-          'fecha': $('#fecha').val(),
+          'fecha': moment($('#fecha').val()).format('YYYY-MM-DD'),
           'horaInicio': $('#horaInicio').val(),
           'horaFinal': $('#horaFinal').val(),
           'motivo': $('#motivo').val(),
           'observaciones': $('#observaciones').val(),
-          'estado': $('#estado').val(),
           'servicio': $('#servicio').val(),
           'paciente': $('#idPaciente').val(),
         },
@@ -269,11 +257,6 @@
             if(data.errors.observaciones){
               $('.error-observaciones').removeClass('hidden');
               $('.error-observaciones').text(data.errors.observaciones);
-            }
-
-            if(data.errors.estado){
-              $('.error-estado').removeClass('hidden');
-              $('.error-estado').text(data.errors.estado);
             }
 
             if(data.errors.servicio){

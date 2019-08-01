@@ -13,7 +13,7 @@
       <small>Información</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
     </ol>
   </section>
 
@@ -51,7 +51,11 @@
                           @foreach ($animales as $animal)
                             <li class="cards__item">
                               <div class="card">
-                                <div class="card__image" style="background-image: url({{url('imgPerfiles/'.$animal->imagenes->first()->imagen)}})"></div>
+                                @if (count($animal->imagenes) > 0)
+                                  <div class="card__image" style="background-image: url({{url('imgPerfiles/'.$animal->imagenes->first()->imagen)}})"></div>
+                                @else
+                                  <div class="card__image" style="background-image: url({{url('img/brand/dog.png')}})"></div>
+                                @endif
                                 <div class="card__content text-center">
                                   <div class="card__title"><h4>{{$animal->tipo_animal->descripcion." - ".$animal->raza." - ".$animal->sexo}}</h3></div>
                                     <p class="card__text">
@@ -63,8 +67,12 @@
                                         <b>Condiciones: </b> {{$animal->condiciones}}
                                       </h5>
                                     </p>
-                                    <button class="btn btn-block btn-primary btn-sm" id="agregar_animales" data-id="{{$animal->id}}">Agregar</button>
-                                  </div>
+                                    <a type="button" class="btn btn-sm btn-primary" data-toggle="tooltip"
+                                    title="Click para agregar el animal a la lista de animales a comprar."
+                                    id="añadir_animales_venta" data-id="{{$animal->id}}">
+                                      Añadir animal
+                                    </a>
+                                  </<div>
                                 </div>
                               </li>
                             @endforeach
@@ -336,7 +344,7 @@
   });
 
   //Añadir
-  $('#agregar_animales').click(function(e){
+  $('#añadir_animales_venta').click(function(e){
     $.ajax({
       type: 'post',
       url: '{{route('venta_animales.solicitar')}}',

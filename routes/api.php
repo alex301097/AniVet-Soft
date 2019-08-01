@@ -83,10 +83,27 @@ Route::get('animales_en_venta', function(){
   ->toJson();
 });
 
-Route::get('reporte_citas', function(){
-  return datatables()
-  ->eloquent(Cita::query()->orderBy('created_at', 'desc')->withTrashed())
-  ->toJson();
+Route::get('reporte_citas/{min?}/{max?}/{estado?}', function($min = null, $max = null, $estado = null){
+  if(!empty($estado) && $estado == "deshabilitados"){
+    if (!empty($min) && !empty($max)) {
+    return datatables()
+    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->whereBetween('fecha', [$min, $max])->onlyTrashed())
+    ->toJson();
+    }
+    return datatables()
+    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->onlyTrashed())
+    ->toJson();
+  }else {
+    if (!empty($min) && !empty($max)) {
+    return datatables()
+    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->whereBetween('fecha', [$min, $max]))
+    ->toJson();
+    }
+    return datatables()
+    ->eloquent(Cita::query()->orderBy('created_at', 'desc'))
+    ->toJson();
+  }
+
 });
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

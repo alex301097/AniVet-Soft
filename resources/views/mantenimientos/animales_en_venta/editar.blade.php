@@ -11,7 +11,7 @@
       <small>Mantenimiento</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
       <li><a href="#">Animales en venta</a></li>
       <li class="active">Edición</li>

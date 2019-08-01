@@ -2,13 +2,15 @@
 @section('css')
   <link rel="stylesheet" rel="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="{{ URL::to('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <!-- daterange picker -->
 @endsection
 @section('contenido')
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>Reportes</h1>
     <ol class="breadcrumb">
-      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Reportes</a></li>
       <li class="active">Citas</li>
     </ol>
@@ -21,17 +23,6 @@
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">Reporte de citas</h3>
-      </br>
-      </br>
-
-      <!--<div class="login100-pic js-tilt" data-tilt>
-        <img src="{{ URL::to('img/brand/yugo.png') }}" width="10%" height="10%" alt="IMG">
-        <h5>Veterinaria El Yugo</h5>
-        <h5>2487-6064</h5>
-      </div>
-      </br>
-    </br>-->
-
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                   title="Collapse">
@@ -39,45 +30,50 @@
         </div>
       </div>
       <div class="box-body">
-          <div class="row" style="padding-bottom:25px;">
-            <div class="col-md-6">
-              <a target="_blank" href="{{route('citas-pdf')}}">Generar pto reporte</a>
+        <div class="row">
+            <div class="col-md-4">
+              <h4>Exportar formato</h4>
+              <button type="submit" class="btn btn-sm btn-success pull-left" style="max-width:300px;"
+                id="generar_reporte" name="generar_reporte" data-toggle="tooltip"
+                title="Click para generar el reporte en PDF de la citas.">
+                &nbsp;<i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Generar reporte
+              </button>
             </div>
-
-            <div class="col-md-6">
-
-                <td>Fecha Mínima:</td>
-                <td><input name="min" id="min" type="text"></td>
-
-                <td>Fecha Máxima:</td>
-                <td><input name="max" id="max" type="text"></td>
-
+            <div class="col-md-4">
+              <h4>Filtro por fechas</h4>
+              <input type="text" class="form-control form-control-sm" name="datefilter" id="rango_fechas" value="" style="max-width:250px;"/>
+              <input type="hidden" id="min" value="">
+              <input type="hidden" id="max" value="">
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h3>Tipos de descarga</h3>
-                  <table class="table table-bordered table-striped" id="citas" name="citas">
+            <div class="col-md-4">
+              <div class="form-group">
+                <h4>Filtro por estado</h4>
+                <select class="form-control form-control-sm" id="estado" name="estado" style="max-width:250px;">
+                  <option value="habilitados">Citas habilitadas</option>
+                  <option value="deshabilitados">Citas deshabilitadas</option>
+                </select>
+              </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-bordered table-striped text-center" id="citas" name="citas">
                   <thead>
-                      <tr>
-                          <th scope="col">Encargado</th>
-                          <th scope="col">Paciente</th>
-                          <th scope="col">Fecha</th>
-                          <th scope="col">Hora Inicio</th>
-                          <th scope="col">Hora Final</th>
-                          <th scope="col">Servicio</th>
-                          <th scope="col">Motivo</th>
-                      </tr>
+                    <tr>
+                        <th scope="col">Encargado</th>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hora Inicio</th>
+                        <th scope="col">Hora Final</th>
+                        <th scope="col">Servicio</th>
+                        <th scope="col">Motivo</th>
+                    </tr>
                   </thead>
                 </table>
-            </div>
           </div>
+        </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
-      <!-- /.box-footer-->
     </div>
     <!-- /.box -->
 
@@ -88,15 +84,18 @@
 @section('scripts')
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
   <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-
   <script src="{{ URL::to('butons/dataTables.buttons.min.js') }}" ></script>
   <script src="{{ URL::to('butons/jszip.min.js') }}" ></script>
   <script src="{{ URL::to('butons/pdfmake.min.js') }}" ></script>
   <script src="{{ URL::to('butons/vfs_fonts.js') }}" ></script>
   <script src="{{ URL::to('butons/buttons.html5.min.js') }}" ></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
   <script type="text/javascript">
+      //Date range picker
+
       const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -121,6 +120,9 @@
       });
 
       $(document).ready(function() {
+
+          var ruta = "{{ url('api/reporte_citas/0/0/:estado') }}";
+          ruta = ruta.replace(':estado', $('#estado').val());
         $('#citas').DataTable({
           dom: 'Bfrtip',
           buttons: [
@@ -131,7 +133,7 @@
           ],
           "processing":true,
           "serverSide":true,
-          "ajax":"{{ url('api/reporte_citas') }}",
+          "ajax":ruta,
           "columns":
           [
             {data: 'nombreDueño', orderable: false, searchable: false},
@@ -166,37 +168,112 @@
 
       } );
 
-      /* Custom filtering function which will search data in column four between two values */
-             $(document).ready(function () {
+       $(document).ready(function () {
+         $(function() {
 
-                 $.fn.dataTable.ext.search.push(
-                     function (settings, data, dataIndex) {
-                         var min = $('#min').datepicker("getDate");
-                         var max = $('#max').datepicker("getDate");
-                         // need to change str order before making  date obect since it uses a new Date("mm/dd/yyyy") format for short date.
-                         var d = data[4].split("/");
-                         var startDate = new Date(d[1]+ "/" +  d[0] +"/" + d[2]);
+             $('input[name="datefilter"]').daterangepicker({
+                 opens: 'center',
+                 autoUpdateInput: false,
+                 format: "DD/MM/YYYY",
+                 maxDate: moment(),
+                "locale": {
 
-                         if (min == null && max == null) { return true; }
-                         if (min == null && startDate <= max) { return true;}
-                         if(max == null && startDate >= min) {return true;}
-                         if (startDate <= max && startDate >= min) { return true; }
-                         return false;
-                     }
-                 );
-
-
-                 $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true , dateFormat:"dd/mm/yy"});
-                 $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true, dateFormat:"dd/mm/yy" });
-                 var table = $('#citas').DataTable();
-
-                 // Event listener to the two range filtering inputs to redraw on input
-                 $('#min, #max').change(function () {
-                     table.draw();
-                 });
+                    "separator": " - ",
+                    "applyLabel": "Aplicar",
+                    "cancelLabel": "Cancelar/Limpiar",
+                    "fromLabel": "De",
+                    "toLabel": "hasta",
+                    "customRangeLabel": "Custom",
+                    "daysOfWeek": [
+                        "Dom",
+                        "Lun",
+                        "Mar",
+                        "Mie",
+                        "Jue",
+                        "Vie",
+                        "Sáb"
+                    ],
+                    "monthNames": [
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ],
+                    "firstDay": 1
+                }
              });
 
+             $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+               var table = $('#citas').DataTable();
 
+                 var ruta = "{{ url('api/reporte_citas/:min/:max/:estado') }}";
+                 ruta = ruta.replace(':min', picker.startDate.format('YYYY-MM-DD'));
+                 ruta = ruta.replace(':max', picker.endDate.format('YYYY-MM-DD'));
+                 ruta = ruta.replace(':estado', $('#estado').val());
+                 $("#min").val(picker.startDate.format('YYYY-MM-DD'));
+                 $("#max").val(picker.endDate.format('YYYY-MM-DD'));
+                 table.ajax.url(ruta);
+                 table.draw();
+
+                 $(this).val("Del " + picker.startDate.format('MM/DD/YYYY') + ' al ' + picker.endDate.format('MM/DD/YYYY') + ".");
+             });
+
+             $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+                var table = $('#citas').DataTable();
+                var ruta = "{{ url('api/reporte_citas/0/0/:estado') }}";
+                ruta = ruta.replace(':estado', $('#estado').val());
+                $("#min").val("");
+                $("#max").val("");
+                table.ajax.url(ruta);
+                table.draw();
+
+                $(this).val('');
+             });
+
+           });
+
+           $('#generar_reporte').click(function () {
+             if(!$('#rango_fechas').val()){
+                 var ruta = "{{ route('citas-pdf',['0','0',':estado']) }}";
+                 ruta = ruta.replace(':estado', $("#estado").val());
+
+                 window.open(ruta, '_blank');
+             }else {
+               var ruta = "{{ route('citas-pdf',[':min',':max',':estado']) }}";
+                 ruta = ruta.replace(':min', $("#min").val());
+                 ruta = ruta.replace(':max', $("#max").val());
+                 ruta = ruta.replace(':estado', $("#estado").val());
+
+                 window.open(ruta, '_blank');
+             }
+           });
+
+           $('#estado').change(function () {
+             var table = $('#citas').DataTable();
+             if(!$('#rango_fechas').val()){
+                 var ruta = "{{ url('api/reporte_citas/0/0/:estado') }}";
+                 ruta = ruta.replace(':estado', $(this).val());
+                 table.ajax.url(ruta);
+                 table.draw();
+             }else {
+                 var ruta = "{{ url('api/reporte_citas/:min/:max/:estado') }}";
+                 ruta = ruta.replace(':min', $("#min").val());
+                 ruta = ruta.replace(':max', $("#max").val());
+                 ruta = ruta.replace(':estado', $(this).val());
+
+                 table.ajax.url(ruta);
+                 table.draw();
+             }
+           });
+       });
 
   </script>
 @endsection

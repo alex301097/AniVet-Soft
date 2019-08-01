@@ -192,11 +192,11 @@ class VentaAnimalController extends Controller
   public function get_solicitar_ventas()
   {
     $animales = AnimalVenta::all();
+    Session::forget("detalles_solicitud");
+    Session::forget("detalles_solicitud_descripcion");
+    Session::put("detalles_solicitud",[]);
+    Session::put("detalles_solicitud_descripcion",[]);
     if (!Session::has('detalles_solicitud') || !Session::has('detalles_solicitud_descripcion')) {
-      Session::forget("detalles_solicitud");
-      Session::forget("detalles_solicitud_descripcion");
-      Session::put("detalles_solicitud",[]);
-      Session::put("detalles_solicitud_descripcion",[]);
     }
 
     $detalles = Session::get('detalles_solicitud_descripcion');
@@ -216,11 +216,10 @@ class VentaAnimalController extends Controller
       $conteo2 = count($detalle_descripcion) + 1;
 
       Session::push("detalles_solicitud",[$conteo=>$det_solicitud]);
-      Session::push("detalles_solicitud_descripcion",[$conteo2=>$det_solicitud->animal_venta]);
+      Session::push("detalles_solicitud_descripcion",[$conteo2=>AnimalVenta::where('id',$request->input('animal_venta_id'))->with('imagenes')->fxirst()]);
 
 
       return response()->json(Session::get("detalles_solicitud_descripcion"));
-
   }
 
   public function solicitar_limpiar_todo()

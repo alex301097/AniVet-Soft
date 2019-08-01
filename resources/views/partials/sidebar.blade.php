@@ -85,7 +85,21 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li id="side_bar_option-roles" name="side_bar_option-roles"><a href="{{route('roles')}}"><i class="fa fa-circle-o"></i>Roles</a></li>
+            <li id="side_bar_option-roles" name="side_bar_option-roles"><a href="{{route('roles')}}"><i class="fa fa-circle-o"></i>Roles/Permisos</a></li>
+            <li id="side_bar_option-respaldos" name="side_bar_option-respaldos"><a href="{{route('respaldos')}}"><i class="fa fa-circle-o"></i>Respaldos</a></li>
+            <li class="treeview" id="side_bar_option-bitacoras" name="side_bar_option-bitacoras">
+              <a href="#"><i class="fa fa-circle-o"></i> Bitacoras
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li id="side_bar_option-bitacoras-expediente_medico" name="side_bar_option-bitacoras-expediente_medico"><a href="{{route('home')}}" ><i class="fa fa-circle-o"></i> Expediente Medico</a></li>
+                <li id="side_bar_option-bitacoras-adopcion_animales" name="side_bar_option-bitacoras-adopcion_animales"><a href="{{route('home')}}" ><i class="fa fa-circle-o"></i> Adopción de animales</a></li>
+                <li id="side_bar_option-bitacoras-venta_animales" name="side_bar_option-bitacoras-venta_animales"><a href="{{route('home')}}" ><i class="fa fa-circle-o"></i> Venta de animales</a></li>
+                <li id="side_bar_option-bitacoras-calendarizacion" name="side_bar_option-bitacoras-calendarizacion"><a href="{{route('home')}}" ><i class="fa fa-circle-o"></i> Calendarización</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
         <li class="treeview" id="side_bar-reportes" name="side_bar-reportes">

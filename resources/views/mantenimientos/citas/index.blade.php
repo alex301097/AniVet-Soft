@@ -10,7 +10,7 @@
       <small>Mantenimiento</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
       <li class="active">Citas</li>
     </ol>
@@ -54,7 +54,6 @@
                           <th scope="col">Hora Final</th>
                           <th scope="col">Servicio</th>
                           <th scope="col">Motivo</th>
-                          <th scope="col">Estado</th>
                           <th scope="col">Acciones</th>
                       </tr>
                   </thead>
@@ -100,7 +99,7 @@
         $('#side_bar-mantenimientos').addClass('active');
         $('#side_bar_option-citas').addClass('active');
       });
-      
+
       $(document).ready(function() {
         $('#citas').DataTable({
           "processing":true,
@@ -115,7 +114,6 @@
             {data: 'horaFinal'},
             {data: 'descripcionServicio', orderable: false, searchable: false},
             {data: 'motivo'},
-            {data: 'estado'},
             {data: 'btn', orderable: false, searchable: false}
           ],
           "language":{

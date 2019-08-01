@@ -161,7 +161,6 @@ Route::group(['prefix'=>'mantenimiento/pacientes', 'middleware'=>'auth'], functi
   Route::get('autocompleteDuenno', 'PacienteController@autocompleteDuenno')->name('autocompleteDuenno');
 });
 
-
 Route::group(['prefix'=>'mantenimiento/citas', 'middleware'=>'auth'], function(){
   Route::get('/', 'CitasController@index')->name('citas')->middleware('can:mant_citas-index');
 
@@ -194,6 +193,18 @@ Route::group(['prefix'=>'mantenimiento/roles', 'middleware'=>'auth'], function()
   Route::post('filtro/{estado}', 'RolController@filtrar_roles')->name('filtro.roles')->middleware('can:mant_roles-index');
 });
 
+Route::group(['prefix'=>'mantenimiento/respaldos', 'middleware'=>'auth'], function(){
+  Route::get('/', 'RespaldoController@index')->name('respaldos')->middleware('auth');
+
+  Route::get('añadir', 'RespaldoController@añadir_respaldos')->name('respaldos.añadir')->middleware('auth');
+
+  Route::get('descargar/{file_name}', 'RespaldoController@descargar_respaldos')->name('respaldos.descargar')->middleware('auth');
+
+  Route::get('restaurar/{file_name}', 'RespaldoController@restaurar_respaldos')->name('respaldos.restaurar')->middleware('auth');
+
+  Route::post('eliminar', 'RespaldoController@eliminar_respaldos')->name('respaldos.eliminar')->middleware('auth');
+});
+
 Route::group(['prefix'=>'proceso/calendarizacion', 'middleware'=>'auth'], function(){
   Route::get('citas',
   [
@@ -220,7 +231,7 @@ Route::group(['prefix'=>'proceso/calendarizacion', 'middleware'=>'auth'], functi
 
 Route::group(['prefix'=>'reportes', 'middleware'=>'auth'], function(){
   Route::get('citas', 'ReportesController@reporte_citas')->name('reportes.citas');
-  Route::get('generar-reporte-citas', 'ReportesController@mostrar_pdf')->name('citas-pdf');
+  Route::get('exportar-pdf-citas/{min?}/{max?}/{estado?}', 'ReportesController@pdf_citas')->name('citas-pdf');
 });
 
 

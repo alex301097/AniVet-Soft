@@ -45,7 +45,6 @@ class CitasController extends Controller
       'horaFinal' => 'required',
       'motivo' => 'required|string|min:4|max:255',
       'observaciones' => 'required|string|min:4|max:255',
-      'estado' => 'required',
       'servicio' => 'required',
       'paciente' => 'required',
     ];
@@ -56,7 +55,6 @@ class CitasController extends Controller
       'horaFinal' => $request->horaFinal,
       'motivo' => $request->motivo,
       'observaciones' => $request->observaciones,
-      'estado' => $request->estado,
       'servicio' => $request->servicio,
       'paciente' => $request->paciente,
     ];
@@ -72,7 +70,6 @@ class CitasController extends Controller
       $cita->horaFinal = $request->input('horaFinal');
       $cita->motivo = $request->input('motivo');
       $cita->observaciones = $request->input('observaciones');
-      $cita->estado = $request->input('estado');
       $cita->servicio()->associate($request->input('servicio'));
       $cita->paciente()->associate($request->input('paciente'));
       $cita->user_create()->associate(Auth::user());
@@ -100,7 +97,6 @@ class CitasController extends Controller
       'horaFinal' => 'required',
       'motivo' => 'required|string|min:4|max:255',
       'observaciones' => 'required|string|min:4|max:255',
-      'estado' => 'required',
       'servicio' => 'required',
       'paciente' => 'required',
     ];
@@ -111,7 +107,6 @@ class CitasController extends Controller
       'horaFinal' => $request->horaFinal,
       'motivo' => $request->motivo,
       'observaciones' => $request->observaciones,
-      'estado' => $request->estado,
       'servicio' => $request->servicio,
       'paciente' => $request->paciente,
     ];
@@ -125,7 +120,6 @@ class CitasController extends Controller
       $cita->horaFinal = $request->input('horaFinal');
       $cita->motivo = $request->input('motivo');
       $cita->observaciones = $request->input('observaciones');
-      $cita->estado = $request->input('estado');
       $cita->servicio()->associate($request->input('servicio'));
       $cita->paciente()->associate($request->input('paciente'));
       $cita->user_create()->associate(Auth::user());

@@ -17,7 +17,7 @@
       <small>Proceso</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="{{route('home')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Procesos</a></li>
       <li class="active">Calendarización</li>
     </ol>
@@ -44,7 +44,7 @@
               <div class="box-header">
                 <i class="fa fa-calendar-plus-o"></i>
 
-                <h3 class="box-title title-cita">Registrar Cita</h3>
+                <h3 class="box-title" id="title-cita">Registrar Cita</h3>
                 <!-- tools box -->
                 <div class="box-tools pull-right">
                     <button type="button" id="btn-eliminar" class="btn btn-danger btn-sm hidden" data-toggle="tooltip" title="Eliminar cita">
@@ -376,7 +376,7 @@
   });
 
   function editarCita(event){
-    $('#title-cita').text('Detalle de la Cita')
+    $('#title-cita').text('Detalle de la Cita');
     $('#idCita').val(event.cita.id);
     $('#paciente').val(event.cita.paciente.nombre + ' - ' + event.cita.paciente.tipo_animal.descripcion + ' ~ ' + event.cita.paciente.raza +' - ' + event.cita.paciente.sexo);
     $('#idPaciente').val(event.cita.paciente.id);
@@ -395,6 +395,7 @@
 
   $('#btnLimpiar').click(function(){
     $('#btnSubmit').text('Registrar cita');
+    $('#title-cita').text('Registrar cita');
     $('#form-cita').trigger("reset");
     $('#btnSubmit').removeClass('hidden');
     $('#btn-eliminar').addClass('hidden');
