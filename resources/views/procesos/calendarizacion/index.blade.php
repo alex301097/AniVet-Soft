@@ -159,7 +159,7 @@
                   <div class="col-md-12">
                     <input type="hidden" name="idCita" id="idCita" value="">
                     @csrf
-                    <button type="submit" class="btn btn-success pull-right" id="btnSubmit" name="btnSubmit">Registrar cita</button>
+                    <a type="submit" class="btn btn-success pull-right" id="btnSubmit" name="btnSubmit">Registrar cita</a>
                   </div>
                 </div>
               </div>
@@ -240,15 +240,18 @@
 
   <!-- bootstrap datepicker -->
   <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
+
   <!-- bootstrap time picker -->
   <script src="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
 
   <script type="text/javascript">
   //Date picker
   $('#fecha').datepicker({
+    startDate: 'days',
+    language: 'es',
     autoclose: true,
-    startDate: 'today'
-  });
+  })
 
   //Timepicker
   $('#horaInicio').timepicker({
@@ -293,6 +296,9 @@
 
   //Añadir
   $('#btnSubmit').click(function(){
+    $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $(this).addClass('disabled');
+
     $.ajax({
       type: 'post',
       url: '{{route('calendarizacion.registrar-cita')}}',
@@ -311,6 +317,8 @@
       },
       success: function(data){
         if((data.errors)){
+          $('#btnSubmit').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Registrar cita');
+          $('#btnSubmit').removeClass('disabled');
           Toast.fire({
             type: 'warning',
             title: 'Errores de validación!'

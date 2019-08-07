@@ -234,7 +234,7 @@
                </div>
               <ul class="list-unstyled list-inline pull-right">
                <li><button type="button" class="btn btn-default prev-step"><i class="fa fa-chevron-left"></i> Atras</button></li>
-               <li><button type="button" class="btn btn-success"><i class="fa fa-check"></i> ¡Hecho!</button></li>
+               <li><a id="asignar" type="button" class="btn btn-success"><i class="fa fa-check"></i> ¡Hecho!</a></li>
               </ul>
              </div>
             </div>
@@ -349,8 +349,13 @@
       }
     });
     //Añadir
-    $('#registrar').click(function(){
+    $('#asignar').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
+
       if($('#id_edicion').val() == 1){
+        $('#asignar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;¡Hecho!');
+        $('#asignar').removeClass('disabled');
         Toast.fire({
           type: 'danger',
           title: 'No se pueden modificar los permisos del administrador!'
@@ -370,6 +375,8 @@
           },
           success: function(data){
             if((data.errors)){
+              $('#asignar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;¡Hecho!');
+              $('#asignar').removeClass('disabled');
               Toast.fire({
                 type: 'warning',
                 title: 'Errores de validación!'

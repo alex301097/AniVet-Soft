@@ -192,14 +192,12 @@ class VentaAnimalController extends Controller
   public function get_solicitar_ventas()
   {
     $animales = AnimalVenta::all();
-    Session::forget("detalles_solicitud");
-    Session::forget("detalles_solicitud_descripcion");
-    Session::put("detalles_solicitud",[]);
-    Session::put("detalles_solicitud_descripcion",[]);
-    if (!Session::has('detalles_solicitud') || !Session::has('detalles_solicitud_descripcion')) {
+    if (!Session::has('detalles_solicitud')) {
+      Session::forget("detalles_solicitud");
+      Session::put("detalles_solicitud",[]);
     }
+    $detalles = Session::get("detalles_solicitud");
 
-    $detalles = Session::get('detalles_solicitud_descripcion');
     return view('procesos.venta.index', ['animales'=>$animales,'detalles'=>$detalles]);
   }
 
@@ -209,26 +207,26 @@ class VentaAnimalController extends Controller
 
       $det_solicitud->animal_venta()->associate($request->input('animal_venta_id'));
 
+      $det_solicitud->load(['animal_venta' => function ($data) {
+        $data->with('imagenes');
+      }]);
+
       $detalle = Session::get("detalles_solicitud");
-      $detalle_descripcion = Session::get("detalles_solicitud_descripcion");
 
       $conteo = count($detalle) + 1;
-      $conteo2 = count($detalle_descripcion) + 1;
 
       Session::push("detalles_solicitud",[$conteo=>$det_solicitud]);
-      Session::push("detalles_solicitud_descripcion",[$conteo2=>AnimalVenta::where('id',$request->input('animal_venta_id'))->with('imagenes')->fxirst()]);
+      // Session::push("detalles_solicitud_descripcion",[$conteo2=>$det_solicitud->animal_venta->load(['imagenes'])]);
 
-
-      return response()->json(Session::get("detalles_solicitud_descripcion"));
+      return response()->json(Session::get("detalles_solicitud"));
   }
 
   public function solicitar_limpiar_todo()
   {
     $resultado = false;
 
-    if (Session::has('detalles_solicitud') || Session::has('detalles_solicitud_descripcion')) {
+    if (Session::has('detalles_solicitud')) {
       Session::forget("detalles_solicitud");
-      Session::forget("detalles_solicitud_descripcion");
 
       $resultado = true;
     }
@@ -238,31 +236,20 @@ class VentaAnimalController extends Controller
 
   public function solicitar_limpiar_individual(Request $request)
   {
-    $id_detalle = $request->input('detalle_solicitud_id');
+    $id_animal = $request->input('animal_id');
 
     $detalle = Session::get("detalles_solicitud");
-    $detalle_descripcion = Session::get("detalles_solicitud_descripcion");
     Session::forget("detalles_solicitud");
-    Session::forget("detalles_solicitud_descripcion");
     Session::put("detalles_solicitud",[]);
-    Session::put("detalles_solicitud_descripcion",[]);
-    foreach ($detalle_descripcion as $id => $arreglo_detalles_descripcion) {
-      foreach ($arreglo_detalles_descripcion as $key => $detalle) {
-        if($key != $id_detalle) {
-          Session::push("detalles_solicitud_descripcion",[$key=>$detalle]);
-        }
-      }
-    }
 
     foreach ($detalle as $id => $arreglo_detalles) {
       foreach ($arreglo_detalles as $key => $detalle) {
-        if($key != $id_detalle) {
+        if($detalle->animal_venta->id != $id_animal) {
           Session::push("detalles_solicitud",[$key=>$detalle]);
         }
       }
     }
-
-    return response()->json(Session::get("detalles_solicitud_descripcion"));
+      return response()->json(Session::get('detalles_solicitud'));
   }
 
   public function finalizar_solicitar_ventas(Request $request)
@@ -293,7 +280,7 @@ class VentaAnimalController extends Controller
         $enc_solicitud->observaciones = $request->input('observaciones');
         $enc_solicitud->save();
 
-        if (Session::has('detalles_solicitud') && Session::has('detalles_solicitud_descripcion')) {
+        if (Session::has('detalles_solicitud')) {
           $detalles = Session::get('detalles_solicitud');
           foreach ($detalles as $arreglo_detalles) {
             foreach ($arreglo_detalles as $detalle) {
@@ -302,7 +289,6 @@ class VentaAnimalController extends Controller
             }
           }
           $request->session()->forget('detalles_solicitud');
-          $request->session()->forget('detalles_solicitud_descripcion');
         }
 
         Mail::to($enc_solicitud->correo)->send(new SolicitudVentaCliente($enc_solicitud));

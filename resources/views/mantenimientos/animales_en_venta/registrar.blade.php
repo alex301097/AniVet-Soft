@@ -2,6 +2,8 @@
 @section('css')
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{ URL::to('plugins/iCheck/all.css') }}">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ URL::to('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 @endsection
 @section('contenido')
   <!-- Content Header (Page header) -->
@@ -66,7 +68,7 @@
             <div class="form-group">
               <label for="fecha_nacimiento"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
                 <div class="input-group">
-                    <input type="date" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
+                    <input type="text" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
                 </div>
                 <p class="error-fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
@@ -140,9 +142,9 @@
         <div class="row">
           <div class="col-md-12 text-right">
             @csrf
-            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:150px;" type="button" id="registrar" name="registrar">
+            <a class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:150px;" type="button" id="registrar" name="registrar">
               <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Registrar animal
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -160,6 +162,10 @@
 @section('scripts')
   <!-- iCheck 1.0.1 -->
   <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
+  <!-- bootstrap datepicker -->
+  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
   <script type="text/javascript">
 
     //iCheck for checkbox and radio inputs
@@ -167,6 +173,15 @@
       checkboxClass: 'icheckbox_minimal-blue',
       radioClass   : 'iradio_minimal-blue'
     });
+
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      endDate: 'days',
+      language: 'es',
+      todayHighlight: true,
+      autoclose: true,
+      orientation: 'bottom'
+    })
 
     const Toast = Swal.mixin({
       toast: true,
@@ -190,6 +205,8 @@
 
     //Añadir
     $('#registrar').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
 
       $.ajax({
         type: 'post',
@@ -200,7 +217,7 @@
           'edad': $('#edad').val(),
           'peso': $('#peso').val(),
           'raza': $('#raza').val(),
-          'fecha_nacimiento': $('#fecha_nacimiento').val(),
+          'fecha_nacimiento': moment($('#fecha_nacimiento').val()).format('YYYY-MM-DD'),
           'sexo': $('input[name="sexo"]:checked').val(),
           'cantidad': $('#cantidad').val(),
           'precio': $('#precio').val(),
@@ -209,6 +226,8 @@
         },
         success: function(data){
           if((data.errors)){
+              $('#registrar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Registrar animal');
+              $('#registrar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
               title: 'Errores de validación!'
@@ -264,6 +283,7 @@
               $('.error-cantidad').text(data.errors.cantidad);
             }
           }else{
+
             Swal.fire({
               position: 'top-end',
               type: 'success',

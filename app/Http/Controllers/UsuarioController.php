@@ -54,7 +54,7 @@ class UsuarioController extends Controller
       'fecha_nacimiento' => 'nullable|sometimes|date',
       'telefono' => 'nullable|sometimes|numeric',
       'direccion' => 'nullable|sometimes|string|max:255',
-      'cedula' => ['nullable','sometimes','min:3','numeric',Rule::unique('users', 'codigo')->ignore($user->id)],
+      // 'old_password' => ['nullable','sometimes',Rule::diff('users', 'cedula')->ignore($user->id)],
       'password' => ['nullable','sometimes',
                      'string',
                      'min:10',             // must be at least 10 characters in length
@@ -63,7 +63,7 @@ class UsuarioController extends Controller
                      'regex:/[0-9]/',      // must contain at least one digit
                      'regex:/[@$!%*#?&-]/', // must contain a special character,
                      'confirmed'],
-        'politicas' => ['nullable','sometimes','accepted']
+        'politicas' => ['accepted']
 
     ];
 

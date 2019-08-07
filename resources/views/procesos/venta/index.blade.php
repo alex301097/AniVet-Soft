@@ -10,7 +10,7 @@
   <section class="content-header">
     <h1>
       Veterinaria El Yugo
-      <small>Información</small>
+      <small>Proceso</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
@@ -33,7 +33,7 @@
       </div>
       <div class="box-body">
         <div class="row">
-          <div class="col-lg-8">
+          <div class="col-lg-7">
             <div class="box box-info">
               <div class="box-header">
                 <i class="fa fa-list-ol"></i>
@@ -67,10 +67,11 @@
                                         <b>Condiciones: </b> {{$animal->condiciones}}
                                       </h5>
                                     </p>
-                                    <a type="button" class="btn btn-sm btn-primary" data-toggle="tooltip"
-                                    title="Click para agregar el animal a la lista de animales a comprar."
-                                    id="añadir_animales_venta" data-id="{{$animal->id}}">
-                                      Añadir animal
+                                    {{-- {{(collect($detalles[0])->pluck('id')->contains($animal->id))?"disabled":""}} --}}
+                                    <a type="button" class="btn btn-sm btn-primary añadir_animales_venta" data-toggle="tooltip"
+                                      title="Click para agregar el animal a la lista de animales a comprar."
+                                      id="añadir_animales_venta_{{$animal->id}}" data-id="{{$animal->id}}">
+                                        Añadir animal
                                     </a>
                                   </<div>
                                 </div>
@@ -84,7 +85,7 @@
                 </div>
               </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-5">
             <div class="box box-info">
               <div class="box-header">
                 <i class="fa fa-list-ol"></i>
@@ -98,50 +99,64 @@
                           @if (empty($detalles))
                             <h3>No hay animales a comprar agregados</h3>
                           @else
-                            @foreach ($detalles as $arreglo_detalles)
-                              @foreach ($arreglo_detalles as $index => $detalle)
-                                <div class="panel panel-default" id="venta_{{$index}}" name="venta_{{$index}}">
-                                  <div class="panel-heading" role="tab" id="heading_{{$index}}">
+                            @foreach ($detalles as $index1 =>$arreglo_detalles)
+                              @foreach ($arreglo_detalles as $index2 => $detalle)
+                                <div class="panel panel-default" id="venta_{{$detalle->animal_venta->id}}" name="venta_{{$detalle->id}}">
+                                  <div class="panel-heading" role="tab" id="heading_{{$detalle->animal_venta->id}}">
                                       <h4 class="panel-title">
-                                          <a class="{{($index == 1)?"":"collapsed"}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$index}}" aria-expanded="{{($index == 1)?"true":"false"}}" aria-controls="collapse_{{$index}}">
-                                              <span>{{$index}}</span>
-                                              {{$detalle->tipo_animal->descripcion." - ".$detalle->raza." - ".$detalle->sexo}}
+                                          <a class="{{($index1 == 1)?"":"collapsed"}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$detalle->id}}" aria-expanded="{{($index1 == 1)?"true":"false"}}" aria-controls="collapse_{{$detalle->animal_venta->id}}">
+                                              <span>{{$index1}}</span>
+                                              {{$detalle->animal_venta->tipo_animal->descripcion." - ".$detalle->animal_venta->raza." - ".$detalle->animal_venta->sexo}}
                                           </a>
                                       </h4>
                                   </div>
-                                  <div id="collapse_{{$index}}" class="panel-collapse collapse {{($index == 1)?"in":""}}" role="tabpanel" aria-labelledby="heading_{{$index}}">
+                                  <div id="collapse_{{$detalle->animal_venta->id}}" class="panel-collapse collapse {{($index1 == 1)?"in":""}}" role="tabpanel" aria-labelledby="heading_{{$detalle->animal_venta->id}}">
                                       <div class="panel-body">
                                           <p>
                                             <div class="row">
-                                              <div class="col-md-4 text-center" id="avatar_animal_{{$index}}">
-                                                <img src="{{ url('imgPerfiles/'.$detalle->imagenes->first()) }}" class="img-circle" alt="Animal Image" style="width:100px; height:100px; top:100px; left:100px;">
+                                              <div class="col-md-4 text-center">
+                                                @if (count($detalle->animal_venta->imagenes) > 0)
+                                                  <img src='{{url('imgPerfiles/'.$detalle->animal_venta->imagenes->first()->imagen)}}' class='img-circle' alt='Animal Image' style='width:100px; height:100px; top:100px; left:100px;'>
+                                                @else
+                                                  <img src='{{url('img/brand/dog.png')}}' class='img-circle' alt='Animal Image' style='width:100px; height:100px; top:100px; left:100px;'>
+                                                @endif
+                                                <div class="row">
+                                                  <div class="col-md-12">
+                                                      <a type="button" class="btn btn-sm btn-danger text-center btn-eliminar-detalle" data-toggle="tooltip"
+                                                        title="Click para eliminar la solicitud de compra" id="btn-eliminar-detalle_{{$detalle->animal_venta->id}}" data-id="{{$detalle->animal_venta->id}}">
+                                                        Eliminar
+                                                      </a>
+                                                  </div>
+                                                </div>
                                               </div>
                                               <div class="col-md-8">
                                                 <div class="row">
-                                                  <div class="col-md-4">
-                                                    <b>Edad: </b> {{$detalle->edad}} <br>
+                                                  <div class="col-md-6">
+                                                    <b>Edad: </b> {{$detalle->animal_venta->edad}} <br>
                                                   </div>
-                                                  <div class="col-md-4">
-                                                    <b>Peso: </b> {{$detalle->peso}} <br>
+                                                  <div class="col-md-6">
+                                                    <b>Peso: </b> {{$detalle->animal_venta->peso}} <br>
                                                   </div>
-                                                  <div class="col-md-4">
-                                                    <b>Fecha de nacimiento: </b> {{$detalle->fecha_nacimiento}} <br>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-12">
+                                                    <b>Fecha de nacimiento: </b> {{$detalle->animal_venta->fecha_nacimiento}} <br>
                                                   </div>
                                                 </div>
                                                 <div class="row">
                                                   <div class="col-md-6">
-                                                    <b>Precio: </b> {{$detalle->precio}} <br>
+                                                    <b>Precio: </b> {{$detalle->animal_venta->precio}} <br>
                                                   </div>
                                                   <div class="col-md-6">
-                                                    <b>Cantidad: </b> {{$detalle->cantidad}} <br>
+                                                    <b>Cantidad: </b> {{$detalle->animal_venta->cantidad}} <br>
                                                   </div>
                                                 </div>
                                                 <div class="row">
                                                   <div class="col-md-6">
-                                                    <b>Condiciones: </b> {{$detalle->condiciones}} <br>
+                                                    <b>Condiciones: </b> {{$detalle->animal_venta->condiciones}} <br>
                                                   </div>
                                                   <div class="col-md-6">
-                                                    <b>Observaciones: </b> {{$detalle->observaciones}} <br>
+                                                    <b>Observaciones: </b> {{$detalle->animal_venta->observaciones}} <br>
                                                   </div>
                                                 </div>
                                               </div>
@@ -160,12 +175,14 @@
               <div class="box-footer clearfix">
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="button" id="limpiar_lista_detalles" class="btn btn-sm bg-navy pull-left disabled" data-toggle="tooltip" title="Limpiar lista de animales a comprar">
-                     &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-                    </button>
-                    @csrf
-                      <a type="button" class="btn btn-sm bg-orange pull-right disabled" data-toggle="tooltip"
-                      title="Click para registrar los datos personales y de contacto para finalizar la solicitud de compra" id="finalizar_venta">
+                      <a type="button" class="btn btn-sm bg-navy pull-navy {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip"
+                      title="Limpiar lista de animales a comprar" id="limpiar_lista_detalles">
+                      &nbsp;<i class="fa fa-eraser"></i>&nbsp;
+                      </a>
+                      @csrf
+                      <a type="button" class="btn btn-sm bg-orange pull-right {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip"
+                      title="Click para registrar los datos personales y de contacto para finalizar la solicitud de compra"
+                      id="finalizar_venta">
                         Finalizar compra ✔
                       </a>
                   </div>
@@ -274,10 +291,11 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-          <button type="button" id="limpiar_formulario_dueño" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario de datos del adoptante de los animales.">
+          <a type="button" id="limpiar_formulario_dueño" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario de datos del adoptante de los animales.">
            &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-          </button>
-          <button type="button" class="btn btn-sm btn-primary" id="efectuar_adopcion" name="efectuar_adopcion" data-toggle="tooltip" title="Click para finalizar el proceso de adopción.">Efectuar solicitud</button>
+         </a>
+          <a type="button" class="btn btn-sm btn-primary" id="efectuar_adopcion" name="efectuar_adopcion"
+          data-toggle="tooltip" title="Click para finalizar el proceso de adopción.">Efectuar solicitud</a>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -316,6 +334,113 @@
     $('#side_bar_option-venta_animales').addClass('active');
   });
 
+  $(document).on("click", ".btn-eliminar-detalle", function(e) {
+      $.ajax({
+        type: 'post',
+        url: '{{route('venta_animales.solicitar.limpiar_individual')}}',
+        data: {
+          '_token': $('input[name=_token]').val(),
+          'animal_id': $(this).data('id')
+        },
+        success: function(data){
+          if((data.length == 0)){
+            alert('Vacio prro');
+            Toast.fire({
+              type: 'success',
+              title: '¡Solicitud de compra correctamente eliminada!'
+            });
+
+            $('#accordion').empty();
+            $('#limpiar_lista_detalles').addClass('disabled');
+            $('#efectuar_adopcion').addClass('disabled');
+            $('#limpiar_formulario_dueño').addClass('disabled');
+            $('#finalizar_venta').addClass('disabled');
+            $('#accordion').append("<h3>No hay animales a comprar agregados</h3>");
+
+          }else{
+            e.preventDefault()
+            $('#accordion').empty();
+            $('.añadir_animales_venta').removeClass('disabled');
+
+            $.each(data, function(index1, value) {
+              $.each(value, function(index2, value){
+                $('#añadir_animales_venta_' + value.animal_venta.id).addClass('disabled');
+                var titulo = value.animal_venta.tipo_animal.descripcion + " - " + value.animal_venta.raza + " - " + value.animal_venta.sexo;
+                var collapsed = (index1 == 1)?"":"collapsed";
+                var collapse_in = (index1 == 1)?"in":"";
+                var aria_expanded = (index1 == 1)?"true":"false";
+                if(Array.isArray(value.animal_venta.imagenes) && value.animal_venta.imagenes.length){
+                  var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
+                  imagen = imagen.replace(':ruta_imagen', value.animal_venta.imagenes[0].imagen);
+                }else{
+                  var imagen = "{{ url('img/brand/dog.png') }}";
+                }
+
+        				$('#accordion').append("<div class='panel panel-default' id='venta_" + value.animal_venta.id + "' name='venta_" + value.animal_venta.id + "'>" +
+                    "<div class='panel-heading' role='tab' id='heading_" + value.animal_venta.id + "'>" +
+                        "<h4 class='panel-title'>" +
+                            "<a class='"+ collapsed +"' role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse_" + value.animal_venta.id + "' aria-expanded='" + aria_expanded + "' aria-controls='collapse_" + value.animal_venta.id + "'>" +
+                                "<span>" + index1 + "</span>" +
+                                  titulo +
+                            "</a>" +
+                        "</h4>" +
+                    "</div>" +
+                    "<div id='collapse_" + value.animal_venta.id + "' class='panel-collapse collapse " + collapse_in + "' role='tabpanel' aria-labelledby='heading_" + value.animal_venta.id + "'>" +
+                        "<div class='panel-body'>" +
+                            "<div class='row'>" +
+                              "<div class='col-md-4 text-center'>" +
+                              "<img src='" + imagen + "' class='img-circle' alt='Animal Image' style='width:100px; height:100px; top:100px; left:100px;'>" +
+                              "<div class='row'>" +
+                                "<div class='col-md-12'>" +
+                                    "<a type='button' class='btn btn-sm btn-danger text-center btn-eliminar-detalle' data-toggle='tooltip'" +
+                                      "title='Click para eliminar la solicitud de compra' id='btn-eliminar-detalle_" + value.animal_venta.id + "' data-id='" + value.animal_venta.id + "'>" +
+                                      "Eliminar" +
+                                    "</a>" +
+                                "</div>" +
+                              "</div>" +
+                              "</div>" +
+                              "<div class='col-md-8'>" +
+                                "<div class='row'>" +
+                                  "<div class='col-md-6'>" +
+                                    "<b>Edad: </b>" + value.animal_venta.edad + "<br>" +
+                                  "</div>" +
+                                  "<div class='col-md-6'>" +
+                                    "<b>Peso: </b>" + value.animal_venta.peso + "<br>" +
+                                  "</div>" +
+                                "</div>" +
+                                "<div class='row'>" +
+                                "<div class='col-md-12'>" +
+                                  "<b>Fecha de nacimiento: </b>" + value.animal_venta.fecha_nacimiento +"<br>" +
+                                "</div>" +
+                                "</div>" +
+                                "<div class='row'>" +
+                                  "<div class='col-md-6'>" +
+                                    "<b>Precio: </b>" + value.animal_venta.precio + "<br>" +
+                                  "</div>" +
+                                  "<div class='col-md-6'>" +
+                                    "<b>Cantidad: </b>" + value.animal_venta.cantidad + "<br>" +
+                                  "</div>" +
+                                "</div>" +
+                                "<div class='row'>" +
+                                  "<div class='col-md-6'>" +
+                                    "<b>Condiciones: </b>" + value.animal_venta.condiciones + "<br>" +
+                                  "</div>" +
+                                  "<div class='col-md-6'>" +
+                                    "<b>Observaciones: </b>" + value.animal_venta.observaciones + "<br>" +
+                                  "</div>" +
+                                "</div>" +
+                              "</div>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>");
+  			       });
+            });
+          }
+        },
+      });
+  });
+
   $('#limpiar_lista_detalles').click(function(){
     $.ajax({
       type: 'post',
@@ -326,7 +451,10 @@
       success: function(data){
           if(data == true){
             $('#accordion').empty();
+            $('.añadir_animales_venta').removeClass('disabled');
             $('#limpiar_lista_detalles').addClass('disabled');
+            $('#efectuar_adopcion').addClass('disabled');
+            $('#limpiar_formulario_dueño').addClass('disabled');
             $('#finalizar_venta').addClass('disabled');
 
             $('#accordion').append("<h3>No hay animales a comprar agregados</h3>");
@@ -344,7 +472,7 @@
   });
 
   //Añadir
-  $('#añadir_animales_venta').click(function(e){
+  $('.añadir_animales_venta').click(function(e){
     $.ajax({
       type: 'post',
       url: '{{route('venta_animales.solicitar')}}',
@@ -368,56 +496,73 @@
         }else{
           e.preventDefault()
           $('#accordion').empty();
-          $.each(data, function(index, value) {
-            $.each(value, function(index, value){
+          $.each(data, function(index1, value) {
+            $.each(value, function(index2, value){
 
-              var titulo = value.tipo_animal.descripcion + " - " + value.raza + " - " + value.sexo;
-              var collapsed = (index == 1)?"":"collapsed";
-              var collapse_in = (index == 1)?"in":"";
-              var aria_expanded = (index == 1)?"true":"false";
-              var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
-              imagen = imagen.replace(':ruta_imagen', value.imagenes.imagen[0]);
+              $('#añadir_animales_venta_' + value.animal_venta.id).addClass('disabled');
 
-      				$('#accordion').append("<div class='panel panel-default' id='venta_" + index + "' name='venta_" + index + "'>" +
-                  "<div class='panel-heading' role='tab' id='heading_" + index + "'>" +
+              var titulo = value.animal_venta.tipo_animal.descripcion + " - " + value.animal_venta.raza + " - " + value.animal_venta.sexo;
+              var collapsed = (index1 == 1)?"":"collapsed";
+              var collapse_in = (index1 == 1)?"in":"";
+              var aria_expanded = (index1 == 1)?"true":"false";
+              if(Array.isArray(value.animal_venta.imagenes) && value.animal_venta.imagenes.length){
+                var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
+                imagen = imagen.replace(':ruta_imagen', value.animal_venta.imagenes[0].imagen);
+              }else{
+                var imagen = "{{ url('img/brand/dog.png') }}";
+              }
+
+      				$('#accordion').append("<div class='panel panel-default' id='venta_" + value.animal_venta.id + "' name='venta_" + value.animal_venta.id + "'>" +
+                  "<div class='panel-heading' role='tab' id='heading_" + value.animal_venta.id + "'>" +
                       "<h4 class='panel-title'>" +
-                          "<a class='"+ collapsed +"' role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse_" + index + "' aria-expanded='" + aria_expanded + "' aria-controls='collapse_" + index + "'>" +
-                              "<span>" + index + "</span>" +
+                          "<a class='"+ collapsed +"' role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse_" + value.animal_venta.id + "' aria-expanded='" + aria_expanded + "' aria-controls='collapse_" + value.animal_venta.id + "'>" +
+                              "<span>" + index1 + "</span>" +
                                 titulo +
                           "</a>" +
                       "</h4>" +
                   "</div>" +
-                  "<div id='collapse_" + index + "' class='panel-collapse collapse " + collapse_in + "' role='tabpanel' aria-labelledby='heading_" + index + "'>" +
+                  "<div id='collapse_" + value.animal_venta.id + "' class='panel-collapse collapse " + collapse_in + "' role='tabpanel' aria-labelledby='heading_" + value.animal_venta.id + "'>" +
                       "<div class='panel-body'>" +
                           "<div class='row'>" +
-                            "<div class='col-md-4 text-center' id='avatar_animal_" + index + "'>" +
+                            "<div class='col-md-4 text-center'>" +
+                            "<img src='" + imagen + "' class='img-circle' alt='Animal Image' style='width:100px; height:100px; top:100px; left:100px;'>" +
+                            "<div class='row'>" +
+                              "<div class='col-md-12'>" +
+                                  "<a type='button' class='btn btn-sm btn-danger text-center btn-eliminar-detalle' data-toggle='tooltip'" +
+                                    "title='Click para eliminar la solicitud de compra' id='btn-eliminar-detalle_" + value.animal_venta.id + "' data-id='" + value.animal_venta.id + "'>" +
+                                    "Eliminar" +
+                                  "</a>" +
+                              "</div>" +
+                            "</div>" +
                             "</div>" +
                             "<div class='col-md-8'>" +
                               "<div class='row'>" +
-                                "<div class='col-md-4'>" +
-                                  "<b>Edad: </b>" + value.edad + "<br>" +
+                                "<div class='col-md-6'>" +
+                                  "<b>Edad: </b>" + value.animal_venta.edad + "<br>" +
                                 "</div>" +
-                                "<div class='col-md-4'>" +
-                                  "<b>Peso: </b>" + value.peso + "<br>" +
+                                "<div class='col-md-6'>" +
+                                  "<b>Peso: </b>" + value.animal_venta.peso + "<br>" +
                                 "</div>" +
-                                "<div class='col-md-4'>" +
-                                  "<b>Fecha de nacimiento: </b>" + value.fecha_nacimiento +"<br>" +
+                              "</div>" +
+                              "<div class='row'>" +
+                              "<div class='col-md-12'>" +
+                                "<b>Fecha de nacimiento: </b>" + value.animal_venta.fecha_nacimiento +"<br>" +
+                              "</div>" +
+                              "</div>" +
+                              "<div class='row'>" +
+                                "<div class='col-md-6'>" +
+                                  "<b>Precio: </b>" + value.animal_venta.precio + "<br>" +
+                                "</div>" +
+                                "<div class='col-md-6'>" +
+                                  "<b>Cantidad: </b>" + value.animal_venta.cantidad + "<br>" +
                                 "</div>" +
                               "</div>" +
                               "<div class='row'>" +
                                 "<div class='col-md-6'>" +
-                                  "<b>Precio: </b>" + value.precio + "<br>" +
+                                  "<b>Condiciones: </b>" + value.animal_venta.condiciones + "<br>" +
                                 "</div>" +
                                 "<div class='col-md-6'>" +
-                                  "<b>Cantidad: </b>" + value.cantidad + "<br>" +
-                                "</div>" +
-                              "</div>" +
-                              "<div class='row'>" +
-                                "<div class='col-md-6'>" +
-                                  "<b>Condiciones: </b>" + value.condiciones + "<br>" +
-                                "</div>" +
-                                "<div class='col-md-6'>" +
-                                  "<b>Observaciones: </b>" + value.observaciones + "<br>" +
+                                  "<b>Observaciones: </b>" + value.animal_venta.observaciones + "<br>" +
                                 "</div>" +
                               "</div>" +
                             "</div>" +
@@ -425,20 +570,17 @@
                       "</div>" +
                   "</div>" +
               "</div>");
-
-              $('#avatar_animal_' + index).html("<img src='" + imagen + "' class='img-circle' alt='Animal Image' style='width:100px; height:100px; top:100px; left:100px;'>");
-      			 });
-					});
-
+			       });
+          });
             Toast.fire({
               type: 'success',
-              title: 'Adopción añadida!'
+              title: 'Venta añadida!'
             });
 
-            $('#form-cita').trigger("reset");
-            $('.image-preview-clear').trigger('click');
-            $('#finalizar_adopcion').removeClass('disabled');
+            $('#limpiar_lista_detalles').removeClass('disabled');
             $('#efectuar_adopcion').removeClass('disabled');
+            $('#limpiar_formulario_dueño').removeClass('disabled');
+            $('#finalizar_venta').removeClass('disabled');
         }
       },
     });
@@ -448,7 +590,7 @@
   $('#efectuar_adopcion').click(function(){
     $.ajax({
       type: 'post',
-      url: '{{route('adopciones.solicitar.finalizar')}}',
+      url: '{{route('venta_animales.solicitar.finalizar')}}',
       data: {
         '_token': $('input[name=_token]').val(),
         'cedula': $('#cedula').val(),
@@ -466,12 +608,6 @@
             type: 'warning',
             title: '¡Errores de validación!'
           })
-
-          if(data.errors.error_vacio){
-            $('.error_vacio_div').removeClass('hidden');
-            $('.error_vacio').removeClass('hidden');
-            $('.error_vacio').text(data.errors.error_vacio);
-          }
 
           $.each(data.errors, function( index, value ) {
             var clase = ".error-" + index;

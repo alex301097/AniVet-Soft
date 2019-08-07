@@ -127,6 +127,13 @@ Route::group(['prefix'=>'proceso/venta_animales', 'middleware'=>'auth'], functio
   Route::post('solicitar.finalizar', 'VentaAnimalController@finalizar_solicitar_ventas')->name('venta_animales.solicitar.finalizar')->middleware('auth');
 });
 
+Route::group(['prefix'=>'proceso/expediente_medico', 'middleware'=>'auth'], function(){
+
+  Route::get('/', 'ExpedienteMedicoController@get_ficha_clinica')->name('expediente_medico')->middleware('auth');
+
+  Route::get('autocompletePaciente', 'ExpedienteMedicoController@autocompletePaciente')->name('autocompletePaciente')->middleware('auth');
+});
+
 Route::group(['prefix'=>'mantenimiento/tipos_servicios', 'middleware'=>'auth'], function(){
   Route::get('/', 'TipoServicioController@index')->name('tipos_servicios')->middleware('can:mant_tipos_servicios-index');
 

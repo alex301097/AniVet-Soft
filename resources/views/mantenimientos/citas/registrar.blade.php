@@ -134,9 +134,9 @@
         <div class="row">
           <div class="col-md-12 text-right">
             @csrf
-            <button class="btn btn-block btn-primary btn-sm pull-right" style="width:100px;" type="submit" id="registrar" name="registrar">
+            <a class="btn btn-block btn-primary btn-sm pull-right" style="width:100px;" type="submit" id="registrar" name="registrar">
               <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Registrar cita
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -152,22 +152,26 @@
   <!-- /.content -->
 @endsection
 @section('scripts')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
   integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
   crossorigin="anonymous"></script>
 
-  <!-- bootstrap datepicker -->
-  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <!-- bootstrap time picker -->
   <script src="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
+  <!-- bootstrap datepicker -->
+  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
 
   <script type="text/javascript">
     //Date picker
     $('#fecha').datepicker({
-      autoclose: true
+      startDate: 'days',
+      language: 'es',
+      todayHighlight: true,
+      autoclose: true,
+      orientation: 'bottom'
     })
 
     //Timepicker
@@ -213,6 +217,9 @@
 
     //Añadir
     $('#registrar').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
+
       $.ajax({
         type: 'post',
         url: '{{route('citas.añadir')}}',
@@ -229,6 +236,8 @@
         },
         success: function(data){
           if((data.errors)){
+            $('#registrar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Registrar cita');
+            $('#registrar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
               title: 'Errores de validación!'

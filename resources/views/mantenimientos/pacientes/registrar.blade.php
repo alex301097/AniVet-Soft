@@ -139,9 +139,9 @@
         <div class="row">
           <div class="col-md-12 text-right">
             @csrf
-            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:175px;" type="button" id="registrar" name="registrar">
+            <a class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:175px;" type="button" id="registrar" name="registrar">
               <span><i class="fas fa-plus"></i></span>&nbsp;Registrar paciente
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -165,6 +165,7 @@
   <!-- bootstrap datepicker -->
   <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
 
   <!-- iCheck 1.0.1 -->
   <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
@@ -178,7 +179,11 @@
 
   //Date picker
   $('#fecha_nacimiento').datepicker({
-    autoclose: true
+    endDate: 'days',
+    language: 'es',
+    todayHighlight: true,
+    autoclose: true,
+    orientation: 'bottom'
   })
 
   $(function(){
@@ -215,6 +220,9 @@
 
     //Añadir
     $('#registrar').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
+
       $.ajax({
         type: 'post',
         url: '{{route('pacientes.añadir')}}',
@@ -232,6 +240,8 @@
         },
         success: function(data){
           if((data.errors)){
+            $('#registrar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Registrar paciente');
+            $('#registrar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
               title: 'Errores de validación!'

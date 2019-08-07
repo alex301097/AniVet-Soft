@@ -84,6 +84,8 @@ class AdopcionController extends Controller
 
     if (Session::has('detalles_adopcion')) {
       Session::forget("detalles_adopcion");
+      Session::put("detalles_adopcion",[]);
+
       $resultado = true;
 
     }
@@ -195,7 +197,8 @@ class AdopcionController extends Controller
     if (Session::has('detalles_solicitud') || Session::has('detalles_solicitud_descripcion')) {
       Session::forget("detalles_solicitud");
       Session::forget("detalles_solicitud_descripcion");
-
+      Session::put("detalles_solicitud",[]);
+      Session::put("detalles_solicitud_descripcion",[]);
       $resultado = true;
 
     }

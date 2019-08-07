@@ -121,7 +121,6 @@
               <p class="error-servicio text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
           </div>
-
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -136,9 +135,9 @@
           <div class="col-md-12 text-right">
             <input type="hidden" name="id_edicion" id="id_edicion" value="{{$cita->id}}">
             @csrf
-            <button class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:100px;" type="button" id="editar" name="editar">
+            <a class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:100px;" type="button" id="editar" name="editar">
               <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Editar cita
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -165,11 +164,16 @@
   <!-- bootstrap time picker -->
   <script src="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
 
   <script type="text/javascript">
     //Date picker
     $('#fecha').datepicker({
-      autoclose: true
+      startDate: 'days',
+      language: 'es',
+      todayHighlight: true,
+      autoclose: true,
+      orientation: 'bottom'
     })
 
     //Timepicker
@@ -215,6 +219,8 @@
 
     //Editar
     $('#editar').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
 
       $.ajax({
         type: 'post',
@@ -233,6 +239,8 @@
         },
         success: function(data){
           if((data.errors)){
+            $('#editar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Editar cita');
+            $('#editar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
               title: 'Errores de validación!'

@@ -319,7 +319,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary" id="registrar" name="registrar">Añadir</button>
+            <a type="button" class="btn btn-primary" id="registrar" name="registrar">Añadir</a>
           </div>
         </div>
         <!-- /.modal-content -->
@@ -681,7 +681,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
             <input type="hidden" name="id_edicion" id="id_edicion" value="">
-            <button type="button" class="btn btn-primary" id="editar" name="editar">Editar</button>
+            <a type="button" class="btn btn-primary" id="editar" name="editar">Editar</a>
           </div>
         </div>
         <!-- /.modal-content -->
@@ -699,27 +699,42 @@
 
   <!-- bootstrap datepicker -->
   <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
+
   <!-- iCheck 1.0.1 -->
   <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
   <script type="text/javascript">
 
       //Date picker
       $('#fecha_nacimiento').datepicker({
-        autoclose: true
-      })
-
-      //Date picker
-      $('#fecha_nacimiento_edicion').datepicker({
-        autoclose: true
+        endDate: 'days',
+        language: 'es',
+        todayHighlight: true,
+        autoclose: true,
+        orientation: 'bottom'
       })
 
       //Date picker
       $('#fecha_nacimiento_detalle').datepicker({
-        autoclose: true
+        endDate: 'days',
+        language: 'es',
+        todayHighlight: true,
+        autoclose: true,
+        orientation: 'bottom'
       })
+
+      //Date picker
+      $('#fecha_nacimiento_edicion').datepicker({
+        endDate: 'days',
+        language: 'es',
+        todayHighlight: true,
+        autoclose: true,
+        orientation: 'bottom'
+      })
+
       //iCheck for checkbox and radio inputs
       $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
         checkboxClass: 'icheckbox_minimal-blue',
@@ -825,6 +840,9 @@
 
     //Añadir
     $('#registrar').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
+
       var form_data = new FormData();
       form_data.append('_token', $('input[name=_token]').val());
       if($('#imagen')[0].files[0]){
@@ -853,6 +871,8 @@
         contentType: false,
         success: function(data){
           if((data.errors)){
+            $('#registrar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Añadir');
+            $('#registrar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
               title: 'Errores de validación!'
@@ -978,7 +998,8 @@
       $('#nacionalidad_edicion').val($(this).data('nacionalidad'));
       if ($(this).data('fecha_nacimiento')) {
         $('#fecha_nacimiento_edicion').val(moment($(this).data('fecha_nacimiento')).format('DD/MM/YYYY'));
-      }      $('#estado_civil_edicion').val($(this).data('estado_civil'));
+      }
+      $('#estado_civil_edicion').val($(this).data('estado_civil'));
       if($(this).data('sexo') == "Masculino"){
         $("#masculino_edicion").prop("checked", true);
       }else{
@@ -990,6 +1011,9 @@
 
     //Editar
     $('#editar').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
+
       var form_data = new FormData();
       form_data.append('_token', $('input[name=_token]').val());
       form_data.append('id_edicion', $('#id_edicion').val());
@@ -1001,7 +1025,7 @@
       form_data.append('nombre_edicion', $('#nombre_edicion').val());
       form_data.append('apellidos_edicion', $('#apellidos_edicion').val());
       form_data.append('nacionalidad_edicion', $('#nacionalidad_edicion').val());
-      form_data.append('fecha_nacimiento_edicion', $('#fecha_nacimiento_edicion').val());
+      form_data.append('fecha_nacimiento_edicion', moment($('#fecha_nacimiento_edicion').val()).format('YYYY-MM-DD'));
       form_data.append('estado_civil_edicion', $('#estado_civil_edicion').val());
       form_data.append('sexo_edicion', $('input[name="sexo_edicion"]:checked').val());
       form_data.append('telefono_edicion', $('#telefono_edicion').val());
@@ -1015,6 +1039,8 @@
         contentType: false,
         success: function(data){
           if((data.errors)){
+            $('#editar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Editar');
+            $('#editar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
               title: 'Errores de validación!'

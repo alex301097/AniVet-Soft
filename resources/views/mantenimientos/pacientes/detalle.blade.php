@@ -48,7 +48,7 @@
         </div>
         <div class="row">
           <div class="col-md-4">
-            <label><b><i class="ni ni-bold-right"></i>Fecha de nacimiento:</b><span style="color:gray;">&nbsp;{{$paciente->fecha_nacimiento}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Fecha de nacimiento:</b><span style="color:gray;">&nbsp;{{date('d/m/Y', strtotime($paciente->fecha_nacimiento))}}</span></label>
           </div>
           <div class="col-md-4">
             <label><b><i class="ni ni-bold-right"></i>Sexo:</b><span style="color:gray;">&nbsp;{{$paciente->sexo}}</span></label>
@@ -110,9 +110,9 @@
               </div>
             @else
               <div class="row">
-                <div class="col-md-12">
-                  <div class="callout callout-warning text-center" style="width:70%;">
-                    <h4>¡No hay imagenes agregadas al paaciente!</h4>
+                <div class="col-md-12 ">
+                  <div class="callout callout-warning">
+                    <h4>¡No hay imagenes agregadas al paciente!</h4>
 
                     <p>Por favor agrega algunas.</p>
                   </div>

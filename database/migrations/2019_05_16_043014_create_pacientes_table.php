@@ -20,7 +20,6 @@ class CreatePacientesTable extends Migration
             $table->string('peso');
             $table->date('fecha_nacimiento')->nullable();;
             $table->string('sexo', 15)->nullable();
-            $table->text('imagen')->nullable();
             $table->string('observaciones');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');

@@ -100,7 +100,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="registrar" name="registrar">Añadir</button>
+          <a type="button" class="btn btn-primary" id="registrar" name="registrar">Añadir</a>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -130,7 +130,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="editar" name="editar">Editar</button>
+          <a type="button" class="btn btn-primary" id="editar" name="editar">Editar</a>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -202,6 +202,8 @@
 
       //Añadir
       $('#registrar').click(function(){
+        $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+        $(this).addClass('disabled');
 
         $.ajax({
           type: 'post',
@@ -212,6 +214,8 @@
           },
           success: function(data){
             if((data.errors)){
+              $('#registrar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Añadir');
+              $('#registrar').removeClass('disabled');
               Toast.fire({
                 type: 'warning',
                 title: 'Errores de validación!'
@@ -241,11 +245,15 @@
 
       //Editar
       $(document).on('click', '#editar_tipo_servicio', function() {
+
+
         $('#id_edicion').val($(this).data('id'));
         $('#descripcion_edicion').val($(this).data('descripcion'));
       });
 
       $('#editar').click(function(){
+        $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+        $(this).addClass('disabled');
 
         $.ajax({
           type: 'post',
@@ -257,6 +265,8 @@
           },
           success: function(data){
             if((data.errors)){
+              $('#editar').html('<i class="fa fa-plus"></i>&nbsp;&nbsp;Editar');
+              $('#editar').removeClass('disabled');
               Toast.fire({
                 type: 'warning',
                 title: 'Errores de validación!'

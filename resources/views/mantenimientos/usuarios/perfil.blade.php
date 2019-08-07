@@ -37,7 +37,12 @@
 
               <p class="text-muted text-center">{{$usuario->rol->descripcion}}</p>
 
-              <a href="#" class="btn btn-primary btn-block"><b>Cerrar sesión</b></a>
+              <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+               class="btn btn-primary btn-block"><b>Cerrar sesión</b></a>
+
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+                @csrf
+              </form>
             </div>
             <!-- /.box-body -->
           </div>
@@ -212,7 +217,7 @@
                                             <div class="input-group-addon">
                                               <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="text" class="form-control form-control-sm pull-right" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento" value="{{$usuario->fecha_nacimiento}}">
+                                            <input type="text" class="form-control form-control-sm pull-right" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento" value="{{date('d/m/Y', strtotime($usuario->fecha_nacimiento))}}">
                                           </div>
                                           <p class="error_fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                         </div>
@@ -288,7 +293,11 @@
                                 <div class="col-md">
                                     <div class="row" style="padding-bottom:10px;">
                                       <div class="col-lg-12 text-center" id="avatar" name="avatar">
-                                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-circle" style="width:300px; height:300px; top:300px; left:300px;" alt="User Avatar">
+                                        @if (!empty($usuario->imagen))
+                                          <img src="{{ url('imgPerfiles/'.$usuario->imagen) }}" class="img-circle" style="width:300px; height:300px; top:300px; left:300px;" alt="User Avatar">
+                                        @else
+                                          <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-circle" style="width:300px; height:300px; top:300px; left:300px;" alt="User Avatar">
+                                        @endif
                                       </div>
                                     </div>
                                 </div>
@@ -321,7 +330,7 @@
                           </div>
                           <div id="collapseThree" class="panel-collapse collapse">
                             <div class="box-body">
-                              <div class="row">
+                              {{-- <div class="row">
                                 <div class="col-md-12" style="padding-left:25px; padding-right:25px;">
                                   <div class="form-group" style="padding-left:15px; padding-right:15px;">
                                     <label for="codigo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Codigo</h5></label>
@@ -332,11 +341,27 @@
                                     <p class="error_codigo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                   </div>
                                 </div>
+                              </div> --}}
+                              <div class="row">
+                                <div class="col-md-12" style="padding-left:25px; padding-right:25px;">
+                                  <div class="form-group" style="padding-left:15px; padding-right:15px;">
+                                    <label for="old_password"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Contraseña Actual</h5></label>
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                      <input class="form-control form-control-sm" placeholder="Contraseña" type="password" id="old_password" name="old_password">
+                                    </div>
+                                    <p class="error_old_password text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                                  </div>
+                                  <small for="old_password" id="passwordHelpBlock" class="form-text text-muted">
+                                    <label for=""><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</label>
+                                    Debes digitar tu actual contraseña para poder actualizarla.
+                                  </small>
+                                </div>
                               </div>
                               <div class="row">
                                 <div class="col-md-6" style="padding-left:25px; padding-right:25px;">
                                   <div class="form-group" style="padding-left:15px; padding-right:15px;">
-                                    <label for="codigo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Contraseña</h5></label>
+                                    <label for="password"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Contraseña</h5></label>
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                       <input class="form-control form-control-sm" placeholder="Contraseña" type="password" id="password" name="password">
@@ -350,7 +375,7 @@
                                 </div>
                                 <div class="col-md-6" style="padding-left:25px; padding-right:25px;">
                                   <div class="form-group" style="padding-left:15px; padding-right:15px;">
-                                    <label for="codigo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Confirmar contraseña</h5></label>
+                                    <label for="password-confirm"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Confirmar contraseña</h5></label>
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                       <input class="form-control form-control-sm" placeholder="Confirmar contraseña" type="password" name="password_confirmation" id="password-confirm">
@@ -377,7 +402,7 @@
                           <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                               <input type="hidden" id="id_edicion" name="id_edicion" value="{{$usuario->id}}">
-                              <button type="button" class="btn btn-danger pull-right">Guardar cambios</button>
+                              <button type="button" class="btn btn-danger pull-right" id="registrar">Guardar cambios</button>
                             </div>
                           </div>
                         </div>
@@ -400,13 +425,20 @@
 @section('scripts')
   <!-- bootstrap datepicker -->
   <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
   <!-- iCheck 1.0.1 -->
   <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
 
   <script type="text/javascript">
+
   //Date picker
   $('#fecha_nacimiento').datepicker({
-    autoclose: true
+    endDate: 'days',
+    language: 'es',
+    todayHighlight: true,
+    autoclose: true,
+    orientation: 'bottom'
   })
 
   //iCheck for checkbox and radio inputs
@@ -430,14 +462,19 @@
     buttonsStyling: false,
   });
 
-  $(document).ready(function(){
-    var imagen = {{(($usuario->imagen)?url('imgPerfiles/'.$usuario->imagen):"null")}}
-    if(imagen){
-      $('#avatar').html("<img src='" + imagen + "' class='img-circle' style='width:300px; height:300px; top:300px; left:300px;' alt='User Avatar'>");
-    }else{
-      $('#avatar').html("<img src='http://ssl.gstatic.com/accounts/ui/avatar_2x.png' class='img-circle' style='width:300px; height:300px; top:200px; left:300px;' alt='User Avatar'>");
+  function filePreview(input){
+    if(input.files && input.files[0]){
+      var reader = new FileReader();
+      reader.onload = function(e){
+        $('#avatar').html("<img src='"+e.target.result+"' class='img-circle' style='width:300px; height:300px; top:300px; left:300px;' alt='User Avatar'>");
+      }
+        reader.readAsDataURL(input.files[0]);
     }
-  })
+  }
+
+  $('#imagen').change(function(){
+    filePreview(this);
+  });
 
   //Añadir
   $('#registrar').click(function(){
@@ -459,7 +496,7 @@
     form_data.append('nombre', $('#nombre').val());
     form_data.append('apellidos', $('#apellidos').val());
     form_data.append('nacionalidad', $('#nacionalidad').val());
-    form_data.append('fecha_nacimiento', $('#fecha_nacimiento').val());
+    form_data.append('fecha_nacimiento', moment($('#fecha_nacimiento').val()).format('YYYY-MM-DD'));
     form_data.append('estado_civil', $('#estado_civil').val());
     form_data.append('sexo', $('#sexo').val());
     form_data.append('telefono', $('#telefono').val());
@@ -537,7 +574,7 @@
           Swal.fire({
             position: 'top-end',
             type: 'success',
-            title: 'El usuario se ha creado correctamente!',
+            title: '¡La información del usuario se ha actualizado correctamente!',
             showConfirmButton: false,
             timer: 1500
           })

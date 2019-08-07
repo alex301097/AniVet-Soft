@@ -31,14 +31,14 @@ public function index(){
         $color = "";
         $deleted_at = $value->getDeletedAtAttribute($value->deleted_at);
         if(empty($value->deleted_at) || new Carbon($value->fecha) <= Carbon::now()){
-          $color = "rgb(128, 176, 93)";
-        }
-
-        if(!empty($value->deleted_at) || new Carbon($value->fecha) > Carbon::now()){
           $color = "rgb(220, 53, 69)";
         }
 
-        if(!empty($value->deleted_at) || new Carbon($value->fecha) <= Carbon::now() && new Carbon($value->fecha) >= Carbon::now()->subDays(4)){
+        if(!empty($value->deleted_at) || new Carbon($value->fecha) > Carbon::now()){
+          $color = "rgb(128, 176, 93)";
+        }
+
+        if(!empty($value->deleted_at) && new Carbon($value->fecha) <= Carbon::now() && new Carbon($value->fecha) >= Carbon::now()->subDays(4)){
           $color = "rgb(209, 111, 19)";
         }
 
