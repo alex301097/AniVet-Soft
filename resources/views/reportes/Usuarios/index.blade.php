@@ -12,7 +12,7 @@
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Reportes</a></li>
-      <li class="active">Citas</li>
+      <li class="active">Usuarios</li>
     </ol>
   </section>
 
@@ -22,7 +22,7 @@
     <!-- Default box -->
     <div class="box">
       <div class="box-header with-border">
-        <h3 class="box-title">Reporte de citas</h3>
+        <h3 class="box-title">Reporte de usuarios</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                   title="Collapse">
@@ -35,7 +35,7 @@
               <h4>Exportar formato</h4>
               <button type="submit" class="btn btn-sm btn-success pull-left" style="max-width:300px;"
                 id="generar_reporte" name="generar_reporte" data-toggle="tooltip"
-                title="Click para generar el reporte en PDF de la citas.">
+                title="Click para generar el reporte en PDF de los usuarios.">
                 &nbsp;<i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;PDF
               </button>
             </div>
@@ -49,24 +49,23 @@
               <div class="form-group">
                 <h4>Filtro por estado</h4>
                 <select class="form-control form-control-sm" id="estado" name="estado" style="max-width:250px;">
-                  <option value="habilitados">Citas habilitadas</option>
-                  <option value="deshabilitados">Citas deshabilitadas</option>
+                  <option value="habilitados">Usuarios habilitadas</option>
+                  <option value="deshabilitados">Usuarios deshabilitadas</option>
                 </select>
               </div>
             </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <table class="table table-bordered table-striped text-center" id="citas" name="citas">
+            <table class="table table-bordered table-striped text-center" id="usuarios" name="usuarios">
                   <thead>
                     <tr>
-                        <th scope="col">Encargado</th>
-                        <th scope="col">Paciente</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Hora Inicio</th>
-                        <th scope="col">Hora Final</th>
-                        <th scope="col">Servicio</th>
-                        <th scope="col">Motivo</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Cédula</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Dirección</th>
                     </tr>
                   </thead>
                 </table>
@@ -121,21 +120,20 @@
 
       $(document).ready(function() {
 
-          var ruta = "{{ url('api/reporte_citas/0/0/:estado') }}";
+          var ruta = "{{ url('api/reporte_usuarios/0/0/:estado') }}";
           ruta = ruta.replace(':estado', $('#estado').val());
-        $('#citas').DataTable({
+        $('#usuarios').DataTable({
           "processing":true,
           "serverSide":true,
           "ajax":ruta,
           "columns":
           [
-            {data: 'nombreDueño', orderable: false, searchable: false},
-            {data: 'nombrePaciente', orderable: false, searchable: false},
-            {data: 'fecha'},
-            {data: 'horaInicio'},
-            {data: 'horaFinal'},
-            {data: 'descripcionServicio', orderable: false, searchable: false},
-            {data: 'motivo'},
+            {data: 'nombre', orderable: false, searchable: false},
+            {data: 'apellidos', orderable: false, searchable: false},
+            {data: 'cedula'},
+            {data: 'telefono'},
+            {data: 'rol.descripcion'},
+            {data: 'direccion', orderable: false, searchable: false},
           ],
           "language":{
             "info": "Mostrando total registros",
@@ -161,14 +159,16 @@
 
       } );
 
-      $(document).ready(function () {
+       $(document).ready(function () {
          $(function() {
+
              $('input[name="datefilter"]').daterangepicker({
                  opens: 'center',
                  autoUpdateInput: false,
                  format: "DD/MM/YYYY",
-      
+                 maxDate: moment(),
                 "locale": {
+
                     "separator": " - ",
                     "applyLabel": "Aplicar",
                     "cancelLabel": "Cancelar/Limpiar",
@@ -201,10 +201,11 @@
                     "firstDay": 1
                 }
              });
-             
+
              $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-               var table = $('#citas').DataTable();
-                 var ruta = "{{ url('api/reporte_citas/:min/:max/:estado') }}";
+               var table = $('#usuarios').DataTable();
+
+                 var ruta = "{{ url('api/reporte_usuarios/:min/:max/:estado') }}";
                  ruta = ruta.replace(':min', picker.startDate.format('YYYY-MM-DD'));
                  ruta = ruta.replace(':max', picker.endDate.format('YYYY-MM-DD'));
                  ruta = ruta.replace(':estado', $('#estado').val());
@@ -213,29 +214,31 @@
                  table.ajax.url(ruta);
                  table.draw();
 
-                 $(this).val("Del " + picker.startDate.format('DD/MM/YYYY') + ' al ' + picker.endDate.format('DD/MM/YYYY') + ".");
+                 $(this).val("Del " + picker.startDate.format('MM/DD/YYYY') + ' al ' + picker.endDate.format('MM/DD/YYYY') + ".");
              });
 
              $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-                var table = $('#citas').DataTable();
-                var ruta = "{{ url('api/reporte_citas/0/0/:estado') }}";
+                var table = $('#usuarios').DataTable();
+                var ruta = "{{ url('api/reporte_usuarios/0/0/:estado') }}";
                 ruta = ruta.replace(':estado', $('#estado').val());
                 $("#min").val("");
                 $("#max").val("");
                 table.ajax.url(ruta);
                 table.draw();
+
                 $(this).val('');
              });
+
            });
 
            $('#generar_reporte').click(function () {
              if(!$('#rango_fechas').val()){
-                 var ruta = "{{ route('citas-pdf',['0','0',':estado']) }}";
+                 var ruta = "{{ route('usuarios-pdf',['0','0',':estado']) }}";
                  ruta = ruta.replace(':estado', $("#estado").val());
 
                  window.open(ruta, '_blank');
              }else {
-               var ruta = "{{ route('citas-pdf',[':min',':max',':estado']) }}";
+               var ruta = "{{ route('usuarios-pdf',[':min',':max',':estado']) }}";
                  ruta = ruta.replace(':min', $("#min").val());
                  ruta = ruta.replace(':max', $("#max").val());
                  ruta = ruta.replace(':estado', $("#estado").val());
@@ -245,14 +248,14 @@
            });
 
            $('#estado').change(function () {
-             var table = $('#citas').DataTable();
+             var table = $('#usuarios').DataTable();
              if(!$('#rango_fechas').val()){
-                 var ruta = "{{ url('api/reporte_citas/0/0/:estado') }}";
+                 var ruta = "{{ url('api/reporte_usuarios/0/0/:estado') }}";
                  ruta = ruta.replace(':estado', $(this).val());
                  table.ajax.url(ruta);
                  table.draw();
              }else {
-                 var ruta = "{{ url('api/reporte_citas/:min/:max/:estado') }}";
+                 var ruta = "{{ url('api/reporte_usuarios/:min/:max/:estado') }}";
                  ruta = ruta.replace(':min', $("#min").val());
                  ruta = ruta.replace(':max', $("#max").val());
                  ruta = ruta.replace(':estado', $(this).val());

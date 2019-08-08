@@ -37,13 +37,13 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-4">
-            <label><b><i class="ni ni-bold-right"></i>Nombre:</b><span style="color:gray;">&nbsp;{{$paciente->nombre}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Nombre del paciente:</b><span style="color:gray;">&nbsp;{{$paciente->nombre}}</span></label>
           </div>
           <div class="col-md-4">
-            <label><b><i class="ni ni-bold-right"></i>Edad:</b><span style="color:gray;">&nbsp;{{$paciente->edad}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Edad del paciente:</b><span style="color:gray;">&nbsp;{{$paciente->edad}}</span></label>
           </div>
           <div class="col-md-4">
-            <label><b><i class="ni ni-bold-right"></i>Peso:</b><span style="color:gray;">&nbsp;{{$paciente->peso}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Peso del paciente:</b><span style="color:gray;">&nbsp;{{$paciente->peso}}</span></label>
           </div>
         </div>
         <div class="row">
@@ -51,13 +51,13 @@
             <label><b><i class="ni ni-bold-right"></i>Fecha de nacimiento:</b><span style="color:gray;">&nbsp;{{date('d/m/Y', strtotime($paciente->fecha_nacimiento))}}</span></label>
           </div>
           <div class="col-md-4">
-            <label><b><i class="ni ni-bold-right"></i>Sexo:</b><span style="color:gray;">&nbsp;{{$paciente->sexo}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Sexo del paciente:</b><span style="color:gray;">&nbsp;{{$paciente->sexo}}</span></label>
           </div>
           <div class="col-md-4">
-            <label><b><i class="ni ni-bold-right"></i>Especie:</b><span style="color:gray;">&nbsp;{{$paciente->tipo_animal->descripcion}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Especie del paciente:</b><span style="color:gray;">&nbsp;{{$paciente->tipo_animal->descripcion}}</span></label>
           </div>
           <div class="col-md-4">
-            <label><b><i class="ni ni-bold-right"></i>Raza:</b><span style="color:gray;">&nbsp;{{$paciente->raza}}</span></label>
+            <label><b><i class="ni ni-bold-right"></i>Raza del paciente:</b><span style="color:gray;">&nbsp;{{$paciente->raza}}</span></label>
           </div>
         </div>
         <div class="row">
@@ -67,9 +67,7 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
 
         </div>
@@ -78,7 +76,7 @@
         <!-- Paciente imagen box -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Imagenes</h3>
+            <h3 class="box-title">Imágenes</h3>
 
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
@@ -112,18 +110,24 @@
               <div class="row">
                 <div class="col-md-12 ">
                   <div class="callout callout-warning">
-                    <h4>¡No hay imagenes agregadas al paciente!</h4>
+                    <h4>¡No hay imágenes agregadas al paciente!</h4>
 
                     <p>Por favor agrega algunas.</p>
                   </div>
                 </div>
               </div>
             @endif
+
           </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+            <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
+              <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
+            </div>
+            </div>
           <!-- /.box-body -->
-          <div class="box-footer">
-            Footer
-          </div>
+
           <!-- /.box-footer-->
   </section>
   <!-- /.content -->

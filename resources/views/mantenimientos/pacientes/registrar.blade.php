@@ -39,14 +39,14 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="nombre"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre</h5></label>
+              <label for="nombre"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Nombre del paciente</h5></label>
               <input type="text" class="form-control form-control-sm form-control-alternative" id="nombre" name="nombre" placeholder="Nombre">
               <p class="error-nombre text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="duenno"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Dueño</h5></label>
+              <label for="duenno"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Dueño del paciente</h5></label>
               <input type="hidden" name="idUser" id="idUser" value="">
               <input type="text" class="form-control form-control-sm form-control-alternative" name="duenno" id="duenno" value="" placeholder="Ingrese el nombre o cedula del dueño" >
               <p class="error-duenno text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
@@ -68,7 +68,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="raza"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Raza</h5></label>
+              <label for="raza"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Raza del paciente</h5></label>
               <input type="text" class="form-control form-control-sm form-control-alternative" id="raza" name="raza" placeholder="Raza">
               <p class="error-raza text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
@@ -88,7 +88,7 @@
           <div class="col-md-6">
 
                 <div class="form-group">
-                  <label for="nacionalidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo</h5></label>
+                  <label for="nacionalidad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Sexo del paciente</h5></label>
                   <div class="row">
                     <div class="col-md-6 text-center">
                       <div class="custom-control custom-radio mb-3">
@@ -115,14 +115,14 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="edad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Edad</h5></label>
+              <label for="edad"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Edad del paciente</h5></label>
               <input type="number" class="form-control form-control-sm form-control-alternative" id="edad" name="edad" placeholder="Edad">
               <p class="error-edad text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="peso"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Peso</h5></label>
+              <label for="peso"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Peso del paciente</h5></label>
               <input type="text" class="form-control form-control-sm form-control-alternative" id="peso" name="peso" placeholder="Peso">
               <p class="error-peso text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
@@ -131,14 +131,18 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
+              <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones del paciente (Comportamiento, personalidad, etc)</h5></label>
               <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones"></textarea>
               <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 text-right">
+          <div class="col-md-6">
+          <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
+            <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
+          </div>
+          <div class="col-md-6 text-right">
             @csrf
             <a class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:175px;" type="button" id="registrar" name="registrar">
               <span><i class="fas fa-plus"></i></span>&nbsp;Registrar paciente
@@ -147,9 +151,6 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -296,7 +297,7 @@
             $('#registrar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
-              title: 'Errores de validación!'
+              title: '!Errores de validación!'
             })
 
             if(data.errors.tipo_animal){
@@ -347,7 +348,7 @@
             Swal.fire({
               position: 'top-end',
               type: 'success',
-              title: 'El paciente se ha registrado correctamente!',
+              title: '!El paciente se ha registrado correctamente!',
               showConfirmButton: false,
               timer: 1500
             })

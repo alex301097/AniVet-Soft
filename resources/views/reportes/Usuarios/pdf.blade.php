@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Reporte de citas</title>
+    <title>Reporte de usuarios</title>
     <style>
       .simbolo {
         font-family: DejaVu Sans;
@@ -156,7 +156,7 @@
               <td width="30%" colspan="4" class="text-right">
                 <b>
                 <small>
-                  {{\Carbon\Carbon::now()->formatLocalized('%A, %d de %B del %Y, %h:%M hrs')}}
+                  {{\Carbon\Carbon::now()->formatLocalized('%A, %d de %B del %Y, %H:%M hrs')}}
                   <br>
                   Realizado por: {{auth()->user()->nombre}}
                 </small>
@@ -170,29 +170,27 @@
     <table width="100%">
       <tr>
         <td colspan="12" class="text-center">
-          <u><b><h2>Reporte de citas medicas</h2></b></u>
+          <u><b><h2>Reporte de usuarios</h2></b></u>
         </br>
         </br>
         </td>
       </tr>
       <tr class="text-size-10">
-        <td><b>Encargado</b></td>
-        <td><b>Paciente</b></td>
-        <td><b>Fecha</b></td>
-        <td><b>Hora de inicio</b></td>
-        <td><b>Hora final</b></td>
-        <td><b>Servicio</b></td>
-        <td><b>Motivo</b></td>
+        <td><b>Nombre</b></td>
+        <td><b>Apellidos</b></td>
+        <td><b>Cédula</b></td>
+        <td><b>Telefono</b></td>
+        <td><b>Rol</b></td>
+        <td><b>Dirección</b></td>
       </tr>
-      @foreach ($citas as $cita)
+      @foreach ($usuarios as $usuario)
         <tr class="text-size-10 text-center">
-          <td>{{$cita->paciente->user->nombre." ".$cita->paciente->user->apellidos}}</td>
-          <td>{{$cita->paciente->nombre." - ".$cita->paciente->tipo_animal->descripcion." - ".$cita->paciente->raza." - ".$cita->paciente->sexo}} </td>
-          <td>{{$cita->fecha}}</td>
-          <td>{{$cita->horaInicio}}</td>
-          <td>{{$cita->horaFinal}}</td>
-          <td>{{$cita->servicio->descripcion}}</td>
-          <td>{{$cita->motivo}}</td>
+          <td>{{$usuario->nombre}}</td>
+          <td>{{$usuario->apellidos}}</td>
+          <td>{{$usuario->cedula}}</td>
+          <td>{{$usuario->telefono}}</td>
+          <td>{{$usuario->rol->descripcion}}</td>
+          <td>{{$usuario->direccion}}</td>
         </tr>
       @endforeach
     </table>

@@ -133,7 +133,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 text-right">
+          <div class="col-md-6">
+          <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
+            <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
+          </div>
+          <div class="col-md-6 text-right">
             @csrf
             <a class="btn btn-block btn-primary btn-sm pull-right" style="width:100px;" type="submit" id="registrar" name="registrar">
               <span><i class="fas fa-plus"></i></span>&nbsp;&nbsp;Registrar cita
@@ -142,9 +146,6 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -292,7 +293,7 @@
             $('#registrar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
-              title: 'Errores de validación!'
+              title: '!Errores de validación!'
             })
 
             if(data.errors.fecha){
@@ -334,7 +335,7 @@
             Swal.fire({
               position: 'top-end',
               type: 'success',
-              title: 'La cita se ha registrado correctamente!',
+              title: '!La cita se ha registrado correctamente!',
               showConfirmButton: false,
               timer: 1500
             })

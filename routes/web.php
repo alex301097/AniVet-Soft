@@ -241,5 +241,15 @@ Route::group(['prefix'=>'reportes', 'middleware'=>'auth'], function(){
   Route::get('exportar-pdf-citas/{min?}/{max?}/{estado?}', 'ReportesController@pdf_citas')->name('citas-pdf');
 });
 
+Route::group(['prefix'=>'reportes', 'middleware'=>'auth'], function(){
+  Route::get('usuarios', 'ReportesController@reporte_usuarios')->name('reportes.usuarios');
+  Route::get('exportar-pdf-usuarios/{min?}/{max?}/{estado?}', 'ReportesController@pdf_usuarios')->name('usuarios-pdf');
+});
+
+Route::group(['prefix'=>'reportes', 'middleware'=>'auth'], function(){
+  Route::get('pacientes', 'ReportesController@reporte_pacientes')->name('reportes.pacientes');
+  Route::get('exportar-pdf-pacientes/{min?}/{max?}/{estado?}', 'ReportesController@pdf_pacientes')->name('pacientes-pdf');
+});
+
 
 // Route::get('registro', 'HomeController@index')->name('home');

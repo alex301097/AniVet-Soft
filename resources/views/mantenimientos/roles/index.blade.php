@@ -71,9 +71,7 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -184,7 +182,7 @@
           if((data.errors)){
             Toast.fire({
               type: 'warning',
-              title: 'Errores de validación!'
+              title: '!Errores de validación!'
             })
             if(data.errors.descripcion){
               $('.error-descripcion').removeClass('hidden');
@@ -194,7 +192,7 @@
             Swal.fire({
               position: 'top-end',
               type: 'success',
-              title: 'El rol se ha registrado correctamente!',
+              title: '!El rol se ha registrado correctamente!',
               showConfirmButton: false,
               timer: 1500
             })
@@ -210,12 +208,12 @@
     $(document).on('click', '#habilitar_rol', function() {
       var id = $(this).data('id');
       swal_confirm.fire({
-        title: 'Estas seguro de habilitar esto?',
-        text: "Podras deshabilitar esto después!",
+        title: '¿Estas seguro de habilitar esto?',
+        text: "!Podras deshabilitar esto después!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Si, habilitalo!',
-        cancelButtonText: 'No, cancelar!',
+        confirmButtonText: '!Si, habilitalo!',
+        cancelButtonText: '!No, cancelar!',
         reverseButtons: true
       }).then((result) => {
         if (result.value) {
@@ -228,7 +226,7 @@
 							},
 							success: function (data) {
                 swal_confirm.fire(
-                  'Habilitado!',
+                  '!Habilitado!',
                   'Los datos han sido habilitados.',
                   'success'
                 ).then(function() {
@@ -242,7 +240,7 @@
         ) {
           swal_confirm.fire(
             'Cancelado',
-            'El dato esta seguro :)',
+            'El dato esta seguro.',
             'error'
           )
         }
@@ -253,12 +251,12 @@
     $(document).on('click', '#deshabilitar_rol', function() {
       var id = $(this).data('id');
       swal_confirm.fire({
-        title: 'Estas seguro de deshabilitar esto?',
-        text: "Podras habilitar esto después!",
+        title: '¿Estas seguro de deshabilitar esto?',
+        text: "!Podras habilitar esto después!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Si, deshabilitalo!',
-        cancelButtonText: 'No, cancelar!',
+        confirmButtonText: '!Si, deshabilitalo!',
+        cancelButtonText: '!No, cancelar!',
         reverseButtons: true
       }).then((result) => {
         if (result.value) {
@@ -271,7 +269,7 @@
 							},
 							success: function (data) {
                 swal_confirm.fire(
-                  'Deshabilitado!',
+                  '!Deshabilitado!',
                   'El dato ha sido deshabilitado.',
                   'success'
                 ).then(function() {
@@ -285,7 +283,7 @@
         ) {
           swal_confirm.fire(
             'Cancelado',
-            'El dato esta seguro :)',
+            'El dato esta seguro.',
             'error'
           )
         }

@@ -134,7 +134,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 text-right">
+          <div class="col-md-6">
+          <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
+            <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
+          </div>
+          <div class="col-md-6 text-right">
             <input type="hidden" name="id_edicion" id="id_edicion" value="{{$cita->id}}">
             @csrf
             <a class="btn btn-block btn-primary btn-sm pull-right" style="padding-right:10px;width:100px;" type="button" id="editar" name="editar">
@@ -144,9 +148,7 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -296,7 +298,7 @@
             $('#editar').removeClass('disabled');
             Toast.fire({
               type: 'warning',
-              title: 'Errores de validación!'
+              title: '!Errores de validación!'
             })
 
             if(data.errors.fecha){
@@ -343,7 +345,7 @@
             Swal.fire({
               position: 'top-end',
               type: 'success',
-              title: 'La cita se ha editado correctamente!',
+              title: '!La cita se ha editado correctamente!',
               showConfirmButton: false,
               timer: 1500
             })

@@ -41,13 +41,13 @@ class RolController extends Controller
   public function get_asignar_permisos($id)
   {
     $rol = Rol::find($id);
-    $permisos_usuario = Permiso::where('categoria','Mantenimiento de usuarios')->get();
-    $permisos_paciente = Permiso::where('categoria','Mantenimiento de pacientes')->get();
-    $permisos_rol = Permiso::where('categoria','Mantenimiento de roles')->get();
-    $permisos_tipo_servicio = Permiso::where('categoria','Mantenimiento de tipos de servicio')->get();
-    $permisos_tipo_animal = Permiso::where('categoria','Mantenimiento de tipos de animales')->get();
-    $permisos_animal_en_venta = Permiso::where('categoria','Mantenimiento de animales en venta')->get();
-    $permisos_citas = Permiso::where('categoria','Mantenimiento de citas')->get();
+    $permisos_usuario = Permiso::where('categoria','usuarios')->get();
+    $permisos_paciente = Permiso::where('categoria','pacientes')->get();
+    $permisos_rol = Permiso::where('categoria','roles')->get();
+    $permisos_tipo_servicio = Permiso::where('categoria','tipos de servicio')->get();
+    $permisos_tipo_animal = Permiso::where('categoria','tipos de animales')->get();
+    $permisos_animal_en_venta = Permiso::where('categoria','animales en venta')->get();
+    $permisos_citas = Permiso::where('categoria','citas')->get();
 
     return view('mantenimientos.roles.asignar', ['rol'=>$rol, 'permisos_usuario'=>$permisos_usuario,'permisos_paciente'=>$permisos_paciente,
     'permisos_rol'=>$permisos_rol,'permisos_tipo_servicio'=>$permisos_tipo_servicio,'permisos_tipo_animal'=>$permisos_tipo_animal,
