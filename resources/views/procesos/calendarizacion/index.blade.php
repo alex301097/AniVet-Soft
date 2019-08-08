@@ -189,9 +189,7 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -368,7 +366,7 @@
           Swal.fire({
             position: 'top-end',
             type: 'success',
-            title: 'La cita se ha registrado correctamente!',
+            title: '!La cita se ha registrado correctamente!',
             showConfirmButton: false,
             timer: 1500
           })

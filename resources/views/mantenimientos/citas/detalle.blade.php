@@ -72,14 +72,6 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="observaciones"><h5>Observaciones</h5></label>
-              <textarea class="form-control form-control-sm" disabled id="observaciones" name="observaciones" rows="3" placeholder="Observaciones" style="resize:none">{{$cita->observaciones}}</textarea>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
               <label for="tipo_animal"><h5>Tipo de servicio</h5></label>
               <select class="form-control form-control-sm disabled" disabled id="servicio" name="servicio">
                 <option value="" disabled>Seleccione una opción</option>
@@ -89,23 +81,18 @@
               </select>
             </div>
           </div>
-          <div class="col-md-6">
+        </div>
+        <div class="row">
+          <div class="col-md-12">
             <div class="form-group">
-              <label for="estado"><h5>Estado</h5></label>
-              <select class="form-control form-control-sm disabled" disabled id="estado" name="estado">
-                <option value="" disabled>Seleccione una opción</option>
-                <option value="Activa" {{($cita->estado == "Activa")?"selected":"disabled"}}>Activa</option>
-                <option value="Pendiente" {{($cita->estado == "Pendiente")?"selected":"disabled"}}>Pendiente</option>
-                <option value="Inactiva" {{($cita->estado == "Inactiva")?"selected":"disabled"}}>Inactiva</option>
-              </select>
+              <label for="observaciones"><h5>Observaciones</h5></label>
+              <textarea class="form-control form-control-sm" disabled id="observaciones" name="observaciones" rows="3" placeholder="Observaciones" style="resize:none">{{$cita->observaciones}}</textarea>
             </div>
           </div>
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -113,7 +100,7 @@
     <!-- Paciente imagen box -->
     <div class="box box-info">
       <div class="box-header with-border">
-        <h3 class="box-title">Imagenes del paciente</h3>
+        <h3 class="box-title">Imágenes del paciente</h3>
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
@@ -122,7 +109,7 @@
         </div>
       </div>
       <div class="box-body">
-        @if (!empty($cita->paciente->imagenes))
+        @if (count($cita->paciente->imagenes))
           <div class="row">
             <div class="col-md-12">
                 <div class="demo-gallery">
@@ -150,8 +137,8 @@
         @else
           <div class="row">
             <div class="col-md-12">
-              <div class="callout callout-warning text-center" style="width:70%;">
-                <h4>¡No hay imagenes agregadas al paaciente!</h4>
+              <div class="callout callout-warning" style="width:100%;">
+                <h4>¡No hay imágenes agregadas al paciente!</h4>
 
                 <p>Por favor agrega algunas.</p>
               </div>
@@ -160,10 +147,14 @@
         @endif
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
       <!-- /.box-footer-->
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
+          <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
+      </div>
     </div>
     <!-- /.box -->
   </section>

@@ -119,13 +119,13 @@
         if((data.errors)){
           Toast.fire({
             type: 'warning',
-            title: 'Errores encontrados!'
+            title: '!Errores encontrados!'
           })
         }else{
           Swal.fire({
             position: 'top-end',
             type: 'success',
-            title: 'El respaldo se ha añadido correctamente!',
+            title: '!El respaldo se ha añadido correctamente!',
             showConfirmButton: false,
             timer: 1500
           })
@@ -184,13 +184,13 @@
         if((data.errors)){
           Toast.fire({
             type: 'warning',
-            title: 'Errores de validación!'
+            title: '!Errores de validación!'
           })
         }else{
           Swal.fire({
             position: 'top-end',
             type: 'success',
-            title: 'El respaldo se ha restaurado correctamente!',
+            title: '!El respaldo se ha restaurado correctamente!',
             showConfirmButton: false,
             timer: 1500
           })

@@ -75,9 +75,7 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -91,7 +89,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Añadir imagenes al paciente</h4>
+          <h4 class="modal-title">Añadir imágenes al paciente</h4>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -207,12 +205,12 @@
         var id = $(this).data('id');
 
         swal_confirm.fire({
-          title: 'Estas seguro de habilitar esto?',
-          text: "Podras deshabilitar esto después!",
+          title: '¿Estas seguro de habilitar esto?',
+          text: "!Podras deshabilitar esto después!",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonText: 'Si, habilitalo!',
-          cancelButtonText: 'No, cancelar!',
+          confirmButtonText: '!Si, habilitalo!',
+          cancelButtonText: '!No, cancelar!',
           reverseButtons: true
         }).then((result) => {
           if (result.value) {
@@ -225,7 +223,7 @@
   							},
   							success: function (data) {
                   swal_confirm.fire(
-                    'Habilitado!',
+                    '!Habilitado!',
                     'Los datos han sido habilitados.',
                     'success'
                   ).then(function() {
@@ -239,7 +237,7 @@
           ) {
             swal_confirm.fire(
               'Cancelado',
-              'El dato esta seguro :)',
+              'El dato esta seguro.',
               'error'
             )
           }
@@ -251,12 +249,12 @@
         var id = $(this).data('id');
 
         swal_confirm.fire({
-          title: 'Estas seguro de deshabilitar esto?',
-          text: "Podras habilitar esto después!",
+          title: '¿Estas seguro de deshabilitar esto?',
+          text: "!Podras habilitar esto después!",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonText: 'Si, deshabilitalo!',
-          cancelButtonText: 'No, cancelar!',
+          confirmButtonText: '!Si, deshabilitalo!',
+          cancelButtonText: '!No, cancelar!',
           reverseButtons: true
         }).then((result) => {
           if (result.value) {
@@ -269,7 +267,7 @@
   							},
   							success: function (data) {
                   swal_confirm.fire(
-                    'Deshabilitado!',
+                    '!Deshabilitado!',
                     'El dato ha sido deshabilitado.',
                     'success'
                   ).then(function() {
@@ -283,7 +281,7 @@
           ) {
             swal_confirm.fire(
               'Cancelado',
-              'El dato esta seguro :)',
+              'El dato esta seguro.',
               'error'
             )
           }

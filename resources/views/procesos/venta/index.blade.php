@@ -484,7 +484,7 @@
         if((data.errors)){
           Toast.fire({
             type: 'warning',
-            title: 'Errores de validación!'
+            title: '!Errores de validación!'
           });
 
           $.each(data.errors, function( index, value ) {
@@ -574,7 +574,7 @@
           });
             Toast.fire({
               type: 'success',
-              title: 'Venta añadida!'
+              title: '!Venta añadida!'
             });
 
             $('#limpiar_lista_detalles').removeClass('disabled');

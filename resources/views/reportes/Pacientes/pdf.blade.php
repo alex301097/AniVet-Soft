@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Reporte de citas</title>
+    <title>Reporte de pacientes</title>
     <style>
       .simbolo {
         font-family: DejaVu Sans;
@@ -170,29 +170,27 @@
     <table width="100%">
       <tr>
         <td colspan="12" class="text-center">
-          <u><b><h2>Reporte de citas medicas</h2></b></u>
+          <u><b><h2>Reporte de pacientes</h2></b></u>
         </br>
         </br>
         </td>
       </tr>
       <tr class="text-size-10">
-        <td><b>Encargado</b></td>
         <td><b>Paciente</b></td>
-        <td><b>Fecha</b></td>
-        <td><b>Hora de inicio</b></td>
-        <td><b>Hora final</b></td>
-        <td><b>Servicio</b></td>
-        <td><b>Motivo</b></td>
+        <td><b>Edad</b></td>
+        <td><b>Peso</b></td>
+        <td><b>Tipo</b></td>
+        <td><b>Sexo</b></td>
+        <td><b>Raza</b></td>
       </tr>
-      @foreach ($citas as $cita)
+      @foreach ($pacientes as $paciente)
         <tr class="text-size-10 text-center">
-          <td>{{$cita->paciente->user->nombre." ".$cita->paciente->user->apellidos}}</td>
-          <td>{{$cita->paciente->nombre." - ".$cita->paciente->tipo_animal->descripcion." - ".$cita->paciente->raza." - ".$cita->paciente->sexo}} </td>
-          <td>{{$cita->fecha}}</td>
-          <td>{{$cita->horaInicio}}</td>
-          <td>{{$cita->horaFinal}}</td>
-          <td>{{$cita->servicio->descripcion}}</td>
-          <td>{{$cita->motivo}}</td>
+          <td>{{$paciente->nombre}}</td>
+          <td>{{$paciente->edad }}</td>
+          <td>{{$paciente->peso}}</td>
+          <td>{{$paciente->tipo_animal->descripcion}}</td>
+          <td>{{$paciente->sexo}}</td>
+          <td>{{$paciente->raza}}</td>
         </tr>
       @endforeach
     </table>

@@ -87,7 +87,7 @@
           <ul class="treeview-menu">
             <li id="side_bar_option-roles" name="side_bar_option-roles"><a href="{{route('roles')}}"><i class="fa fa-circle-o"></i>Roles/Permisos</a></li>
             <li id="side_bar_option-respaldos" name="side_bar_option-respaldos"><a href="{{route('respaldos')}}"><i class="fa fa-circle-o"></i>Respaldos</a></li>
-            <li class="treeview" id="side_bar_option-bitacoras" name="side_bar_option-bitacoras">
+            <!-- <li class="treeview" id="side_bar_option-bitacoras" name="side_bar_option-bitacoras">
               <a href="#"><i class="fa fa-circle-o"></i> Bitacoras
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
@@ -99,7 +99,7 @@
                 <li id="side_bar_option-bitacoras-venta_animales" name="side_bar_option-bitacoras-venta_animales"><a href="{{route('home')}}" ><i class="fa fa-circle-o"></i> Venta de animales</a></li>
                 <li id="side_bar_option-bitacoras-calendarizacion" name="side_bar_option-bitacoras-calendarizacion"><a href="{{route('home')}}" ><i class="fa fa-circle-o"></i> Calendarización</a></li>
               </ul>
-            </li>
+            </li> -->
           </ul>
         </li>
         <li class="treeview" id="side_bar-reportes" name="side_bar-reportes">
@@ -110,7 +110,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li id="side_bar_option-citas" name="side_bar_option-citas"><a href="{{route('reportes.citas')}}"><i class="fa fa-circle-o"></i>Citas</a></li>
+            <li id="side_bar_option-reportes-citas" name="side_bar_option-reportes-citas"><a href="{{route('reportes.citas')}}"><i class="fa fa-circle-o"></i>Citas</a></li>
+            <li id="side_bar_option-reportes-usuarios" name="side_bar_option-reportes-usuarios"><a href="{{route('reportes.usuarios')}}"><i class="fa fa-circle-o"></i>Usuarios</a></li>
+            <li id="side_bar_option-reportes-pacientes" name="side_bar_option-reportes-pacientes"><a href="{{route('reportes.pacientes')}}"><i class="fa fa-circle-o"></i>Pacientes</a></li>
+          </ul>
           </ul>
         </li>
       </ul>

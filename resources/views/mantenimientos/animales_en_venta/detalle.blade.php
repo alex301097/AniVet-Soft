@@ -68,9 +68,7 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -78,7 +76,7 @@
     <!-- Paciente imagen box -->
     <div class="box box-info">
       <div class="box-header with-border">
-        <h3 class="box-title">Imagenes</h3>
+        <h3 class="box-title">Imágenes</h3>
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
@@ -87,7 +85,7 @@
         </div>
       </div>
       <div class="box-body">
-        @if (!empty($animal->imagenes))
+        @if (count($animal->imagenes))
           <div class="demo-gallery">
             <ul id="lightgallery">
               @foreach ($animal->imagenes as $imagen)
@@ -113,21 +111,27 @@
         @else
           <div class="row">
             <div class="col-md-12">
-              <div class="callout callout-warning text-center" style="width:70%;">
-                <h4>¡No hay imagenes agregadas al paaciente!</h4>
+              <div class="callout callout-warning" style="width:100%;">
+                <h4>¡No hay imágenes agregadas al paciente!</h4>
 
                 <p>Por favor agrega algunas.</p>
               </div>
             </div>
           </div>
         @endif
+
       </div>
+
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
       </div>
+      <div class="row">
+        <div class="col-md-6">
+        <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
+          <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
+        </div>
+        </div>
       <!-- /.box -->
   </section>
   <!-- /.content -->

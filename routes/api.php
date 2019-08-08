@@ -106,6 +106,52 @@ Route::get('reporte_citas/{min?}/{max?}/{estado?}', function($min = null, $max =
 
 });
 
+Route::get('reporte_usuarios/{min?}/{max?}/{estado?}', function($min = null, $max = null, $estado = null){
+  if(!empty($estado && $estado == "deshabilitados")){
+    if (!empty($min) && !empty($max)) {
+    return datatables()
+    ->eloquent(User::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max])->onlyTrashed())
+    ->toJson();
+    }
+    return datatables()
+    ->eloquent(User::query()->orderBy('created_at', 'desc')->onlyTrashed())
+    ->toJson();
+  }else {
+    if (!empty($min) && !empty($max)) {
+    return datatables()
+    ->eloquent(User::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max]))
+    ->toJson();
+    }
+    return datatables()
+    ->eloquent(User::query()->orderBy('created_at', 'desc'))
+    ->toJson();
+  }
+
+});
+
+Route::get('reporte_pacientes/{min?}/{max?}/{estado?}', function($min = null, $max = null, $estado = null){
+  if(!empty($estado) && $estado == "deshabilitados"){
+    if (!empty($min) && !empty($max)) {
+    return datatables()
+    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max])->onlyTrashed())
+    ->toJson();
+    }
+    return datatables()
+    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->onlyTrashed())
+    ->toJson();
+  }else {
+    if (!empty($min) && !empty($max)) {
+    return datatables()
+    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max]))
+    ->toJson();
+    }
+    return datatables()
+    ->eloquent(Paciente::query()->orderBy('created_at', 'desc'))
+    ->toJson();
+  }
+
+});
+
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

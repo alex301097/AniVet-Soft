@@ -82,52 +82,52 @@
               <strong><i class="fa fa-pencil margin-r-5"></i> Permisos</strong>
 
               <p>
-                @if ($usuario->rol->permisos->contains('categoria', 'Mantenimiento de usuarios'))
+                @if ($usuario->rol->permisos->contains('categoria', 'usuarios'))
                   <b>Mantenimiento de usuarios: </b> <br>
-                  @foreach ($usuario->rol->permisos->where('categoria','Mantenimiento de usuarios') as $permiso)
+                  @foreach ($usuario->rol->permisos->where('categoria','usuarios') as $permiso)
                     <span class="label label-info">{{$permiso->nombre}}</span>
                   @endforeach
                   <br>
                 @endif
 
-                @if ($usuario->rol->permisos->contains('categoria', 'Mantenimiento de pacientes'))
+                @if ($usuario->rol->permisos->contains('categoria', 'pacientes'))
                   <b>Mantenimiento de pacientes: </b> <br>
-                  @foreach ($usuario->rol->permisos->where('categoria','Mantenimiento de pacientes') as $permiso)
+                  @foreach ($usuario->rol->permisos->where('categoria','pacientes') as $permiso)
                     <span class="label label-info">{{$permiso->nombre}}</span>
                   @endforeach
                   <br>
                 @endif
-                @if ($usuario->rol->permisos->contains('categoria', 'Mantenimiento de roles'))
+                @if ($usuario->rol->permisos->contains('categoria', 'roles'))
                   <b>Mantenimiento de roles: </b> <br>
-                  @foreach ($usuario->rol->permisos->where('categoria','Mantenimiento de roles') as $permiso)
+                  @foreach ($usuario->rol->permisos->where('categoria','roles') as $permiso)
                     <span class="label label-info">{{$permiso->nombre}}</span>
                   @endforeach
                   <br>
                 @endif
-                @if ($usuario->rol->permisos->contains('categoria', 'Mantenimiento de tipos de animales'))
+                @if ($usuario->rol->permisos->contains('categoria', 'tipos de animales'))
                   <b>Mantenimiento de tipos de animales: </b> <br>
-                  @foreach ($usuario->rol->permisos->where('categoria','Mantenimiento de tipos de animales') as $permiso)
+                  @foreach ($usuario->rol->permisos->where('categoria','tipos de animales') as $permiso)
                     <span class="label label-info">{{$permiso->nombre}}</span>
                   @endforeach
                   <br>
                 @endif
-                @if ($usuario->rol->permisos->contains('categoria', 'Mantenimiento de tipos de servicio'))
+                @if ($usuario->rol->permisos->contains('categoria', 'tipos de servicio'))
                   <b>Mantenimiento de tipos de servicio: </b> <br>
-                  @foreach ($usuario->rol->permisos->where('categoria','Mantenimiento de tipos de servicio') as $permiso)
+                  @foreach ($usuario->rol->permisos->where('categoria','tipos de servicio') as $permiso)
                     <span class="label label-info">{{$permiso->nombre}}</span>
                   @endforeach
                   <br>
                 @endif
-                @if ($usuario->rol->permisos->contains('categoria', 'Mantenimiento de animales en venta'))
+                @if ($usuario->rol->permisos->contains('categoria', 'animales en venta'))
                   <b>Mantenimiento de animales en venta: </b> <br>
-                  @foreach ($usuario->rol->permisos->where('categoria','Mantenimiento de animales en venta') as $permiso)
+                  @foreach ($usuario->rol->permisos->where('categoria','animales en venta') as $permiso)
                     <span class="label label-info">{{$permiso->nombre}}</span>
                   @endforeach
                   <br>
                 @endif
-                @if ($usuario->rol->permisos->contains('categoria', 'Mantenimiento de citas'))
+                @if ($usuario->rol->permisos->contains('categoria', 'citas'))
                   <b>Mantenimiento de citas: </b> <br>
-                  @foreach ($usuario->rol->permisos->where('categoria','Mantenimiento de citas') as $permiso)
+                  @foreach ($usuario->rol->permisos->where('categoria','citas') as $permiso)
                     <span class="label label-info">{{$permiso->nombre}}</span>
                   @endforeach
                   <br>
@@ -515,7 +515,7 @@
         if((data.errors)){
           Toast.fire({
             type: 'warning',
-            title: 'Errores de validación!'
+            title: '!Errores de validación!'
           })
 
           if(data.errors.rol){

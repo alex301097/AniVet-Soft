@@ -260,9 +260,7 @@
         </div>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer">
-        Footer
-      </div>
+
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->
@@ -473,7 +471,7 @@
         if((data.errors)){
           Toast.fire({
             type: 'warning',
-            title: 'Errores de validación!'
+            title: '!Errores de validación!'
           });
 
           $.each(data.errors, function( index, value ) {
