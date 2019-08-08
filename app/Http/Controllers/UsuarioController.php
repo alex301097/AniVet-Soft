@@ -37,6 +37,10 @@ class UsuarioController extends Controller
 
   public function get_editar_perfil($id)
   {
+    // $mydate = date("Y-m-d", strtotime('07/08/2019'));
+    // $date = Carbon::createFromFormat('Y-m-d', '07/08/2019');
+    // $fecha = Carbon::parse('07/08/2019')->format('Y-M-d');
+    // dd(Carbon::createFromFormat('Y-m-d', '07/08/2019')->toDateTimeString());
     $usuario = User::where('id',$id)->first();
     $roles = Rol::all();
     return view('mantenimientos.usuarios.perfil', ['usuario'=>$usuario,'roles'=>$roles]);
@@ -63,7 +67,7 @@ class UsuarioController extends Controller
                      'regex:/[0-9]/',      // must contain at least one digit
                      'regex:/[@$!%*#?&-]/', // must contain a special character,
                      'confirmed'],
-        'politicas' => ['accepted']
+        'condiciones' => ['accepted']
 
     ];
 
@@ -78,7 +82,7 @@ class UsuarioController extends Controller
       'codigo' => $request->codigo,
       'password' => $request->password,
       'password_confirmation' => $request->password_confirmation,
-      'politicas' => $request->condiciones,
+      'condiciones' => $request->condiciones,
     ];
 
     $validator = Validator::make($inputs, $reglas);

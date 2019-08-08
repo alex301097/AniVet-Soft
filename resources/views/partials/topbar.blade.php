@@ -68,10 +68,10 @@
             <p>
               @if (auth()->user())
                 {{auth()->user()->nombre." ".auth()->user()->apellidos." - ".auth()->user()->rol->descripcion}}
-                {{\Carbon\Carbon::setLocale(config('America/Costa_Rica'))}}
+                {{-- {{\Carbon\Carbon::setLocale(config('America/Costa_Rica'))}} --}}
                 {{-- date(strtotime(auth()->user()->created_at)) --}}
 
-                <small>Creado el {{\Carbon\Carbon::parse(auth()->user()->created_at)->formatLocalized('%A, %d de %B del %Y')}}.</small>
+                <small>Creado {{auth()->user()->created_at->diffForHumans()}}.</small>
               @else
                 Usuario invitado
                 <small>No has ingresado al sistema</small>

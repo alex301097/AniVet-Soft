@@ -1,8 +1,8 @@
 @extends('layouts.master')
 @section('css')
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="{{ URL::to('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+  <!-- datepicker -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{ URL::to('plugins/iCheck/all.css') }}">
 @endsection
@@ -80,6 +80,7 @@
               <label for="fecha_nacimiento"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
                 <div class="input-group">
                     <input type="text" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
+                    <input type="hidden" id="fecha_nacimiento_formato" value="">
                 </div>
                 <p class="error-fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
@@ -158,15 +159,14 @@
   <!-- /.content -->
 @endsection
 @section('scripts')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
   integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
   crossorigin="anonymous"></script>
-  <!-- bootstrap datepicker -->
-  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+
+  <!-- datepicker -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
   <!-- iCheck 1.0.1 -->
   <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
@@ -179,13 +179,65 @@
   })
 
   //Date picker
-  $('#fecha_nacimiento').datepicker({
-    endDate: 'days',
-    language: 'es',
-    todayHighlight: true,
-    autoclose: true,
-    orientation: 'bottom'
-  })
+  $(document).ready(function () {
+    $(function() {
+
+        $('input[name="fecha_nacimiento"]').daterangepicker({
+          "singleDatePicker": true,
+            opens: 'center',
+            autoUpdateInput: false,
+            maxDate: moment(),
+           "locale": {
+               "format": "DD/MM/YYYY",
+               "separator": " - ",
+               "applyLabel": "Aplicar",
+               "cancelLabel": "Cancelar/Limpiar",
+               "fromLabel": "De",
+               "toLabel": "hasta",
+               "customRangeLabel": "Custom",
+               "daysOfWeek": [
+                   "Dom",
+                   "Lun",
+                   "Mar",
+                   "Mie",
+                   "Jue",
+                   "Vie",
+                   "Sáb"
+               ],
+               "monthNames": [
+                   "Enero",
+                   "Febrero",
+                   "Marzo",
+                   "Abril",
+                   "Mayo",
+                   "Junio",
+                   "Julio",
+                   "Agosto",
+                   "Septiembre",
+                   "Octubre",
+                   "Noviembre",
+                   "Diciembre"
+               ],
+               "firstDay": 1
+           }
+        });
+
+        $('input[name="fecha_nacimiento"]').on('apply.daterangepicker', function(ev, picker) {
+
+            $("#fecha_nacimiento").val(picker.startDate.format('DD/MM/YYYY'));
+
+            $("#fecha_nacimiento_formato").val(picker.startDate.format('YYYY-MM-DD'));
+
+        });
+
+        $('input[name="fecha_nacimiento"]').on('cancel.daterangepicker', function(ev, picker) {
+          $("#fecha_nacimiento").val("");
+
+          $("#fecha_nacimiento_formato").val("");
+        });
+
+      });
+  });
 
   $(function(){
    $( "#duenno" ).autocomplete({
@@ -235,7 +287,7 @@
           'edad': $('#edad').val(),
           'peso': $('#peso').val(),
           'raza': $('#raza').val(),
-          'fecha_nacimiento': moment($('#fecha_nacimiento').val()).format('YYYY-MM-DD'),
+          'fecha_nacimiento': $('#fecha_nacimiento_formato').val(),
           'sexo': $('input[name="sexo"]:checked').val(),
           'observaciones': $('#observaciones').val(),
         },

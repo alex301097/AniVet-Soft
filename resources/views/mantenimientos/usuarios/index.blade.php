@@ -706,32 +706,176 @@
 
   <script type="text/javascript">
 
-      //Date picker
-      $('#fecha_nacimiento').datepicker({
-        endDate: 'days',
-        language: 'es',
-        todayHighlight: true,
-        autoclose: true,
-        orientation: 'bottom'
-      })
+  //Date picker
+  $(document).ready(function () {
+    $(function() {
 
-      //Date picker
-      $('#fecha_nacimiento_detalle').datepicker({
-        endDate: 'days',
-        language: 'es',
-        todayHighlight: true,
-        autoclose: true,
-        orientation: 'bottom'
-      })
+        $('input[name="fecha_nacimiento"]').daterangepicker({
+          "singleDatePicker": true,
+            opens: 'center',
+            autoUpdateInput: false,
+            maxDate: moment(),
+           "locale": {
+               "format": "DD/MM/YYYY",
+               "separator": " - ",
+               "applyLabel": "Aplicar",
+               "cancelLabel": "Cancelar/Limpiar",
+               "fromLabel": "De",
+               "toLabel": "hasta",
+               "customRangeLabel": "Custom",
+               "daysOfWeek": [
+                   "Dom",
+                   "Lun",
+                   "Mar",
+                   "Mie",
+                   "Jue",
+                   "Vie",
+                   "Sáb"
+               ],
+               "monthNames": [
+                   "Enero",
+                   "Febrero",
+                   "Marzo",
+                   "Abril",
+                   "Mayo",
+                   "Junio",
+                   "Julio",
+                   "Agosto",
+                   "Septiembre",
+                   "Octubre",
+                   "Noviembre",
+                   "Diciembre"
+               ],
+               "firstDay": 1
+           }
+        });
 
-      //Date picker
-      $('#fecha_nacimiento_edicion').datepicker({
-        endDate: 'days',
-        language: 'es',
-        todayHighlight: true,
-        autoclose: true,
-        orientation: 'bottom'
-      })
+        $('input[name="fecha_nacimiento"]').on('apply.daterangepicker', function(ev, picker) {
+
+            $("#fecha_nacimiento").val(picker.startDate.format('DD/MM/YYYY'));
+
+            $("#fecha_nacimiento_formato").val(picker.startDate.format('YYYY-MM-DD'));
+
+        });
+
+        $('input[name="fecha_nacimiento"]').on('cancel.daterangepicker', function(ev, picker) {
+          $("#fecha_nacimiento").val("");
+
+          $("#fecha_nacimiento_formato").val("");
+        });
+  
+
+        $('input[name="fecha_nacimiento_detalle"]').daterangepicker({
+          "singleDatePicker": true,
+            opens: 'center',
+            autoUpdateInput: false,
+            maxDate: moment(),
+           "locale": {
+               "format": "DD/MM/YYYY",
+               "separator": " - ",
+               "applyLabel": "Aplicar",
+               "cancelLabel": "Cancelar/Limpiar",
+               "fromLabel": "De",
+               "toLabel": "hasta",
+               "customRangeLabel": "Custom",
+               "daysOfWeek": [
+                   "Dom",
+                   "Lun",
+                   "Mar",
+                   "Mie",
+                   "Jue",
+                   "Vie",
+                   "Sáb"
+               ],
+               "monthNames": [
+                   "Enero",
+                   "Febrero",
+                   "Marzo",
+                   "Abril",
+                   "Mayo",
+                   "Junio",
+                   "Julio",
+                   "Agosto",
+                   "Septiembre",
+                   "Octubre",
+                   "Noviembre",
+                   "Diciembre"
+               ],
+               "firstDay": 1
+           }
+        });
+
+        $('input[name="fecha_nacimiento_detalle"]').on('apply.daterangepicker', function(ev, picker) {
+
+            $("#fecha_nacimiento_detalle").val(picker.startDate.format('DD/MM/YYYY'));
+
+            $("#fecha_nacimiento_detalle_formato").val(picker.startDate.format('YYYY-MM-DD'));
+
+        });
+
+        $('input[name="fecha_nacimiento_detalle"]').on('cancel.daterangepicker', function(ev, picker) {
+          $("#fecha_nacimiento_detalle").val("");
+
+          $("#fecha_nacimiento_detalle_formato").val("");
+        });
+
+
+        $('input[name="fecha_nacimiento_edicion"]').daterangepicker({
+          "singleDatePicker": true,
+            opens: 'center',
+            autoUpdateInput: false,
+            maxDate: moment(),
+           "locale": {
+               "format": "DD/MM/YYYY",
+               "separator": " - ",
+               "applyLabel": "Aplicar",
+               "cancelLabel": "Cancelar/Limpiar",
+               "fromLabel": "De",
+               "toLabel": "hasta",
+               "customRangeLabel": "Custom",
+               "daysOfWeek": [
+                   "Dom",
+                   "Lun",
+                   "Mar",
+                   "Mie",
+                   "Jue",
+                   "Vie",
+                   "Sáb"
+               ],
+               "monthNames": [
+                   "Enero",
+                   "Febrero",
+                   "Marzo",
+                   "Abril",
+                   "Mayo",
+                   "Junio",
+                   "Julio",
+                   "Agosto",
+                   "Septiembre",
+                   "Octubre",
+                   "Noviembre",
+                   "Diciembre"
+               ],
+               "firstDay": 1
+           }
+        });
+
+        $('input[name="fecha_nacimiento_edicion"]').on('apply.daterangepicker', function(ev, picker) {
+
+            $("#fecha_nacimiento_edicion").val(picker.startDate.format('DD/MM/YYYY'));
+
+            $("#fecha_nacimiento_edicion_formato").val(picker.startDate.format('YYYY-MM-DD'));
+
+        });
+
+        $('input[name="fecha_nacimiento_edicion"]').on('cancel.daterangepicker', function(ev, picker) {
+          $("#fecha_nacimiento_edicion").val("");
+
+          $("#fecha_nacimiento_edicion_formato").val("");
+        });
+
+          });
+      });
 
       //iCheck for checkbox and radio inputs
       $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -851,7 +995,7 @@
       form_data.append('nombre', $('#nombre').val());
       form_data.append('apellidos', $('#apellidos').val());
       form_data.append('nacionalidad', $('#nacionalidad').val());
-      form_data.append('fecha_nacimiento', moment($('#fecha_nacimiento').val()).format('YYYY-MM-DD'));
+      form_data.append('fecha_nacimiento', $('#fecha_nacimiento_formato').val());
       form_data.append('estado_civil', $('#estado_civil').val());
       form_data.append('sexo', $('input[name="sexo"]:checked').val());
       form_data.append('telefono', $('#telefono').val());
@@ -1023,7 +1167,7 @@
       form_data.append('nombre_edicion', $('#nombre_edicion').val());
       form_data.append('apellidos_edicion', $('#apellidos_edicion').val());
       form_data.append('nacionalidad_edicion', $('#nacionalidad_edicion').val());
-      form_data.append('fecha_nacimiento_edicion', moment($('#fecha_nacimiento_edicion').val()).format('YYYY-MM-DD'));
+      form_data.append('fecha_nacimiento_edicion', $('#fecha_nacimiento_edicion_formato').val());
       form_data.append('estado_civil_edicion', $('#estado_civil_edicion').val());
       form_data.append('sexo_edicion', $('input[name="sexo_edicion"]:checked').val());
       form_data.append('telefono_edicion', $('#telefono_edicion').val());

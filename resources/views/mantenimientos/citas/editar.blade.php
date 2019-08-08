@@ -2,8 +2,9 @@
 @section('css')
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="{{ URL::to('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+  <!-- datepicker -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
   <!-- Bootstrap time Picker -->
   <link rel="stylesheet" href="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.css') }}">
 @endsection
@@ -45,7 +46,8 @@
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control form-control-sm pull-right" id="fecha" name="fecha" placeholder="Fecha" value="{{$cita->fecha}}">
+                <input type="text" class="form-control form-control-sm pull-right" id="fecha" name="fecha" placeholder="Fecha" value="{{date('d/m/Y', strtotime($cita->fecha))}}">
+                <input type="hidden" id="fecha_formato" value="">
               </div>
               <p class="error-fecha text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
@@ -161,22 +163,73 @@
   integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
   crossorigin="anonymous"></script>
 
-  <!-- bootstrap datepicker -->
-  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <!-- bootstrap time picker -->
   <script src="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
+  <!-- datepicker -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
   <script type="text/javascript">
-    //Date picker
-    $('#fecha').datepicker({
-      startDate: 'days',
-      language: 'es',
-      todayHighlight: true,
-      autoclose: true,
-      orientation: 'bottom'
-    })
+  //Date picker
+  $(document).ready(function () {
+    $(function() {
+
+        $('input[name="fecha"]').daterangepicker({
+          "singleDatePicker": true,
+            opens: 'center',
+            autoUpdateInput: false,
+            minDate: moment(),
+           "locale": {
+               "format": "DD/MM/YYYY",
+               "separator": " - ",
+               "applyLabel": "Aplicar",
+               "cancelLabel": "Cancelar/Limpiar",
+               "fromLabel": "De",
+               "toLabel": "hasta",
+               "customRangeLabel": "Custom",
+               "daysOfWeek": [
+                   "Dom",
+                   "Lun",
+                   "Mar",
+                   "Mie",
+                   "Jue",
+                   "Vie",
+                   "Sáb"
+               ],
+               "monthNames": [
+                   "Enero",
+                   "Febrero",
+                   "Marzo",
+                   "Abril",
+                   "Mayo",
+                   "Junio",
+                   "Julio",
+                   "Agosto",
+                   "Septiembre",
+                   "Octubre",
+                   "Noviembre",
+                   "Diciembre"
+               ],
+               "firstDay": 1
+           }
+        });
+
+        $('input[name="fecha"]').on('apply.daterangepicker', function(ev, picker) {
+
+            $("#fecha").val(picker.startDate.format('DD/MM/YYYY'));
+
+            $("#fecha_formato").val(picker.startDate.format('YYYY-MM-DD'));
+
+        });
+
+        $('input[name="fecha"]').on('cancel.daterangepicker', function(ev, picker) {
+          $("#fecha").val("");
+
+          $("#fecha_formato").val("");
+        });
+
+      });
+  });
 
     //Timepicker
     $('#horaInicio').timepicker({
@@ -230,7 +283,7 @@
         data: {
           '_token': $('input[name=_token]').val(),
           'id_edicion': $('#id_edicion').val(),
-          'fecha': moment($('#fecha').val()).format('YYYY-MM-DD'),
+          'fecha': $('#fecha_formato').val(),
           'horaInicio': $('#horaInicio').val(),
           'horaFinal': $('#horaFinal').val(),
           'motivo': $('#motivo').val(),

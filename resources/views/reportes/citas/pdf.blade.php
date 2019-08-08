@@ -156,7 +156,7 @@
               <td width="30%" colspan="4" class="text-right">
                 <b>
                 <small>
-                  {{\Carbon\Carbon::now()->formatLocalized('%A, %d de %B del %Y, %H:%M hrs')}}
+                  {{\Carbon\Carbon::now()->formatLocalized('%A, %d de %B del %Y, %h:%M hrs')}}
                   <br>
                   Realizado por: {{auth()->user()->nombre}}
                 </small>

@@ -1,9 +1,9 @@
 @extends('layouts.master')
 @section('css')
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="{{ URL::to('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{ URL::to('plugins/iCheck/all.css') }}">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 @endsection
 @section('contenido')
     <!-- Content Header (Page header) -->
@@ -30,7 +30,7 @@
               @if (empty($usuario->imagen))
                 <img class="profile-user-img img-responsive img-circle" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User profile picture">
               @else
-                <img class="profile-user-img img-responsive img-circle" src="{{ url('imgPerfiles/'.$usuario->imagen) }}" alt="User profile picture">
+                <img class="profile-user-img img-responsive img-circle" style="width:150px;height:150px;" src="{{ url('imgPerfiles/'.$usuario->imagen) }}" alt="User profile picture">
               @endif
 
               <h3 class="profile-username text-center">{{$usuario->nombre." ".$usuario->apellidos}}</h3>
@@ -74,7 +74,7 @@
                 <li><b>Cedula: </b>{{($usuario->cedula)?$usuario->cedula:"No registrada."}}</li>
                 <li><b>Sexo: </b>{{($usuario->sexo)?$usuario->sexo:"No registrado."}}</li>
                 <li><b>Nacionalidad: </b>{{($usuario->nacionalidad)?$usuario->nacionalidad:"No registrada."}}</li>
-                <li><b>Fecha de nacimiento: </b>{{($usuario->fecha_nacimiento)?$usuario->fecha_nacimiento:"No registrada."}}</li>
+                <li><b>Fecha de nacimiento: </b>{{($usuario->fecha_nacimiento)?Carbon\Carbon::parse($usuario->fecha_nacimiento)->format('d/m/Y'):"No registrada."}}</li>
                 <li><b>Estado civil: </b>{{($usuario->estado_civil)?$usuario->estado_civil:"No registrado."}}</li>
               </ul>
               <hr>
@@ -218,6 +218,7 @@
                                               <i class="fa fa-calendar"></i>
                                             </div>
                                             <input type="text" class="form-control form-control-sm pull-right" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento" value="{{date('d/m/Y', strtotime($usuario->fecha_nacimiento))}}">
+                                            <input type="hidden" id="fecha_nacimiento_formato" value="">
                                           </div>
                                           <p class="error_fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                         </div>
@@ -330,7 +331,7 @@
                           </div>
                           <div id="collapseThree" class="panel-collapse collapse">
                             <div class="box-body">
-                              {{-- <div class="row">
+                              <div class="row">
                                 <div class="col-md-12" style="padding-left:25px; padding-right:25px;">
                                   <div class="form-group" style="padding-left:15px; padding-right:15px;">
                                     <label for="codigo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Codigo</h5></label>
@@ -341,8 +342,8 @@
                                     <p class="error_codigo text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                   </div>
                                 </div>
-                              </div> --}}
-                              <div class="row">
+                              </div>
+                              {{-- <div class="row">
                                 <div class="col-md-12" style="padding-left:25px; padding-right:25px;">
                                   <div class="form-group" style="padding-left:15px; padding-right:15px;">
                                     <label for="old_password"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Contraseña Actual</h5></label>
@@ -357,7 +358,7 @@
                                     Debes digitar tu actual contraseña para poder actualizarla.
                                   </small>
                                 </div>
-                              </div>
+                              </div> --}}
                               <div class="row">
                                 <div class="col-md-6" style="padding-left:25px; padding-right:25px;">
                                   <div class="form-group" style="padding-left:15px; padding-right:15px;">
@@ -394,6 +395,7 @@
                             <div class="checkbox pull-left">
                               <label>
                                 <input type="checkbox" name="condiciones" id="condiciones" class="minimal pull-left"> Estoy de acuerdo con los <a href="#">terminos y condiciones</a>
+                                <p class="error_condiciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                               </label>
                             </div>
                           </div>
@@ -423,169 +425,224 @@
     <!-- /.content -->
 @endsection
 @section('scripts')
-  <!-- bootstrap datepicker -->
-  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+  <!-- datepicker -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
   <!-- iCheck 1.0.1 -->
   <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
 
   <script type="text/javascript">
 
-  //Date picker
-  $('#fecha_nacimiento').datepicker({
-    endDate: 'days',
-    language: 'es',
-    todayHighlight: true,
-    autoclose: true,
-    orientation: 'bottom'
-  })
+    $(document).ready(function () {
+      $(function() {
 
-  //iCheck for checkbox and radio inputs
-  $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-    checkboxClass: 'icheckbox_minimal-blue',
-    radioClass   : 'iradio_minimal-blue'
-  })
+          $('input[name="fecha_nacimiento"]').daterangepicker({
+            "singleDatePicker": true,
+              opens: 'center',
+              autoUpdateInput: false,
+              maxDate: moment(),
+             "locale": {
+                 "format": "DD/MM/YYYY",
+                 "separator": " - ",
+                 "applyLabel": "Aplicar",
+                 "cancelLabel": "Cancelar/Limpiar",
+                 "fromLabel": "De",
+                 "toLabel": "hasta",
+                 "customRangeLabel": "Custom",
+                 "daysOfWeek": [
+                     "Dom",
+                     "Lun",
+                     "Mar",
+                     "Mie",
+                     "Jue",
+                     "Vie",
+                     "Sáb"
+                 ],
+                 "monthNames": [
+                     "Enero",
+                     "Febrero",
+                     "Marzo",
+                     "Abril",
+                     "Mayo",
+                     "Junio",
+                     "Julio",
+                     "Agosto",
+                     "Septiembre",
+                     "Octubre",
+                     "Noviembre",
+                     "Diciembre"
+                 ],
+                 "firstDay": 1
+             }
+          });
 
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 2500
-  });
+          $('input[name="fecha_nacimiento"]').on('apply.daterangepicker', function(ev, picker) {
 
-  const swal_confirm = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn btn-success',
-      cancelButton: 'btn btn-danger'
-    },
-    buttonsStyling: false,
-  });
+              $("#fecha_nacimiento").val(picker.startDate.format('DD/MM/YYYY'));
 
-  function filePreview(input){
-    if(input.files && input.files[0]){
-      var reader = new FileReader();
-      reader.onload = function(e){
-        $('#avatar').html("<img src='"+e.target.result+"' class='img-circle' style='width:300px; height:300px; top:300px; left:300px;' alt='User Avatar'>");
-      }
-        reader.readAsDataURL(input.files[0]);
-    }
-  }
+              $("#fecha_nacimiento_formato").val(picker.startDate.format('YYYY-MM-DD'));
 
-  $('#imagen').change(function(){
-    filePreview(this);
-  });
+          });
 
-  //Añadir
-  $('#registrar').click(function(){
-    var form_data = new FormData();
-    form_data.append('_token', $('input[name=_token]').val());
-    form_data.append('id_edicion', $('#id_edicion').val());
-    if($('#imagen')[0].files[0]){
-      form_data.append('imagen', $('#imagen')[0].files[0]);
-    }
+          $('input[name="fecha_nacimiento"]').on('cancel.daterangepicker', function(ev, picker) {
+            $("#fecha_nacimiento").val("");
 
-    if($('input[name=condiciones]').is(":checked")){
-      form_data.append('condiciones', true);
-		}else{
-      form_data.append('condiciones', false);
-		}
+            $("#fecha_nacimiento_formato").val("");
+          });
 
-    form_data.append('rol', $('#rol').val());
-    form_data.append('cedula', $('#cedula').val());
-    form_data.append('nombre', $('#nombre').val());
-    form_data.append('apellidos', $('#apellidos').val());
-    form_data.append('nacionalidad', $('#nacionalidad').val());
-    form_data.append('fecha_nacimiento', moment($('#fecha_nacimiento').val()).format('YYYY-MM-DD'));
-    form_data.append('estado_civil', $('#estado_civil').val());
-    form_data.append('sexo', $('#sexo').val());
-    form_data.append('telefono', $('#telefono').val());
-    form_data.append('direccion', $('#direccion').val());
-    form_data.append('codigo', $('#codigo').val());
-    form_data.append('password', $('#password').val());
-    form_data.append('password_confirmation', $('#password-confirm').val());
-
-    $.ajax({
-      type: 'post',
-      url: '{{route('usuarios.editar_perfil')}}',
-      data: form_data,
-      processData: false,
-      contentType: false,
-      success: function(data){
-        if((data.errors)){
-          Toast.fire({
-            type: 'warning',
-            title: '!Errores de validación!'
-          })
-
-          if(data.errors.rol){
-            $('.error_rol').removeClass('hidden');
-            $('.error_rol').text(data.errors.rol);
-          }
-          if(data.errors.cedula){
-            $('.error_cedula').removeClass('hidden');
-            $('.error_cedula').text(data.errors.cedula);
-          }
-          if(data.errors.nombre){
-            $('.error_nombre').removeClass('hidden');
-            $('.error_nombre').text(data.errors.nombre);
-          }
-          if(data.errors.apellidos){
-            $('.error_apellidos').removeClass('hidden');
-            $('.error_apellidos').text(data.errors.apellidos);
-          }
-          if(data.errors.nacionalidad){
-            $('.error_nacionalidad').removeClass('hidden');
-            $('.error_nacionalidad').text(data.errors.nacionalidad);
-          }
-          if(data.errors.fecha_nacimiento){
-            $('.error_fecha_nacimiento').removeClass('hidden');
-            $('.error_fecha_nacimiento').text(data.errors.fecha_nacimiento);
-          }
-          if(data.errors.estado_civil){
-            $('.error_estado_civil').removeClass('hidden');
-            $('.error_estado_civil').text(data.errors.estado_civil);
-          }
-          if(data.errors.sexo){
-            $('.error_sexo').removeClass('hidden');
-            $('.error_sexo').text(data.errors.sexo);
-          }
-          if(data.errors.telefono){
-            $('.error_telefono').removeClass('hidden');
-            $('.error_telefono').text(data.errors.telefono);
-          }
-          if(data.errors.direccion){
-            $('.error_direccion').removeClass('hidden');
-            $('.error_direccion').text(data.errors.direccion);
-          }
-          if(data.errors.codigo){
-            $('.error_codigo').removeClass('hidden');
-            $('.error_codigo').text(data.errors.codigo);
-          }
-          if(data.errors.password){
-            $('.error_password').removeClass('hidden');
-            $('.error_password').text(data.errors.password);
-          }
-          if(data.errors.password_confirmation){
-            $('.error_password_confirmation').removeClass('hidden');
-            $('.error_password_confirmation').text(data.errors.password_confirmation);
-          }
-        }else{
-          Swal.fire({
-            position: 'top-end',
-            type: 'success',
-            title: '¡La información del usuario se ha actualizado correctamente!',
-            showConfirmButton: false,
-            timer: 1500
-          })
-
-          setTimeout(function(){
-            location.reload();
-          }, 2000);
-      }
-      },
+        });
     });
 
-  });
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass   : 'iradio_minimal-blue'
+    })
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2500
+    });
+
+    const swal_confirm = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false,
+    });
+
+    function filePreview(input){
+      if(input.files && input.files[0]){
+        var reader = new FileReader();
+        reader.onload = function(e){
+          $('#avatar').html("<img src='"+e.target.result+"' class='img-circle' style='width:300px; height:300px; top:300px; left:300px;' alt='User Avatar'>");
+        }
+          reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $('#imagen').change(function(){
+      filePreview(this);
+    });
+    
+    //Añadir
+    $('#registrar').click(function(){
+      var form_data = new FormData();
+      form_data.append('_token', $('input[name=_token]').val());
+      form_data.append('id_edicion', $('#id_edicion').val());
+      if($('#imagen')[0].files[0]){
+        form_data.append('imagen', $('#imagen')[0].files[0]);
+      }
+
+      if($('input[name=condiciones]').is(":checked")){
+        form_data.append('condiciones', true);
+  		}else{
+        form_data.append('condiciones', false);
+  		}
+
+      form_data.append('rol', $('#rol').val());
+      form_data.append('cedula', $('#cedula').val());
+      form_data.append('nombre', $('#nombre').val());
+      form_data.append('apellidos', $('#apellidos').val());
+      form_data.append('nacionalidad', $('#nacionalidad').val());
+      form_data.append('fecha_nacimiento', $('#fecha_nacimiento_formato').val());
+      form_data.append('estado_civil', $('#estado_civil').val());
+      form_data.append('sexo', $('input[name="sexo"]:checked').val());
+      form_data.append('telefono', $('#telefono').val());
+      form_data.append('direccion', $('#direccion').val());
+      form_data.append('codigo', $('#codigo').val());
+      form_data.append('password', $('#password').val());
+      form_data.append('password_confirmation', $('#password-confirm').val());
+
+      $.ajax({
+        type: 'post',
+        url: '{{route('usuarios.editar_perfil')}}',
+        data: form_data,
+        processData: false,
+        contentType: false,
+        success: function(data){
+          if((data.errors)){
+            Toast.fire({
+              type: 'warning',
+              title: 'Errores de validación!'
+            })
+
+            if(data.errors.rol){
+              $('.error_rol').removeClass('hidden');
+              $('.error_rol').text(data.errors.rol);
+            }
+            if(data.errors.cedula){
+              $('.error_cedula').removeClass('hidden');
+              $('.error_cedula').text(data.errors.cedula);
+            }
+            if(data.errors.nombre){
+              $('.error_nombre').removeClass('hidden');
+              $('.error_nombre').text(data.errors.nombre);
+            }
+            if(data.errors.apellidos){
+              $('.error_apellidos').removeClass('hidden');
+              $('.error_apellidos').text(data.errors.apellidos);
+            }
+            if(data.errors.nacionalidad){
+              $('.error_nacionalidad').removeClass('hidden');
+              $('.error_nacionalidad').text(data.errors.nacionalidad);
+            }
+            if(data.errors.fecha_nacimiento){
+              $('.error_fecha_nacimiento').removeClass('hidden');
+              $('.error_fecha_nacimiento').text(data.errors.fecha_nacimiento);
+            }
+            if(data.errors.estado_civil){
+              $('.error_estado_civil').removeClass('hidden');
+              $('.error_estado_civil').text(data.errors.estado_civil);
+            }
+            if(data.errors.sexo){
+              $('.error_sexo').removeClass('hidden');
+              $('.error_sexo').text(data.errors.sexo);
+            }
+            if(data.errors.telefono){
+              $('.error_telefono').removeClass('hidden');
+              $('.error_telefono').text(data.errors.telefono);
+            }
+            if(data.errors.direccion){
+              $('.error_direccion').removeClass('hidden');
+              $('.error_direccion').text(data.errors.direccion);
+            }
+            if(data.errors.codigo){
+              $('.error_codigo').removeClass('hidden');
+              $('.error_codigo').text(data.errors.codigo);
+            }
+            if(data.errors.password){
+              $('.error_password').removeClass('hidden');
+              $('.error_password').text(data.errors.password);
+            }
+            if(data.errors.password_confirmation){
+              $('.error_password_confirmation').removeClass('hidden');
+              $('.error_password_confirmation').text(data.errors.password_confirmation);
+            }
+            if(data.errors.condiciones){
+              $('.error_condiciones').removeClass('hidden');
+              $('.error_condiciones').text(data.errors.condiciones);
+            }
+          }else{
+            Swal.fire({
+              position: 'top-end',
+              type: 'success',
+              title: '¡La información del usuario se ha actualizado correctamente!',
+              showConfirmButton: false,
+              timer: 1500
+            })
+
+            setTimeout(function(){
+              location.reload();
+            }, 2000);
+        }
+        },
+      });
+
+    });
   </script>
 @endsection
