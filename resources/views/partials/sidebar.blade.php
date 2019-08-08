@@ -8,7 +8,7 @@
           @if (empty(auth()->user()->imagen))
             <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-circle" alt="User Image">
           @else
-            <img src="{{ url('imgPerfiles/'.Auth::user()->imagen) }}" class="img-circle" alt="User Image">
+            <img src="{{ url('imgPerfiles/'.Auth::user()->imagen) }}" class="img-circle" style="width:50px;height:50px;"  alt="User Image">
           @endif
         </div>
         <div class="pull-left info">

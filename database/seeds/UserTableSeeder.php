@@ -15,7 +15,7 @@ class UserTableSeeder extends Seeder
     {
       ///Admin
       $user = new \App\User();
-      $user->cedula = "1-0234-0567";
+      $user->cedula = "102340567";
       $user->nombre = "Admin1";
       $user->apellidos = "Admin1";
       $user->nacionalidad = "Costa Rica";

@@ -223,7 +223,7 @@
                  table.ajax.url(ruta);
                  table.draw();
 
-                 $(this).val("Del " + picker.startDate.format('MM/DD/YYYY') + ' al ' + picker.endDate.format('MM/DD/YYYY') + ".");
+                 $(this).val("Del " + picker.startDate.format('DD/MM/YYYY') + ' al ' + picker.endDate.format('DD/MM/YYYY') + ".");
              });
 
              $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
