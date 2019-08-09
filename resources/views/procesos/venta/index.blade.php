@@ -623,10 +623,10 @@
             timer: 1500
           })
 
-          setTimeout(function(){
-            var url = "{{route('home')}}";
-                document.location.href=url;
-          }, 2000);
+          // setTimeout(function(){
+          //   var url = "{{route('home')}}";
+          //       document.location.href=url;
+          // }, 2000);
       }
       },
     });

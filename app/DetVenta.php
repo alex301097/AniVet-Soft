@@ -14,7 +14,7 @@ class DetVenta extends Model
    * Metodos de relacion.
    */
 
-  public function enc_solicitud(){
+  public function enc_venta(){
     return $this->belongsTo('App\EncVenta');
   }
 

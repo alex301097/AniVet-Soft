@@ -130,7 +130,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones del paciente (Comportamiento, personalidad, etc)</h5></label>
+              <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones del paciente (Comportamiento, personalidad, salud, anomalias, etc)</h5></label>
               <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones">{{$paciente->observaciones}}</textarea>
               <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>

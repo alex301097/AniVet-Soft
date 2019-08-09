@@ -148,8 +148,8 @@ class AdopcionController extends Controller
           $request->session()->forget('detalles_adopcion');
         }
 
-        Mail::to($enc_adopcion->correo_dueño)->send(new SolicitudAdopcionDueño($enc_solicitud));
-        Mail::to("alexandervillalobos50@gmail.com")->send(new SolicitudAdopcionGerente($enc_solicitud));
+        // Mail::to($enc_adopcion->correo_dueño)->send(new RegistroAdopcion($enc_adopcion));
+        // Mail::to("alexandervillalobos50@gmail.com")->send(new RegistroAdopcion($enc_adopcion));
 
         return response()->json($enc_adopcion);
       }

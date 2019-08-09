@@ -16,7 +16,7 @@ class CreatePacienteImagensTable extends Migration
         Schema::create('paciente_imagens', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->text('imagen');
-          $table->unsignedInteger('paciente_id');
+          $table->unsignedBigInteger('paciente_id');
           $table->foreign('paciente_id')->references('id')->on('pacientes');
           $table->timestamps();
         });

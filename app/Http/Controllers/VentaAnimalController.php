@@ -203,6 +203,11 @@ class VentaAnimalController extends Controller
 
   public function solicitar_ventas(Request $request)
   {
+      if (!Session::has('detalles_solicitud')) {
+        Session::forget("detalles_solicitud");
+        Session::put("detalles_solicitud",[]);
+      }
+
       $det_solicitud = new DetVenta();
 
       $det_solicitud->animal_venta()->associate($request->input('animal_venta_id'));
@@ -282,9 +287,10 @@ class VentaAnimalController extends Controller
 
         if (Session::has('detalles_solicitud')) {
           $detalles = Session::get('detalles_solicitud');
+          dd($detalles);
           foreach ($detalles as $arreglo_detalles) {
             foreach ($arreglo_detalles as $detalle) {
-              $detalle->enc_solicitud()->associate($enc_solicitud);
+              $detalle->enc_venta_id = $enc_solicitud->id;
               $detalle->save();
             }
           }

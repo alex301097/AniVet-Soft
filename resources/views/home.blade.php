@@ -1,19 +1,17 @@
 @extends('layouts.master')
 @section('css')
+  <style>
+    .iconos-sociales img{border-radius:50px;}
+    .iconos-sociales img{margin:5px;}
+    .iconos-sociales img{
+    transition:all 0.5s ease-out;
+    border-radius:50px;}
+    .iconos-sociales img:hover{
+    transform: rotate(360deg);
+    }
+    </style>
 @endsection
 @section('contenido')
-  <head>
-    <style>
-      .iconos-sociales img{border-radius:50px;}
-      .iconos-sociales img{margin:5px;}
-      .iconos-sociales img{
-      transition:all 0.5s ease-out;
-      border-radius:50px;}
-      .iconos-sociales img:hover{
-      transform: rotate(360deg);
-      }
-      </style>
-  </head>
   <div class="row">
     <div class="col-md-12">
       <div id="carousel-example" class="carousel slide" data-ride="carousel">
@@ -55,13 +53,11 @@
           <span class="glyphicon glyphicon-chevron-right"></span>
         </a>
       </div>
+
     </div>
-  </div>
   <br/>
   <div class="row">
     <div class="col-md-12">
-      <section class="content">
-
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
@@ -108,8 +104,6 @@
           <!-- /.box-body -->
         </div>
         <!-- /.box -->
-
-      </section>
     </div>
   </div>
 @endsection
