@@ -38,54 +38,155 @@
             <div class="process">
              <div class="process-row nav nav-tabs">
               <div class="process-step">
-               <button type="button" class="btn btn-info btn-circle" data-toggle="tab" href="#menu1"><i class="fa fa-info fa-3x"></i></button>
-               <p><small>Usuarios<br /></small></p>
+               <button type="button" class="btn btn-info btn-circle" data-toggle="tab" href="#menu1"><i class="fas fa-bone fa-3x"></i></button>
+               <p><small>Procesos<br /></small></p>
               </div>
               <div class="process-step">
-               <button type="button" class="btn btn-default btn-circle" data-toggle="tab" href="#menu2"><i class="fa fa-file-text-o fa-3x"></i></button>
-               <p><small>Roles<br /></small></p>
+               <button type="button" class="btn btn-default btn-circle" data-toggle="tab" href="#menu2"><i class="fa fa-folder fa-3x"></i></button>
+               <p><small>Mantenimientos<br /></small></p>
               </div>
               <div class="process-step">
-               <button type="button" class="btn btn-default btn-circle" data-toggle="tab" href="#menu3"><i class="fa fa-image fa-3x"></i></button>
-               <p><small>Pacientes<br /></small></p>
+               <button type="button" class="btn btn-default btn-circle" data-toggle="tab" href="#menu3"><i class="fas fa-lock fa-3x"></i></button>
+               <p><small>Seguridad<br /></small></p>
               </div>
               <div class="process-step">
-               <button type="button" class="btn btn-default btn-circle" data-toggle="tab" href="#menu4"><i class="fa fa-cogs fa-3x"></i></button>
-               <p><small>Tipos de animales<br /></small></p>
+               <button type="button" class="btn btn-default btn-circle" data-toggle="tab" href="#menu4"><i class="fas fa-file-alt fa-3x"></i></button>
+               <p><small>Reportes<br /></small></p>
               </div>
-              <div class="process-step">
-               <button type="button" class="btn btn-default btn-circle" data-toggle="tab" href="#menu5"><i class="fa fa-cogs fa-3x"></i></button>
-               <p><small>Tipos de servicios<br /></small></p>
-              </div>
-              <div class="process-step">
-               <button type="button" class="btn btn-default btn-circle" data-toggle="tab" href="#menu6"><i class="fa fa-check fa-3x"></i></button>
-               <p><small>Animales en venta<br /></small></p>
-              </div>
+
              </div>
             </div>
             <div class="tab-content">
              <div id="menu1" class="tab-pane fade active in">
-              <h3>Permisos disponibles para la sección de usuarios.</h3>
               <div class="row">
-                <div class="col-md-12 text-center">
-                  <ul class="ks-cboxtags">
-                    @foreach ($permisos_usuario as $permiso)
+                <div class="col-md-6">
+                  <h3>Permisos disponibles para la sección de calendarización.</h3>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        @foreach ($permisos_calendarizacion as $permiso)
+                            <li>
+                              <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-calendarizacion" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                              <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                            </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
                         <li>
-                          <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-usuarios" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
-                          <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                          <input type="checkbox" id="permiso-todos-calendarizacion" name="permiso-todos-calendarizacion" value="permiso-todos-calendarizacion">
+                          <label for="permiso-todos-calendarizacion">Todos</label>
                         </li>
-                    @endforeach
-                  </ul>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <h3>Permisos disponibles para la sección de expediente médico.</h3>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        @foreach ($permisos_expediente as $permiso)
+                            <li>
+                              <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-expediente" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                              <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                            </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        <li>
+                          <input type="checkbox" id="permiso-todos-expediente" name="permiso-todos-expediente" value="permiso-todos-expediente">
+                          <label for="permiso-todos-expediente">Todos</label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <h3>Permisos disponibles para la sección de ventas de animales.</h3>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        @foreach ($permisos_venta_animales as $permiso)
+                            <li>
+                              <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-venta_animales" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                              <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                            </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        <li>
+                          <input type="checkbox" id="permiso-todos-ventas_animales" name="permiso-todos-ventas_animales" value="permiso-todos-ventas_animales">
+                          <label for="permiso-todos-ventas_animales">Todos</label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <h3>Permisos disponibles para la sección de registro de adopción de animales.</h3>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        @foreach ($permisos_registro_adopcion_animales as $permiso)
+                            <li>
+                              <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-registro_adopcion_animales" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                              <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                            </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        <li>
+                          <input type="checkbox" id="permiso-todos-registro_adopcion_animales" name="permiso-todos-registro_adopcion_animales" value="permiso-todos-registro_adopcion_animales">
+                          <label for="permiso-todos-registro_adopcion_animales">Todos</label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12 text-center">
-                  <ul class="ks-cboxtags">
-                    <li>
-                      <input type="checkbox" id="permiso-todos-usuarios" name="permiso-todos-usuarios" value="permiso-todos-usuarios">
-                      <label for="permiso-todos-usuarios">Todos</label>
-                    </li>
-                  </ul>
+                  <h3>Permisos disponibles para la sección de solicitud de adopción de animales.</h3>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        @foreach ($permisos_solicitud_adopcion_animales as $permiso)
+                            <li>
+                              <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-permisos_solicitud_adopcion_animales" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                              <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                            </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <ul class="ks-cboxtags">
+                        <li>
+                          <input type="checkbox" id="permiso-todos-solicitud_adopcion_animales" name="permiso-todos-solicitud_adopcion_animales" value="permiso-todos-solicitud_adopcion_animales">
+                          <label for="permiso-todos-solicitud_adopcion_animales">Todos</label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
               <ul class="list-unstyled list-inline pull-right">
@@ -93,27 +194,160 @@
               </ul>
              </div>
              <div id="menu2" class="tab-pane fade">
-               <h3>Permisos disponibles para la sección de roles.</h3>
                <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     @foreach ($permisos_rol as $permiso)
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de mantenimientos de usuarios.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_usuario as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-usuarios" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
                          <li>
-                           <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-roles" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
-                           <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                           <input type="checkbox" id="permiso-todos-usuarios" name="permiso-todos-usuarios" value="permiso-todos-usuarios">
+                           <label for="permiso-todos-usuarios">Todos</label>
                          </li>
-                     @endforeach
-                   </ul>
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de mantenimientos de pacientes.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_paciente as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-pacientes" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         <li>
+                           <input type="checkbox" id="permiso-todos-pacientes" name="permiso-todos-pacientes" value="permiso-todos-pacientes">
+                           <label for="permiso-todos-pacientes">Todos</label>
+                         </li>
+                       </ul>
+                     </div>
+                   </div>
                  </div>
                </div>
                <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     <li>
-                       <input type="checkbox" id="permiso-todos-roles" name="permiso-todos-roles" value="permiso-todos-roles">
-                       <label for="permiso-todos-roles">Todos</label>
-                     </li>
-                   </ul>
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de mantenimiento de tipo de animales.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_tipo_animal as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-tipo_animal" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         <li>
+                           <input type="checkbox" id="permiso-todos-tipo_animal" name="permiso-todos-tipo_animal" value="permiso-todos-tipo_animal">
+                           <label for="permiso-todos-tipo_animal">Todos</label>
+                         </li>
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de mantenimiento de tipo de servicios.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_tipo_servicio as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-tipo_servicio" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         <li>
+                           <input type="checkbox" id="permiso-todos-tipo_servicio" name="permiso-todos-tipo_servicio" value="permiso-todos-tipo_servicio">
+                           <label for="permiso-todos-tipo_servicio">Todos</label>
+                         </li>
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               <div class="row">
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de mantenimiento de animales en venta.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_animal_en_venta as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-animal_en_venta" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         <li>
+                           <input type="checkbox" id="permiso-todos-animal_en_venta" name="permiso-todos-animal_en_venta" value="permiso-todos-animal_en_venta">
+                           <label for="permiso-todos-animal_en_venta">Todos</label>
+                         </li>
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de mantenimiento de citas.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_citas as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-citas" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         <li>
+                           <input type="checkbox" id="permiso-todos-citas" name="permiso-todos-citas" value="permiso-todos-citas">
+                           <label for="permiso-todos-citas">Todos</label>
+                         </li>
+                       </ul>
+                     </div>
+                   </div>
                  </div>
                </div>
               <ul class="list-unstyled list-inline pull-right">
@@ -122,27 +356,56 @@
               </ul>
              </div>
              <div id="menu3" class="tab-pane fade">
-               <h3>Permisos disponibles para la sección de pacientes.</h3>
                <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     @foreach ($permisos_paciente as $permiso)
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de roles y permisos.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_rol as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-rol" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
                          <li>
-                           <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-pacientes" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
-                           <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                           <input type="checkbox" id="permiso-todos-rol" name="permiso-todos-rol" value="permiso-todos-rol">
+                           <label for="permiso-todos-rol">Todos</label>
                          </li>
-                     @endforeach
-                   </ul>
+                       </ul>
+                     </div>
+                   </div>
                  </div>
-               </div>
-               <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     <li>
-                       <input type="checkbox" id="permiso-todos-pacientes" name="permiso-todos-pacientes" value="permiso-todos-pacientes">
-                       <label for="permiso-todos-pacientes">Todos</label>
-                     </li>
-                   </ul>
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de respaldos.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_respaldos as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-respaldos" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         <li>
+                           <input type="checkbox" id="permiso-todos-respaldos" name="permiso-todos-respaldos" value="permiso-todos-respaldos">
+                           <label for="permiso-todos-respaldos">Todos</label>
+                         </li>
+                       </ul>
+                     </div>
+                   </div>
                  </div>
                </div>
               <ul class="list-unstyled list-inline pull-right">
@@ -151,85 +414,53 @@
               </ul>
              </div>
              <div id="menu4" class="tab-pane fade">
-               <h3>Permisos disponibles para la sección de tipos de animales.</h3>
                <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     @foreach ($permisos_tipo_animal as $permiso)
-                         <li>
-                           <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-tipos_animal" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
-                           <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
-                         </li>
-                     @endforeach
-                   </ul>
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de reporte de citas.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_reporte_citas as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-reporte_citas" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de reportes de usuarios.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_reporte_usuarios as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-reporte_usuarios" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
                  </div>
                </div>
                <div class="row">
                  <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     <li>
-                       <input type="checkbox" id="permiso-todos-tipos_animal" name="permiso-todos-tipos_animal" value="permiso-todos-tipos_animal">
-                       <label for="permiso-todos-tipos_animal">Todos</label>
-                     </li>
-                   </ul>
-                 </div>
-               </div>
-              <ul class="list-unstyled list-inline pull-right">
-               <li><button type="button" class="btn btn-default prev-step"><i class="fa fa-chevron-left"></i> Atras</button></li>
-               <li><button type="button" class="btn btn-info next-step">Siguiente <i class="fa fa-chevron-right"></i></button></li>
-              </ul>
-             </div>
-             <div id="menu5" class="tab-pane fade">
-               <h3>Permisos disponibles para la sección de tipos de servicios.</h3>
-               <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     @foreach ($permisos_tipo_servicio as $permiso)
-                         <li>
-                           <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-tipos_servicio" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
-                           <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
-                         </li>
-                     @endforeach
-                   </ul>
-                 </div>
-               </div>
-               <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     <li>
-                       <input type="checkbox" id="permiso-todos-tipos_servicio" name="permiso-todos-tipos_servicio" value="permiso-todos-tipos_servicio">
-                       <label for="permiso-todos-tipos_servicio">Todos</label>
-                     </li>
-                   </ul>
-                 </div>
-               </div>
-              <ul class="list-unstyled list-inline pull-right">
-               <li><button type="button" class="btn btn-default prev-step"><i class="fa fa-chevron-left"></i> Atras</button></li>
-               <li><button type="button" class="btn btn-info next-step">Siguiente <i class="fa fa-chevron-right"></i></button></li>
-              </ul>
-             </div>
-             <div id="menu6" class="tab-pane fade">
-               <h3>Permisos disponibles para la sección de animales en venta.</h3>
-               <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     @foreach ($permisos_animal_en_venta as $permiso)
-                         <li>
-                           <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-animales_en_venta" name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
-                           <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
-                         </li>
-                     @endforeach
-                   </ul>
-                 </div>
-               </div>
-               <div class="row">
-                 <div class="col-md-12 text-center">
-                   <ul class="ks-cboxtags">
-                     <li>
-                       <input type="checkbox" id="permiso-todos-animales_en_venta" name="permiso-todos-animales_en_venta" value="permiso-todos-animales_en_venta">
-                       <label for="permiso-todos-animales_en_venta">Todos</label>
-                     </li>
-                   </ul>
+                   <h3>Permisos disponibles para la sección de reporte de pacientes.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_reporte_pacientes as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-reporte_pacientes " name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
                  </div>
                </div>
               <ul class="list-unstyled list-inline pull-right">
@@ -307,19 +538,19 @@
       }
     });
 
-    $('#permiso-todos-tipos_animal').change(function(){
+    $('#permiso-todos-tipo_animal').change(function(){
       if($(this).is(":checked")){
-        $('.permiso-tipos_animal').prop("checked", true);
+        $('.permiso-tipo_animal').prop("checked", true);
       }else{
-        $('.permiso-tipos_animal').prop("checked", false);
+        $('.permiso-tipo_animal').prop("checked", false);
       }
     });
 
-    $('#permiso-todos-tipos_servicio').change(function(){
+    $('#permiso-todos-tipo_servicio').change(function(){
       if($(this).is(":checked")){
-        $('.permiso-tipos_servicio').prop("checked", true);
+        $('.permiso-tipo_servicio').prop("checked", true);
       }else{
-        $('.permiso-tipos_servicio').prop("checked", false);
+        $('.permiso-tipo_servicio').prop("checked", false);
       }
     });
 
@@ -339,13 +570,71 @@
       }
     });
 
-    $('#permiso-todos-animales_en_venta').change(function(){
+    $('#permiso-todos-animal_en_venta').change(function(){
       if($(this).is(":checked")){
-        $('.permiso-animales_en_venta').prop("checked", true);
+        $('.permiso-animal_en_venta').prop("checked", true);
       }else{
-        $('.permiso-animales_en_venta').prop("checked", false);
+        $('.permiso-animal_en_venta').prop("checked", false);
       }
     });
+
+    $('#permiso-todos-calendarizacion').change(function(){
+      if($(this).is(":checked")){
+        $('.permiso-calendarizacion').prop("checked", true);
+      }else{
+        $('.permiso-calendarizacion').prop("checked", false);
+      }
+    });
+
+    $('#permiso-todos-expediente').change(function(){
+      if($(this).is(":checked")){
+        $('.permiso-expediente').prop("checked", true);
+      }else{
+        $('.permiso-expediente').prop("checked", false);
+      }
+    });
+
+    $('#permiso-todos-ventas_animales').change(function(){
+      if($(this).is(":checked")){
+        $('.permiso-venta_animales').prop("checked", true);
+      }else{
+        $('.permiso-venta_animales').prop("checked", false);
+      }
+    });
+
+    $('#permiso-todos-registro_adopcion_animales').change(function(){
+      if($(this).is(":checked")){
+        $('.permiso-registro_adopcion_animales').prop("checked", true);
+      }else{
+        $('.permiso-registro_adopcion_animales').prop("checked", false);
+      }
+    });
+
+    $('#permiso-todos-solicitud_adopcion_animales').change(function(){
+      if($(this).is(":checked")){
+        $('.permiso-permisos_solicitud_adopcion_animales').prop("checked", true);
+      }else{
+        $('.permiso-permisos_solicitud_adopcion_animales').prop("checked", false);
+      }
+    });
+
+    $('#permiso-todos-rol').change(function(){
+      if($(this).is(":checked")){
+        $('.permiso-rol').prop("checked", true);
+      }else{
+        $('.permiso-rol').prop("checked", false);
+      }
+    });
+
+    $('#permiso-todos-respaldos').change(function(){
+      if($(this).is(":checked")){
+        $('.permiso-respaldos').prop("checked", true);
+      }else{
+        $('.permiso-respaldos').prop("checked", false);
+      }
+    });
+
+
     //Añadir
     $('#asignar').click(function(){
       $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');

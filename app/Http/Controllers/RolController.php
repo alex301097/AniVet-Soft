@@ -48,10 +48,23 @@ class RolController extends Controller
     $permisos_tipo_animal = Permiso::where('categoria','tipos de animales')->get();
     $permisos_animal_en_venta = Permiso::where('categoria','animales en venta')->get();
     $permisos_citas = Permiso::where('categoria','citas')->get();
+    $permisos_calendarizacion = Permiso::where('categoria','calendarizacion')->get();
+    $permisos_expediente = Permiso::where('categoria','expediente')->get();
+    $permisos_registro_adopcion_animales = Permiso::where('categoria','registro de adopcion')->get();
+    $permisos_solicitud_adopcion_animales = Permiso::where('categoria','solicitud de adopcion')->get();
+    $permisos_venta_animales = Permiso::where('categoria','venta de animales')->get();
+    $permisos_reporte_usuarios = Permiso::where('categoria','reporte de usuarios')->get();
+    $permisos_reporte_pacientes = Permiso::where('categoria','reporte de pacientes')->get();
+    $permisos_reporte_citas = Permiso::where('categoria','reporte de citas')->get();
+    $permisos_respaldos = Permiso::where('categoria','respaldos')->get();
 
     return view('mantenimientos.roles.asignar', ['rol'=>$rol, 'permisos_usuario'=>$permisos_usuario,'permisos_paciente'=>$permisos_paciente,
     'permisos_rol'=>$permisos_rol,'permisos_tipo_servicio'=>$permisos_tipo_servicio,'permisos_tipo_animal'=>$permisos_tipo_animal,
-    'permisos_animal_en_venta'=>$permisos_animal_en_venta,'permisos_citas'=>$permisos_citas]);
+    'permisos_animal_en_venta'=>$permisos_animal_en_venta,'permisos_citas'=>$permisos_citas,'permisos_calendarizacion'=>$permisos_calendarizacion,
+    'permisos_expediente'=>$permisos_expediente,'permisos_registro_adopcion_animales'=>$permisos_registro_adopcion_animales,
+    'permisos_solicitud_adopcion_animales'=>$permisos_solicitud_adopcion_animales,'permisos_venta_animales'=>$permisos_venta_animales,
+    'permisos_reporte_usuarios'=>$permisos_reporte_usuarios,'permisos_reporte_pacientes'=>$permisos_reporte_pacientes,
+    'permisos_reporte_citas'=>$permisos_reporte_citas,'permisos_respaldos'=>$permisos_respaldos]);
   }
 
   public function asignar_permisos(Request $request)
