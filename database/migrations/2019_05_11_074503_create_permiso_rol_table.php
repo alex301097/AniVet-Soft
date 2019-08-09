@@ -14,9 +14,9 @@ class CreatePermisoRolTable extends Migration
     public function up()
     {
         Schema::create('permiso_rol', function (Blueprint $table) {
-          $table->integer('rol_id')->unsigned();
+          $table->unsignedBigInteger('rol_id');
           $table->foreign('rol_id')->references('id')->on('rols');
-          $table->integer('permiso_id')->unsigned();
+          $table->unsignedBigInteger('permiso_id');
           $table->foreign('permiso_id')->references('id')->on('permisos');
           $table->timestamps();
         });

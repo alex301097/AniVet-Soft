@@ -175,16 +175,16 @@
               <div class="box-footer clearfix">
                 <div class="row">
                   <div class="col-md-12">
-                      <a type="button" class="btn btn-sm bg-navy pull-navy {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip"
-                      title="Limpiar lista de animales a comprar" id="limpiar_lista_detalles">
-                      &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-                      </a>
-                      @csrf
-                      <a type="button" class="btn btn-sm bg-orange pull-right {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip"
-                      title="Click para registrar los datos personales y de contacto para finalizar la solicitud de compra"
-                      id="finalizar_venta">
-                        Finalizar compra ✔
-                      </a>
+                    <a type="button" class="btn btn-sm bg-navy pull-navy {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip"
+                    title="Limpiar lista de animales a comprar" id="limpiar_lista_detalles">
+                    &nbsp;<i class="fa fa-eraser"></i>&nbsp;
+                    </a>
+                    @csrf
+                    <a type="button" class="btn btn-sm bg-orange pull-right {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip"
+                    title="Click para registrar los datos personales y de contacto para finalizar la solicitud de compra"
+                    id="finalizar_venta">
+                      Finalizar compra ✔
+                    </a>
                   </div>
                 </div>
               </div>
@@ -344,7 +344,6 @@
         },
         success: function(data){
           if((data.length == 0)){
-            alert('Vacio prro');
             Toast.fire({
               type: 'success',
               title: '¡Solicitud de compra correctamente eliminada!'

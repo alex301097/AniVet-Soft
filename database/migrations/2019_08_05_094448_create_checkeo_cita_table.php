@@ -16,7 +16,7 @@ class CreateCheckeoCitaTable extends Migration
         Schema::create('checkeo_cita', function (Blueprint $table) {
           $table->unsignedBigInteger('checkeo_id');
           $table->foreign('checkeo_id')->references('id')->on('checkeos');
-          $table->integer('cita_id')->unsigned();
+          $table->unsignedBigInteger('cita_id');
           $table->foreign('cita_id')->references('id')->on('citas');
           $table->string('descripcion');
           $table->timestamps();

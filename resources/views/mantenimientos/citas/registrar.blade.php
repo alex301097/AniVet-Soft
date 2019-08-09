@@ -279,7 +279,7 @@
         data: {
 
           '_token': $('input[name=_token]').val(),
-          'fecha': $('#fecha_formato').val(),
+          'fecha': moment($('#fecha_formato').val()).format('YYYY-MM-DD'),
           'horaInicio': $('#horaInicio').val(),
           'horaFinal': $('#horaFinal').val(),
           'motivo': $('#motivo').val(),

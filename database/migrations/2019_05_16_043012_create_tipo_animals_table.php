@@ -14,7 +14,7 @@ class CreateTipoAnimalsTable extends Migration
     public function up()
     {
         Schema::create('tipo_animals', function (Blueprint $table) {
-          $table->increments('id');
+          $table->bigIncrements('id');
           $table->string('descripcion');
           $table->softDeletes();
           $table->timestamps();

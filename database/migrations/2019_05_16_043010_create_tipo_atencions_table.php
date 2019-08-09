@@ -14,7 +14,7 @@ class CreateTipoAtencionsTable extends Migration
     public function up()
     {
         Schema::create('tipo_atencions', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('descripcion');
             $table->softDeletes();
             $table->timestamps();

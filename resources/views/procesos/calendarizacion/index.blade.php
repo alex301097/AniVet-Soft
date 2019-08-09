@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('css')
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="{{ URL::to('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+  <!-- datepicker -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- Bootstrap time Picker -->
   <link rel="stylesheet" href="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.css') }}">
 
@@ -67,6 +67,7 @@
                             <i class="fa fa-calendar"></i>
                           </div>
                           <input type="text" class="form-control form-control-sm pull-right" id="fecha" name="fecha" placeholder="Fecha">
+                          <input type="hidden" id="fecha_formato" value="">
                         </div>
                         <p class="error-fecha text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                       </div>
@@ -176,7 +177,10 @@
               {!! $calendar->calendar() !!}
             </div>
             <div class="box-footer clearfix pull-right">
-                <button class="btn btn-sm" style="color: #fff; background-color: #0f9f97; cursor: default;" type="button" onclick="return false;">
+                <button class="btn btn-sm" style="color: #fff; background-color: rgb(128, 176, 93); cursor: default;" type="button" onclick="return false;">
+                  Activas ✔
+                </button>
+                <button class="btn btn-sm" style="color: #fff; background-color: rgb(209, 111, 19); cursor: default;" type="button" onclick="return false;">
                   Pendientes ✔
                 </button>
                 <button class="btn btn-sm" style="color: #fff; background-color: rgb(220, 53, 69); cursor: default;" type="button" onclick="return false;">
@@ -231,25 +235,80 @@
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <!-- datepicker -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
   <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/lang/es.js"></script>
   {!! $calendar->script() !!}
 
-  <!-- bootstrap datepicker -->
-  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
 
   <!-- bootstrap time picker -->
   <script src="{{ URL::to('plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
 
   <script type="text/javascript">
   //Date picker
-  $('#fecha').datepicker({
-    startDate: 'days',
-    language: 'es',
-    autoclose: true,
-  })
+  $(document).ready(function () {
+    $(function() {
+
+        $('input[name="fecha"]').daterangepicker({
+          "singleDatePicker": true,
+            opens: 'center',
+            autoUpdateInput: false,
+            minDate: moment(),
+           "locale": {
+               "format": "DD/MM/YYYY",
+               "separator": " - ",
+               "applyLabel": "Aplicar",
+               "cancelLabel": "Cancelar/Limpiar",
+               "fromLabel": "De",
+               "toLabel": "hasta",
+               "customRangeLabel": "Custom",
+               "daysOfWeek": [
+                   "Dom",
+                   "Lun",
+                   "Mar",
+                   "Mie",
+                   "Jue",
+                   "Vie",
+                   "Sáb"
+               ],
+               "monthNames": [
+                   "Enero",
+                   "Febrero",
+                   "Marzo",
+                   "Abril",
+                   "Mayo",
+                   "Junio",
+                   "Julio",
+                   "Agosto",
+                   "Septiembre",
+                   "Octubre",
+                   "Noviembre",
+                   "Diciembre"
+               ],
+               "firstDay": 1
+           }
+        });
+
+        $('input[name="fecha"]').on('apply.daterangepicker', function(ev, picker) {
+
+            $("#fecha").val(picker.startDate.format('DD/MM/YYYY'));
+
+            $("#fecha_formato").val(picker.startDate.format('YYYY-MM-DD'));
+
+        });
+
+        $('input[name="fecha"]').on('cancel.daterangepicker', function(ev, picker) {
+          $("#fecha").val("");
+
+          $("#fecha_formato").val("");
+        });
+
+      });
+  });
 
   //Timepicker
   $('#horaInicio').timepicker({
@@ -304,12 +363,11 @@
 
         '_token': $('input[name=_token]').val(),
         'id_cita': $('#id_cita').val(),
-        'fecha': $('#fecha').val(),
+        'fecha': moment($('#fecha_formato').val()).format('YYYY-MM-DD'),
         'horaInicio': $('#horaInicio').val(),
         'horaFinal': $('#horaFinal').val(),
         'motivo': $('#motivo').val(),
         'observaciones': $('#observaciones').val(),
-        'estado': $('#estado').val(),
         'servicio': $('#servicio').val(),
         'paciente': $('#idPaciente').val(),
       },
@@ -345,11 +403,6 @@
           if(data.errors.observaciones){
             $('.error-observaciones').removeClass('hidden');
             $('.error-observaciones').text(data.errors.observaciones);
-          }
-
-          if(data.errors.estado){
-            $('.error-estado').removeClass('hidden');
-            $('.error-estado').text(data.errors.estado);
           }
 
           if(data.errors.servicio){

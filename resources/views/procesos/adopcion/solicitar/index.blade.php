@@ -54,9 +54,9 @@
           </div>
           <div class="row">
             <div class="col-md-12 pull-right">
-              <button type="button" id="limpiar_lista_detalles" class="btn btn-sm bg-navy disabled hidden" data-toggle="tooltip" title="Limpiar lista de animales a adoptar">
+              <a type="button" id="limpiar_lista_detalles" class="btn btn-sm bg-navy disabled hidden" data-toggle="tooltip" title="Limpiar lista de animales a adoptar">
                &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-              </button>
+             </a>
               @csrf
               <a type="button" class="btn btn-sm bg-orange disabled hidden" data-toggle="tooltip"
               title="Click para registrar los datos personales y de contacto para finalizar la solicitud de adopción" id="finalizar_adopcion">
@@ -97,9 +97,9 @@
               Finalizar solicitud ✔
               </a>
               @csrf
-              <button type="button" id="limpiar_lista_detalles" class="btn btn-sm bg-navy pull-right" style="margin-right:5px;" data-toggle="tooltip" title="Limpiar lista de animales a adoptar">
+              <a type="button" id="limpiar_lista_detalles" class="btn btn-sm bg-navy pull-right" style="margin-right:5px;" data-toggle="tooltip" title="Limpiar lista de animales a adoptar">
                &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-              </button>
+             </a>
             </div>
           </div>
         @endif
@@ -148,10 +148,10 @@
                         <br>
                         <div class="row">
                           <div class="col-md-12 text-center">
-                            <button type="submit" class="btn btn-sm bg-orange info_registro_animal_{{$detalle->id}}" id="añadir_solicitud" name="añadir_solicitud" title="Click para añadir la solicitud de este animal a la lista de animales a adoptar"
+                            <a type="submit" class="btn btn-sm bg-orange info_registro_animal_{{$detalle->id}}" id="añadir_solicitud" name="añadir_solicitud" title="Click para añadir la solicitud de este animal a la lista de animales a adoptar"
                             data-id="{{$detalle->id}}">
                               Añadir animal
-                            </button>
+                            </a>
                           </div>
                         </div>
                         <br>
@@ -265,10 +265,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-          <button type="button" id="limpiar_formulario_dueño" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario de datos del adoptante de los animales.">
+          <a type="button" id="limpiar_formulario_dueño" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario de datos del adoptante de los animales.">
            &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-          </button>
-          <button type="button" class="btn btn-sm btn-primary" id="efectuar_adopcion" name="efectuar_adopcion" data-toggle="tooltip" title="Click para finalizar el proceso de adopción.">Efectuar solicitud</button>
+         </a>
+          <a type="button" class="btn btn-sm btn-primary" id="efectuar_adopcion" name="efectuar_adopcion" data-toggle="tooltip" title="Click para finalizar el proceso de adopción.">Efectuar solicitud</a>
         </div>
       </div>
       <!-- /.modal-content -->

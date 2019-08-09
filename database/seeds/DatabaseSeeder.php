@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
       $this->call(TipoAnimalTableSeeder::class);
       $this->call(TipoServicioTableSeeder::class);
       $this->call(TipoAtencionTableSeeder::class);
+      $this->call(CheckeoTableSeeder::class);
     }
 }

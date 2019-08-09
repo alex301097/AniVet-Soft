@@ -164,13 +164,13 @@
               <div class="box-footer clearfix">
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="button" id="limpiar_formulario_cita" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario">
+                    <a id="limpiar_formulario_cita" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario">
                      &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-                    </button>
+                   </a>
                     @csrf
-                    <button type="submit" class="btn btn-sm btn-success pull-right" id="añadir_adopcion" name="añadir_adopcion" data-toggle="tooltip" title="Click para añadir el animal a la lista de animales a adoptar">
+                    <a class="btn btn-sm btn-success pull-right" id="añadir_adopcion" name="añadir_adopcion" data-toggle="tooltip" title="Click para añadir el animal a la lista de animales a adoptar">
                       &nbsp;<i class="fa fa-plus-square"></i>&nbsp;&nbsp;Añadir animal
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -244,11 +244,11 @@
               <div class="box-footer clearfix">
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="button" id="limpiar_lista_detalles" class="btn btn-sm bg-navy pull-left" data-toggle="tooltip" title="Limpiar lista de animales para adopción">
+                    <a type="button" id="limpiar_lista_detalles" class="btn btn-sm bg-navy pull-left {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip" title="Limpiar lista de animales para adopción">
                      &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-                    </button>
+                   </a>
                     @csrf
-                      <a type="button" class="btn btn-sm bg-orange pull-right disabled" data-toggle="tooltip"
+                      <a type="button" class="btn btn-sm bg-orange pull-right {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip"
                       title="Click para registrar los datos personales y de contacto para finalizar el registro de adopción" id="finalizar_adopcion">
                         Finalizar adopción ✔
                       </a>

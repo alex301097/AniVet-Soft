@@ -56,12 +56,15 @@ class Cita extends Model
       return $this->belongsTo('App\User','user_create_id');
     }
 
-    //Metodos de relacion
     public function checkeos(){
       return $this->belongsToMany('App\Checkeo',
       'checkeo_cita',
       'cita_id',
       'checkeo_id'
       )->withPivot('descripcion')->withTimestamps();
+    }
+
+    public function resultado(){
+      return $this->belongsTo('App\Resultado');
     }
 }

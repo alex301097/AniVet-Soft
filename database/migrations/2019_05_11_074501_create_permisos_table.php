@@ -14,7 +14,7 @@ class CreatePermisosTable extends Migration
     public function up()
     {
       Schema::create('permisos', function (Blueprint $table) {
-          $table->increments('id');
+          $table->bigIncrements('id');
           $table->string('categoria');
           $table->string('nombre',50);
           $table->string('descripcion',50);

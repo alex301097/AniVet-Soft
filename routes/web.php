@@ -132,6 +132,15 @@ Route::group(['prefix'=>'proceso/expediente_medico', 'middleware'=>'auth'], func
   Route::get('/', 'ExpedienteMedicoController@get_ficha_clinica')->name('expediente_medico')->middleware('auth');
 
   Route::get('autocompletePaciente', 'ExpedienteMedicoController@autocompletePaciente')->name('autocompletePaciente')->middleware('auth');
+
+  Route::post('autocompleteCitas', 'ExpedienteMedicoController@autocompleteCitas')->name('autocompleteCitasPaciente')->middleware('auth');
+
+  Route::post('autocompleteExpediente', 'ExpedienteMedicoController@autocompleteExpediente')->name('autocompleteExpediente')->middleware('auth');
+
+  Route::post('guardar-chequeo', 'ExpedienteMedicoController@guardar_chequeos')->name('expediente_medico.guardar.chequeos')->middleware('auth');
+
+  Route::post('guardar-resultados', 'ExpedienteMedicoController@guardar_resultados')->name('expediente_medico.guardar.resultados')->middleware('auth');
+
 });
 
 Route::group(['prefix'=>'mantenimiento/tipos_servicios', 'middleware'=>'auth'], function(){
@@ -239,17 +248,10 @@ Route::group(['prefix'=>'proceso/calendarizacion', 'middleware'=>'auth'], functi
 Route::group(['prefix'=>'reportes', 'middleware'=>'auth'], function(){
   Route::get('citas', 'ReportesController@reporte_citas')->name('reportes.citas');
   Route::get('exportar-pdf-citas/{min?}/{max?}/{estado?}', 'ReportesController@pdf_citas')->name('citas-pdf');
-});
 
-Route::group(['prefix'=>'reportes', 'middleware'=>'auth'], function(){
   Route::get('usuarios', 'ReportesController@reporte_usuarios')->name('reportes.usuarios');
   Route::get('exportar-pdf-usuarios/{min?}/{max?}/{estado?}', 'ReportesController@pdf_usuarios')->name('usuarios-pdf');
-});
 
-Route::group(['prefix'=>'reportes', 'middleware'=>'auth'], function(){
   Route::get('pacientes', 'ReportesController@reporte_pacientes')->name('reportes.pacientes');
   Route::get('exportar-pdf-pacientes/{min?}/{max?}/{estado?}', 'ReportesController@pdf_pacientes')->name('pacientes-pdf');
 });
-
-
-// Route::get('registro', 'HomeController@index')->name('home');

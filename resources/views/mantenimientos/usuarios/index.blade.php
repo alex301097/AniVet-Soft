@@ -4,8 +4,8 @@
   <link rel="stylesheet" rel="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css"></script>
   <link rel="stylesheet" rel="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="{{ URL::to('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+  <!-- datepicker -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{ URL::to('plugins/iCheck/all.css') }}">
 @endsection
@@ -190,6 +190,7 @@
                                         <i class="fa fa-calendar"></i>
                                       </div>
                                       <input type="text" class="form-control form-control-sm pull-right" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
+                                      <input type="hidden" id="fecha_nacimiento_formato" value="">
                                     </div>
                                     <p class="error_fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                   </div>
@@ -612,6 +613,7 @@
                                         <i class="fa fa-calendar"></i>
                                       </div>
                                       <input type="text" class="form-control form-control-sm pull-right" id="fecha_nacimiento_edicion" name="fecha_nacimiento_edicion" placeholder="Fecha de nacimiento">
+                                      <input type="hidden" id="fecha_nacimiento_edicion_formato" value="">
                                     </div>
                                     <p class="error_fecha_nacimiento_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                   </div>
@@ -689,20 +691,16 @@
 
 @endsection
 @section('scripts')
-
   <!-- Dropzone.js and dataTables links -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
 
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-  <!-- bootstrap datepicker -->
-  <script src="{{ URL::to('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
-
   <!-- iCheck 1.0.1 -->
   <script src="{{ URL::to('plugins/iCheck/icheck.min.js') }}"></script>
-
+  <!-- datepicker -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
   <script type="text/javascript">
 
@@ -762,61 +760,6 @@
           $("#fecha_nacimiento").val("");
 
           $("#fecha_nacimiento_formato").val("");
-        });
-  
-
-        $('input[name="fecha_nacimiento_detalle"]').daterangepicker({
-          "singleDatePicker": true,
-            opens: 'center',
-            autoUpdateInput: false,
-            maxDate: moment(),
-           "locale": {
-               "format": "DD/MM/YYYY",
-               "separator": " - ",
-               "applyLabel": "Aplicar",
-               "cancelLabel": "Cancelar/Limpiar",
-               "fromLabel": "De",
-               "toLabel": "hasta",
-               "customRangeLabel": "Custom",
-               "daysOfWeek": [
-                   "Dom",
-                   "Lun",
-                   "Mar",
-                   "Mie",
-                   "Jue",
-                   "Vie",
-                   "Sáb"
-               ],
-               "monthNames": [
-                   "Enero",
-                   "Febrero",
-                   "Marzo",
-                   "Abril",
-                   "Mayo",
-                   "Junio",
-                   "Julio",
-                   "Agosto",
-                   "Septiembre",
-                   "Octubre",
-                   "Noviembre",
-                   "Diciembre"
-               ],
-               "firstDay": 1
-           }
-        });
-
-        $('input[name="fecha_nacimiento_detalle"]').on('apply.daterangepicker', function(ev, picker) {
-
-            $("#fecha_nacimiento_detalle").val(picker.startDate.format('DD/MM/YYYY'));
-
-            $("#fecha_nacimiento_detalle_formato").val(picker.startDate.format('YYYY-MM-DD'));
-
-        });
-
-        $('input[name="fecha_nacimiento_detalle"]').on('cancel.daterangepicker', function(ev, picker) {
-          $("#fecha_nacimiento_detalle").val("");
-
-          $("#fecha_nacimiento_detalle_formato").val("");
         });
 
 
@@ -995,7 +938,7 @@
       form_data.append('nombre', $('#nombre').val());
       form_data.append('apellidos', $('#apellidos').val());
       form_data.append('nacionalidad', $('#nacionalidad').val());
-      form_data.append('fecha_nacimiento', $('#fecha_nacimiento_formato').val());
+      form_data.append('fecha_nacimiento', moment($('#fecha_nacimiento_formato').val()).format('YYYY-MM-DD'));
       form_data.append('estado_civil', $('#estado_civil').val());
       form_data.append('sexo', $('input[name="sexo"]:checked').val());
       form_data.append('telefono', $('#telefono').val());
@@ -1167,7 +1110,7 @@
       form_data.append('nombre_edicion', $('#nombre_edicion').val());
       form_data.append('apellidos_edicion', $('#apellidos_edicion').val());
       form_data.append('nacionalidad_edicion', $('#nacionalidad_edicion').val());
-      form_data.append('fecha_nacimiento_edicion', $('#fecha_nacimiento_edicion_formato').val());
+      form_data.append('fecha_nacimiento_edicion', moment($('#fecha_nacimiento_edicion_formato').val()).format('YYYY-MM-DD'));
       form_data.append('estado_civil_edicion', $('#estado_civil_edicion').val());
       form_data.append('sexo_edicion', $('input[name="sexo_edicion"]:checked').val());
       form_data.append('telefono_edicion', $('#telefono_edicion').val());

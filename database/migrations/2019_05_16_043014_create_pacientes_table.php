@@ -14,16 +14,16 @@ class CreatePacientesTable extends Migration
     public function up()
     {
         Schema::create('pacientes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('nombre');
             $table->string('edad');
             $table->string('peso');
             $table->date('fecha_nacimiento')->nullable();;
             $table->string('sexo', 15)->nullable();
             $table->string('observaciones');
-            $table->integer('user_id')->unsigned();
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('tipo_animal_id')->unsigned();
+            $table->unsignedBigInteger('tipo_animal_id');
             $table->foreign('tipo_animal_id')->references('id')->on('tipo_animals');
             $table->string('raza');
             $table->softDeletes();

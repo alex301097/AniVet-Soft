@@ -167,7 +167,6 @@
                  opens: 'center',
                  autoUpdateInput: false,
                  format: "DD/MM/YYYY",
-      
                 "locale": {
                     "separator": " - ",
                     "applyLabel": "Aplicar",
@@ -201,7 +200,7 @@
                     "firstDay": 1
                 }
              });
-             
+
              $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
                var table = $('#citas').DataTable();
                  var ruta = "{{ url('api/reporte_citas/:min/:max/:estado') }}";

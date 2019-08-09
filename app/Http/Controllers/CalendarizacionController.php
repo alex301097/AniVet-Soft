@@ -21,7 +21,7 @@ class CalendarizacionController extends Controller
   public function getCitas(){
     $servicios = TipoServicio::all();
     return view('procesos.calendarizacion.index', ['servicios'=>$servicios]);
-}
+  }
 
 public function index(){
   $events = [];
@@ -29,19 +29,17 @@ public function index(){
   if($data->count()) {
       foreach ($data as $key => $value) {
         $color = "";
-        $deleted_at = $value->getDeletedAtAttribute($value->deleted_at);
-        if(empty($value->deleted_at) || new Carbon($value->fecha) <= Carbon::now()){
+        if(!empty($value->deleted_at) || new Carbon($value->fecha) < Carbon::now()){
           $color = "rgb(220, 53, 69)";
         }
 
-        if(!empty($value->deleted_at) || new Carbon($value->fecha) > Carbon::now()){
-          $color = "rgb(128, 176, 93)";
-        }
-
-        if(!empty($value->deleted_at) && new Carbon($value->fecha) <= Carbon::now() && new Carbon($value->fecha) >= Carbon::now()->subDays(4)){
+        if(empty($value->deleted_at) && new Carbon($value->fecha) >= Carbon::now() && new Carbon($value->fecha) <= Carbon::now()->addDays(4)){
           $color = "rgb(209, 111, 19)";
         }
 
+        if(empty($value->deleted_at) && new Carbon($value->fecha) > Carbon::now()->addDays(4)){
+          $color = "rgb(128, 176, 93)";
+        }
         $events[] = Calendar::event(
             $value->paciente->nombre. ' - ' .$value->paciente->tipo_animal->descripcion. ' - ' .$value->paciente->raza,
             true,
@@ -99,7 +97,6 @@ public function postRegistrarCita(Request $request)
     $cita->horaFinal = $request->input('horaFinal');
     $cita->motivo = $request->input('motivo');
     $cita->observaciones = $request->input('observaciones');
-    $cita->estado = "Activa";
     $cita->servicio()->associate($request->input('servicio'));
     $cita->paciente()->associate($request->input('paciente'));
     $cita->user_create()->associate(Auth::user());

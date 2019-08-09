@@ -285,7 +285,7 @@
           'edad': $('#edad').val(),
           'peso': $('#peso').val(),
           'raza': $('#raza').val(),
-          'fecha_nacimiento': $('#fecha_nacimiento_formato').val(),
+          'fecha_nacimiento': moment($('#fecha_nacimiento_formato').val()).format('YYYY-MM-DD'),
           'sexo': $('input[name="sexo"]:checked').val(),
           'observaciones': $('#observaciones').val(),
         },
