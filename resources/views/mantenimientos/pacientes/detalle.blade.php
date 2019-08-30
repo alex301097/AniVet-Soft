@@ -15,7 +15,7 @@
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
-      <li><a href="#">Pacientes</a></li>
+      <li><a href="{{route('pacientes')}}">Pacientes</a></li>
       <li class="active">Detalle</li>
     </ol>
   </section>
@@ -89,7 +89,7 @@
               <div class="demo-gallery">
                 <ul id="lightgallery">
                   @foreach ($paciente->imagenes as $imagen)
-                    <li  data-src="{{ url('imgPacientes/'.$imagen->imagen) }}"
+                    <li style="width:150px;height:150px;" data-src="{{ url('imgPacientes/'.$imagen->imagen) }}"
                     data-sub-html="<h4>Nombre: {{$paciente->nombre}}</h4>
                     <p>
                       Especie: {{$paciente->tipo_animal->descripcion}} - Raza: {{$paciente->raza}} - Edad: {{$paciente->edad}} años
@@ -97,7 +97,7 @@
                       Observaciones: {{$paciente->observaciones}}
                     </p>">
                       <a href="">
-                        <img class="img-responsive" src="{{ url('imgPacientes/'.$imagen->imagen) }}" alt="{{$paciente->nombre}}">
+                        <img class="img-responsive" style="width:150px;height:150px;" src="{{ url('imgPacientes/'.$imagen->imagen) }}" alt="{{$paciente->nombre}}">
                         <div class="demo-gallery-poster">
                           <img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
                         </div>
@@ -125,7 +125,7 @@
             <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
               <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
             </div>
-            </div>
+          </div>
           <!-- /.box-body -->
 
           <!-- /.box-footer-->

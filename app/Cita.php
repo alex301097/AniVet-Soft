@@ -65,6 +65,6 @@ class Cita extends Model
     }
 
     public function resultado(){
-      return $this->belongsTo('App\Resultado');
+      return $this->hasOne('App\Resultado');
     }
 }

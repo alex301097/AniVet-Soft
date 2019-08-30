@@ -31,7 +31,7 @@
       </div>
       <div class="box-body">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <h4>Exportar formato</h4>
               <button type="submit" class="btn btn-sm btn-success pull-left" style="max-width:300px;"
                 id="generar_reporte" name="generar_reporte" data-toggle="tooltip"
@@ -39,13 +39,24 @@
                 &nbsp;<i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;PDF
               </button>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <h4>Filtro por fechas</h4>
               <input type="text" class="form-control form-control-sm" name="datefilter" id="rango_fechas" value="" style="max-width:250px;"/>
               <input type="hidden" id="min" value="">
               <input type="hidden" id="max" value="">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+              <div class="form-group">
+                <h4>Filtro por roles</h4>
+                <select class="form-control form-control-sm" id="rol" name="rol" style="max-width:250px;">
+                  <option value="0">Seleccione una opción</option>
+                  @foreach ($roles as $rol)
+                    <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
               <div class="form-group">
                 <h4>Filtro por estado</h4>
                 <select class="form-control form-control-sm" id="estado" name="estado" style="max-width:250px;">
@@ -118,22 +129,29 @@
         buttonsStyling: false,
       });
 
+      $(document).ready(function(){
+        $('#side_bar-reportes').addClass('active');
+        $('#side_bar_option-reportes-usuarios').addClass('active');
+      });
+
       $(document).ready(function() {
 
-          var ruta = "{{ url('api/reporte_usuarios/0/0/:estado') }}";
+          var ruta = "{{ url('api/reporte_usuarios/0/0/:rol/:estado') }}";
           ruta = ruta.replace(':estado', $('#estado').val());
+          ruta = ruta.replace(':rol', $('#rol').val());
+
         $('#usuarios').DataTable({
           "processing":true,
           "serverSide":true,
           "ajax":ruta,
           "columns":
           [
-            {data: 'nombre', orderable: false, searchable: false},
-            {data: 'apellidos', orderable: false, searchable: false},
+            {data: 'nombre'},
+            {data: 'apellidos'},
             {data: 'cedula'},
             {data: 'telefono'},
-            {data: 'rol.descripcion'},
-            {data: 'direccion', orderable: false, searchable: false},
+            {data: 'rol.descripcion', name:'rol.descripcion'},
+            {data: 'direccion'},
           ],
           "language":{
             "info": "Mostrando total registros",
@@ -166,9 +184,7 @@
                  opens: 'center',
                  autoUpdateInput: false,
                  format: "DD/MM/YYYY",
-                 maxDate: moment(),
                 "locale": {
-
                     "separator": " - ",
                     "applyLabel": "Aplicar",
                     "cancelLabel": "Cancelar/Limpiar",
@@ -205,10 +221,11 @@
              $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
                var table = $('#usuarios').DataTable();
 
-                 var ruta = "{{ url('api/reporte_usuarios/:min/:max/:estado') }}";
+                 var ruta = "{{ url('api/reporte_usuarios/:min/:max/:rol/:estado') }}";
                  ruta = ruta.replace(':min', picker.startDate.format('YYYY-MM-DD'));
                  ruta = ruta.replace(':max', picker.endDate.format('YYYY-MM-DD'));
                  ruta = ruta.replace(':estado', $('#estado').val());
+                 ruta = ruta.replace(':rol', $('#rol').val());
                  $("#min").val(picker.startDate.format('YYYY-MM-DD'));
                  $("#max").val(picker.endDate.format('YYYY-MM-DD'));
                  table.ajax.url(ruta);
@@ -219,8 +236,9 @@
 
              $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
                 var table = $('#usuarios').DataTable();
-                var ruta = "{{ url('api/reporte_usuarios/0/0/:estado') }}";
+                var ruta = "{{ url('api/reporte_usuarios/0/0/:rol/:estado') }}";
                 ruta = ruta.replace(':estado', $('#estado').val());
+                ruta = ruta.replace(':rol', $('#rol').val());
                 $("#min").val("");
                 $("#max").val("");
                 table.ajax.url(ruta);
@@ -233,14 +251,15 @@
 
            $('#generar_reporte').click(function () {
              if(!$('#rango_fechas').val()){
-                 var ruta = "{{ route('usuarios-pdf',['0','0',':estado']) }}";
+                 var ruta = "{{ route('usuarios-pdf',['0','0',':rol',':estado']) }}";
                  ruta = ruta.replace(':estado', $("#estado").val());
-
+                 ruta = ruta.replace(':rol', $('#rol').val());
                  window.open(ruta, '_blank');
              }else {
-               var ruta = "{{ route('usuarios-pdf',[':min',':max',':estado']) }}";
+               var ruta = "{{ route('usuarios-pdf',[':min',':max',':rol',':estado']) }}";
                  ruta = ruta.replace(':min', $("#min").val());
                  ruta = ruta.replace(':max', $("#max").val());
+                 ruta = ruta.replace(':rol', $("#rol").val());
                  ruta = ruta.replace(':estado', $("#estado").val());
 
                  window.open(ruta, '_blank');
@@ -250,16 +269,36 @@
            $('#estado').change(function () {
              var table = $('#usuarios').DataTable();
              if(!$('#rango_fechas').val()){
-                 var ruta = "{{ url('api/reporte_usuarios/0/0/:estado') }}";
+                 var ruta = "{{ url('api/reporte_usuarios/0/0/:rol/:estado') }}";
                  ruta = ruta.replace(':estado', $(this).val());
+                 ruta = ruta.replace(':rol', $('#rol').val());
                  table.ajax.url(ruta);
                  table.draw();
              }else {
-                 var ruta = "{{ url('api/reporte_usuarios/:min/:max/:estado') }}";
+                 var ruta = "{{ url('api/reporte_usuarios/:min/:max/:rol/:estado') }}";
                  ruta = ruta.replace(':min', $("#min").val());
                  ruta = ruta.replace(':max', $("#max").val());
                  ruta = ruta.replace(':estado', $(this).val());
+                 ruta = ruta.replace(':rol', $('#rol').val());
+                 table.ajax.url(ruta);
+                 table.draw();
+             }
+           });
 
+           $('#rol').change(function () {
+             var table = $('#usuarios').DataTable();
+             if(!$('#rango_fechas').val()){
+                 var ruta = "{{ url('api/reporte_usuarios/0/0/:rol/:estado') }}";
+                 ruta = ruta.replace(':rol', $(this).val());
+                 ruta = ruta.replace(':estado', $('#estado').val());
+                 table.ajax.url(ruta);
+                 table.draw();
+             }else {
+                 var ruta = "{{ url('api/reporte_usuarios/:min/:max/:rol/:estado') }}";
+                 ruta = ruta.replace(':min', $("#min").val());
+                 ruta = ruta.replace(':max', $("#max").val());
+                 ruta = ruta.replace(':rol', $(this).val());
+                 ruta = ruta.replace(':estado', $('#estado').val());
                  table.ajax.url(ruta);
                  table.draw();
              }

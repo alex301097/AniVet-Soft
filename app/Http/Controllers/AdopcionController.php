@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SolicitudAdopcionGerente;
 use App\Mail\SolicitudAdopcionDueño;
 use App\Mail\SolicitudAdopcionAdoptante;
+use App\Mail\RegistroAdopcion;
 use App\EncAdopcion;
 use App\DetAdopcion;
 use App\EncSolicitud;
@@ -69,10 +70,7 @@ class AdopcionController extends Controller
       $det_adopcion->condiciones = $request->input('condiciones');
       $det_adopcion->observaciones = $request->input('observaciones');
 
-
-      $detalle = Session::get("detalles_adopcion");
-      $conteo = count($detalle) + 1;
-      Session::push("detalles_adopcion",[$conteo=>$det_adopcion]);
+      Session::push("detalles_adopcion",$det_adopcion);
 
       return response()->json(Session::get("detalles_adopcion"));
     }
@@ -87,28 +85,30 @@ class AdopcionController extends Controller
       Session::put("detalles_adopcion",[]);
 
       $resultado = true;
-
     }
 
     return response()->json($resultado);
   }
 
-  public function registrar_limpiar_individual()
+  public function registrar_limpiar_individual(Request $request)
   {
-    $resultado = false;
+    $posicion = $request->input('posicion');
 
-    if (Session::has('detalles_adopcion')) {
-      Session::forget("detalles_adopcion");
-      $resultado = true;
+    $detalle = Session::get("detalles_adopcion");
+    Session::forget("detalles_adopcion");
+    Session::put("detalles_adopcion",[]);
 
+    foreach ($detalle as $id => $detalle) {
+      if($id != $posicion) {
+        Session::push("detalles_adopcion",$detalle);
+      }
     }
-
-    return response()->json($resultado);
+      return response()->json(Session::get('detalles_adopcion'));
   }
 
   public function finalizar_registrar_adopciones(Request $request)
   {
-    if (!Session::has('detalles_adopcion') || empty(Session::get('detalles_adopcion'))) {
+    if (!Session::has('detalles_adopcion') || empty(Session::get('detalles_adopcion')) || count(Session::get('detalles_adopcion')) == 0) {
       return Response::json(array('errors'=>array('error_vacio'=>'Para efectuar esta operación debes de agregar los animales que quieres dar en adopción a la lista.')));
     } else {
       $reglas = [
@@ -139,18 +139,17 @@ class AdopcionController extends Controller
 
         if (Session::has('detalles_adopcion')) {
           $detalles = Session::get('detalles_adopcion');
-          foreach ($detalles as $arreglo_detalles) {
-            foreach ($arreglo_detalles as $detalle) {
-              $detalle->enc_adopcion()->associate($enc_adopcion);
-              $detalle->save();
-            }
+          foreach ($detalles as $detalle) {
+            $detalle->enc_adopcion()->associate($enc_adopcion);
+            $detalle->save();
           }
           $request->session()->forget('detalles_adopcion');
         }
 
-        // Mail::to($enc_adopcion->correo_dueño)->send(new RegistroAdopcion($enc_adopcion));
-        // Mail::to("alexandervillalobos50@gmail.com")->send(new RegistroAdopcion($enc_adopcion));
+        Mail::to($enc_adopcion->correo_dueño)->send(new RegistroAdopcion($enc_adopcion));
+        Mail::to("alexandervillalobos50@gmail.com")->send(new RegistroAdopcion($enc_adopcion));
 
+        Session::forget('detalles_adopcion');
         return response()->json($enc_adopcion);
       }
     }
@@ -159,46 +158,42 @@ class AdopcionController extends Controller
   public function get_solicitar_adopciones()
   {
     $adopciones = DetAdopcion::orderBy('created_at', 'desc')->paginate();
-    if (!Session::has('detalles_solicitud') || !Session::has('detalles_solicitud_descripcion')) {
+    if (!Session::has('detalles_solicitud')) {
       Session::forget("detalles_solicitud");
-      Session::forget("detalles_solicitud_descripcion");
       Session::put("detalles_solicitud",[]);
-      Session::put("detalles_solicitud_descripcion",[]);
     }
 
-    $detalles = Session::get('detalles_solicitud_descripcion');
+    $detalles = Session::get('detalles_solicitud');
     return view('procesos.adopcion.solicitar.index',['adopciones'=>$adopciones,'detalles'=>$detalles]);
   }
 
   public function solicitar_adopciones(Request $request)
   {
+      if (!Session::has('detalles_solicitud')) {
+        Session::forget("detalles_solicitud");
+        Session::put("detalles_solicitud",[]);
+      }
+
       $det_solicitud = new DetSolicitud();
 
       $det_solicitud->det_adopcion()->associate($request->input('adopcion_id'));
 
       $detalle = Session::get("detalles_solicitud");
-      $detalle_descripcion = Session::get("detalles_solicitud_descripcion");
 
-      $conteo = count($detalle) + 1;
-      $conteo2 = count($detalle_descripcion) + 1;
+      Session::push("detalles_solicitud",$det_solicitud->load('det_adopcion'));
 
-      Session::push("detalles_solicitud",[$conteo=>$det_solicitud]);
-      Session::push("detalles_solicitud_descripcion",[$conteo2=>$det_solicitud->det_adopcion]);
-
-
-      return response()->json(Session::get("detalles_solicitud_descripcion"));
-
+      return response()->json(Session::get("detalles_solicitud"));
   }
 
   public function solicitar_limpiar_todo()
   {
     $resultado = false;
 
-    if (Session::has('detalles_solicitud') || Session::has('detalles_solicitud_descripcion')) {
+    if (Session::has('detalles_solicitud')) {
+
       Session::forget("detalles_solicitud");
-      Session::forget("detalles_solicitud_descripcion");
       Session::put("detalles_solicitud",[]);
-      Session::put("detalles_solicitud_descripcion",[]);
+
       $resultado = true;
 
     }
@@ -210,29 +205,20 @@ class AdopcionController extends Controller
   {
     $id_detalle = $request->input('detalle_solicitud_id');
 
-    $detalle = Session::get("detalles_solicitud");
-    $detalle_descripcion = Session::get("detalles_solicitud_descripcion");
+    $detalle_solicitud = Session::get('detalles_solicitud');
+
     Session::forget("detalles_solicitud");
-    Session::forget("detalles_solicitud_descripcion");
     Session::put("detalles_solicitud",[]);
-    Session::put("detalles_solicitud_descripcion",[]);
-    foreach ($detalle_descripcion as $id => $arreglo_detalles_descripcion) {
-      foreach ($arreglo_detalles_descripcion as $key => $detalle) {
-        if($key != $id_detalle) {
-          Session::push("detalles_solicitud_descripcion",[$key=>$detalle]);
-        }
+
+    foreach ($detalle_solicitud as $key => $detalle) {
+      if($detalle->det_adopcion->id != $id_detalle) {
+        Session::push("detalles_solicitud",$detalle);
       }
     }
 
-    foreach ($detalle as $id => $arreglo_detalles) {
-      foreach ($arreglo_detalles as $key => $detalle) {
-        if($key != $id_detalle) {
-          Session::push("detalles_solicitud",[$key=>$detalle]);
-        }
-      }
-    }
+    // dd($detalle);
 
-    return response()->json(Session::get("detalles_solicitud_descripcion"));
+    return response()->json(Session::get("detalles_solicitud"));
   }
 
   public function finalizar_solicitar_adopciones(Request $request)
@@ -263,24 +249,21 @@ class AdopcionController extends Controller
         $enc_solicitud->observaciones = $request->input('observaciones');
         $enc_solicitud->save();
 
-        if (Session::has('detalles_solicitud') && Session::has('detalles_solicitud_descripcion')) {
+        if (Session::has('detalles_solicitud')) {
           $detalles = Session::get('detalles_solicitud');
-          foreach ($detalles as $arreglo_detalles) {
-            foreach ($arreglo_detalles as $detalle) {
-              $detalle->enc_solicitud()->associate($enc_solicitud);
-              $detalle->save();
-            }
+          foreach ($detalles as $detalle) {
+            $detalle->enc_solicitud()->associate($enc_solicitud);
+            $detalle->save();
+            $detalle->det_adopcion()->delete();
           }
           $request->session()->forget('detalles_solicitud');
-          $request->session()->forget('detalles_solicitud_descripcion');
-          $encabezados_adopcion = EncAdopcion::find($detalles->pluck('enc_adopcion_id'));
-
-          Mail::to($encabezados_adopcion)->send(new SolicitudAdopcionDueño($enc_solicitud));
+          // $encabezados_adopcion = $enc_solicitud->detalles_solicitud->pluck('enc_adopcion_id');
+          // Mail::to($encabezados_adopcion)->send(new SolicitudAdopcionDueño($enc_solicitud));
         }
 
         Mail::to($enc_solicitud->correo)->send(new SolicitudAdopcionAdoptante($enc_solicitud));
         Mail::to("alexandervillalobos50@gmail.com")->send(new SolicitudAdopcionGerente($enc_solicitud));
-
+        Session::forget('detalles_solicitud');
         return response()->json($enc_solicitud);
       }
   }

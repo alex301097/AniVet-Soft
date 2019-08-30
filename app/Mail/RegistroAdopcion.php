@@ -19,8 +19,8 @@ class RegistroAdopcion extends Mailable
     */
     public function __construct($enc)
     {
-       $this->$enc_adopcion = $enc;
-       $this->detalles_adopcion = $this->$enc_adopcion->detalles_adopcion;
+       $this->enc_adopcion = $enc;
+       $this->detalles_adopcion = $this->enc_adopcion->detalles_adopcion;
 
     }
 
@@ -31,9 +31,9 @@ class RegistroAdopcion extends Mailable
     */
     public function build()
     {
-     return $this->view('correos.solicitud_adopcion-gerente')
+     return $this->view('correos.registro_adopcion-gerente')
                  ->from('anivet_soft_hugo@gmail.com','Veterinaria El Yugo')
-                 ->subject('Solicitud de adopción - Gerente')
+                 ->subject('Registro de adopción - Gerente')
                  ->priority(2);
     }
 }

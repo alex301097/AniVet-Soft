@@ -187,5 +187,162 @@ class AuthServiceProvider extends ServiceProvider
       Gate::define('mant_tipos_animales-eliminar',function($user){
           return $user->tieneAcceso(['mant_tipos_animales-eliminar']);
       });
+
+      //Proceso de registro de adopcion de animales
+      Gate::define('pro_registro_adopcion-index',function($user){
+          return $user->tieneAcceso(['pro_registro_adopcion-index']);
+      });
+
+      Gate::define('pro_registro_adopcion-Añadir',function($user){
+          return $user->tieneAcceso(['pro_registro_adopcion-Añadir']);
+      });
+
+      Gate::define('pro_registro_adopcion-Finalizar',function($user){
+          return $user->tieneAcceso(['pro_registro_adopcion-Finalizar']);
+      });
+
+      Gate::define('pro_registro_adopcion-Eliminar_Grupal',function($user){
+          return $user->tieneAcceso(['pro_registro_adopcion-Eliminar_Grupal']);
+      });
+
+      Gate::define('pro_registro_adopcion-Eliminar_Individual',function($user){
+          return $user->tieneAcceso(['pro_registro_adopcion-Eliminar_Individual']);
+      });
+
+      //Proceso del expediente digital
+      Gate::define('pro_expediente-index',function($user){
+          return $user->tieneAcceso(['pro_expediente-index']);
+      });
+
+      Gate::define('pro_expediente-Añadir_Resultados',function($user){
+          return $user->tieneAcceso(['pro_expediente-Añadir_Resultados']);
+      });
+
+      Gate::define('pro_expediente-Añadir_Chequeos',function($user){
+          return $user->tieneAcceso(['pro_expediente-Añadir_Chequeos']);
+      });
+
+      Gate::define('pro_expediente-Modificar',function($user){
+          return $user->tieneAcceso(['pro_expediente-Modificar']);
+      });
+
+      Gate::define('pro_expediente-Eliminar',function($user){
+          return $user->tieneAcceso(['pro_expediente-Eliminar']);
+      });
+
+      //Proceso de calendarizacion de citas
+      Gate::define('pro_calendarizacion-index',function($user){
+          return $user->tieneAcceso(['pro_calendarizacion-index']);
+      });
+
+      Gate::define('pro_calendarizacion-Añadir',function($user){
+          return $user->tieneAcceso(['pro_calendarizacion-Añadir']);
+      });
+
+      Gate::define('pro_calendarizacion-Modificar',function($user){
+          return $user->tieneAcceso(['pro_calendarizacion-Modificar']);
+      });
+
+      Gate::define('pro_calendarizacion-Eliminar',function($user){
+          return $user->tieneAcceso(['pro_calendarizacion-Eliminar']);
+      });
+
+      //Proceso de solicitud de Adopcion de animales
+      Gate::define('pro_solicitud_adopcion-index',function($user){
+          return $user->tieneAcceso(['pro_solicitud_adopcion-index']);
+      });
+
+      Gate::define('pro_solicitud_adopcion-Añadir',function($user){
+          return $user->tieneAcceso(['pro_solicitud_adopcion-Añadir']);
+      });
+
+      Gate::define('pro_solicitud_adopcion-Finalizar',function($user){
+          return $user->tieneAcceso(['pro_solicitud_adopcion-Finalizar']);
+      });
+
+      Gate::define('pro_solicitud_adopcion-Eliminar_Grupal',function($user){
+          return $user->tieneAcceso(['pro_solicitud_adopcion-Eliminar_Grupal']);
+      });
+
+      Gate::define('pro_solicitud_adopcion-Eliminar_Individual',function($user){
+          return $user->tieneAcceso(['pro_solicitud_adopcion-Eliminar_Individual']);
+      });
+
+      //Proceso de venta de animales
+      Gate::define('pro_venta_animales-index',function($user){
+          return $user->tieneAcceso(['pro_venta_animales-index']);
+      });
+
+      Gate::define('pro_venta_animales-Añadir',function($user){
+          return $user->tieneAcceso(['pro_venta_animales-Añadir']);
+      });
+
+      Gate::define('pro_venta_animales-Finalizar',function($user){
+          return $user->tieneAcceso(['pro_venta_animales-Finalizar']);
+      });
+
+      Gate::define('pro_venta_animales-Eliminar_Grupal',function($user){
+          return $user->tieneAcceso(['pro_venta_animales-Eliminar_Grupal']);
+      });
+
+      Gate::define('pro_venta_animales-Eliminar_Individual',function($user){
+          return $user->tieneAcceso(['pro_venta_animales-Eliminar_Individual']);
+      });
+
+      //Reporte de Usuarios
+      Gate::define('rep_reporte_usuarios-index',function($user){
+          return $user->tieneAcceso(['rep_reporte_usuarios-index']);
+      });
+
+      Gate::define('rep_reporte_usuarios-Generar',function($user){
+          return $user->tieneAcceso(['rep_reporte_usuarios-Generar']);
+      });
+
+        //Reporte de Pacientes
+        Gate::define('rep_reporte_pacientes-index',function($user){
+            return $user->tieneAcceso(['rep_reporte_pacientes-index']);
+        });
+
+        Gate::define('rep_reporte_pacientes-Generar',function($user){
+            return $user->tieneAcceso(['rep_reporte_pacientes-Generar']);
+        });
+
+        //Reporte de Citas
+        Gate::define('rep_reporte_citas-index',function($user){
+            return $user->tieneAcceso(['rep_reporte_citas-index']);
+        });
+
+        Gate::define('rep_reporte_citas-Generar',function($user){
+            return $user->tieneAcceso(['rep_reporte_citas-Generar']);
+        });
+
+        //Reporte de Citas
+        Gate::define('rep_reporte_expediente_medico-index',function($user){
+            return $user->tieneAcceso(['rep_reporte_citas-index']);
+        });
+
+        Gate::define('rep_reporte_expediente_medico-Generar',function($user){
+            return $user->tieneAcceso(['rep_reporte_expediente_medico-Generar']);
+        });
+        //Respaldos
+        Gate::define('seg_respaldos-index',function($user){
+            return $user->tieneAcceso(['seg_respaldos-index']);
+        });
+
+        Gate::define('seg_respaldos-Añadir',function($user){
+            return $user->tieneAcceso(['seg_respaldos-Añadir']);
+        });
+
+        Gate::define('seg_respaldos-Restaurar',function($user){
+            return $user->tieneAcceso(['seg_respaldos-Restaurar']);
+        });
+
+        Gate::define('seg_respaldos-Eliminar',function($user){
+            return $user->tieneAcceso(['seg_respaldos-Eliminar']);
+        });
+
+        Gate::define('seg_respaldos-descargar',function($user){
+            return $user->tieneAcceso(['seg_respaldos-descargar']);
+        });
     }
 }

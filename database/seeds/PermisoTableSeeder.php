@@ -243,6 +243,12 @@ class PermisoTableSeeder extends Seeder
       //Proceso de Calendarización de citas
       $permiso = new \App\Permiso();
       $permiso->categoria = 'calendarizacion';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'pro_calendarizacion-index';
+      $permiso->save();
+
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'calendarizacion';
       $permiso->nombre = 'Añadir';
       $permiso->descripcion = 'pro_calendarizacion-Añadir';
       $permiso->save();
@@ -262,8 +268,20 @@ class PermisoTableSeeder extends Seeder
       //Proceso de expediente digital
       $permiso = new \App\Permiso();
       $permiso->categoria = 'expediente';
-      $permiso->nombre = 'Añadir';
-      $permiso->descripcion = 'pro_expediente-Añadir';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'pro_expediente-index';
+      $permiso->save();
+
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'expediente';
+      $permiso->nombre = 'Añadir_Resultados';
+      $permiso->descripcion = 'pro_expediente-Añadir_Resultados';
+      $permiso->save();
+
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'expediente';
+      $permiso->nombre = 'Añadir_Chequeos';
+      $permiso->descripcion = 'pro_expediente-Añadir_Chequeos';
       $permiso->save();
 
       $permiso = new \App\Permiso();
@@ -279,6 +297,12 @@ class PermisoTableSeeder extends Seeder
       $permiso->save();
 
       //Proceso de registro de Adopcion de animales
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'registro de adopcion';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'pro_registro_adopcion-index';
+      $permiso->save();
+
       $permiso = new \App\Permiso();
       $permiso->categoria = 'registro de adopcion';
       $permiso->nombre = 'Añadir';
@@ -306,6 +330,12 @@ class PermisoTableSeeder extends Seeder
       //Proceso de solicitud de Adopcion de animales
       $permiso = new \App\Permiso();
       $permiso->categoria = 'solicitud de adopcion';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'pro_solicitud_adopcion-index';
+      $permiso->save();
+
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'solicitud de adopcion';
       $permiso->nombre = 'Añadir';
       $permiso->descripcion = 'pro_solicitud_adopcion-Añadir';
       $permiso->save();
@@ -329,6 +359,12 @@ class PermisoTableSeeder extends Seeder
       $permiso->save();
 
       //Proceso de venta de animales
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'venta de animales';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'pro_venta_animales-index';
+      $permiso->save();
+
       $permiso = new \App\Permiso();
       $permiso->categoria = 'venta de animales';
       $permiso->nombre = 'Añadir';
@@ -356,11 +392,23 @@ class PermisoTableSeeder extends Seeder
       //Reporte de Usuarios
       $permiso = new \App\Permiso();
       $permiso->categoria = 'reporte de usuarios';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'rep_reporte_usuarios-index';
+      $permiso->save();
+
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'reporte de usuarios';
       $permiso->nombre = 'Generar';
       $permiso->descripcion = 'rep_reporte_usuarios-Generar';
       $permiso->save();
 
       //Reporte de Pacientes
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'reporte de pacientes';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'rep_reporte_pacientes-index';
+      $permiso->save();
+
       $permiso = new \App\Permiso();
       $permiso->categoria = 'reporte de pacientes';
       $permiso->nombre = 'Generar';
@@ -370,11 +418,36 @@ class PermisoTableSeeder extends Seeder
       //Reporte de Citas
       $permiso = new \App\Permiso();
       $permiso->categoria = 'reporte de citas';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'rep_reporte_citas-index';
+      $permiso->save();
+
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'reporte de citas';
       $permiso->nombre = 'Generar';
       $permiso->descripcion = 'rep_reporte_citas-Generar';
       $permiso->save();
 
+      //Reporte de expediente medico
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'reporte de expediente medico';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'rep_reporte_expediente_medico-index';
+      $permiso->save();
+
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'reporte de expediente medico';
+      $permiso->nombre = 'Generar';
+      $permiso->descripcion = 'rep_reporte_expediente_medico-Generar';
+      $permiso->save();
+
       //Respaldos
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'respaldos';
+      $permiso->nombre = 'Inicio/Lista';
+      $permiso->descripcion = 'seg_respaldos-index';
+      $permiso->save();
+
       $permiso = new \App\Permiso();
       $permiso->categoria = 'respaldos';
       $permiso->nombre = 'Añadir';
@@ -393,6 +466,10 @@ class PermisoTableSeeder extends Seeder
       $permiso->descripcion = 'seg_respaldos-Eliminar';
       $permiso->save();
 
-
+      $permiso = new \App\Permiso();
+      $permiso->categoria = 'respaldos';
+      $permiso->nombre = 'Descargar';
+      $permiso->descripcion = 'seg_respaldos-descargar';
+      $permiso->save();
     }
 }

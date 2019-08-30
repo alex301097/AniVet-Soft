@@ -21,6 +21,7 @@ class CreateResultadosTable extends Migration
             $table->string('diagnostico');
             $table->string('tratamiento');
             $table->string('recomendaciones');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

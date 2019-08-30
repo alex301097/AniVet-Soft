@@ -18,7 +18,7 @@
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
-      <li><a href="#">Citas</a></li>
+      <li><a href="{{route('citas')}}">Citas</a></li>
       <li class="active">Edición</li>
     </ol>
   </section>
@@ -47,7 +47,7 @@
                   <i class="fa fa-calendar"></i>
                 </div>
                 <input type="text" class="form-control form-control-sm pull-right" id="fecha" name="fecha" placeholder="Fecha" value="{{date('d/m/Y', strtotime($cita->fecha))}}">
-                <input type="hidden" id="fecha_formato" value="">
+                <input type="hidden" id="fecha_formato" value="{{$cita->fecha}}">
               </div>
               <p class="error-fecha text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>
@@ -101,6 +101,11 @@
                 </div>
                 <!-- /.form group -->
               </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p class="error-rango_invalido text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
           </div>
         </div>
         <div class="row">
@@ -341,6 +346,10 @@
               $('.error-paciente').text(data.errors.paciente);
             }
 
+            if(data.errors.rango_invalido){
+              $('.error-rango_invalido').removeClass('hidden');
+              $('.error-rango_invalido').text(data.errors.rango_invalido);
+            }
           }else{
             Swal.fire({
               position: 'top-end',

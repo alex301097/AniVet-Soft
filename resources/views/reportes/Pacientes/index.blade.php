@@ -118,8 +118,12 @@
         buttonsStyling: false,
       });
 
-      $(document).ready(function() {
+      $(document).ready(function(){
+        $('#side_bar-reportes').addClass('active');
+        $('#side_bar_option-reportes-pacientes').addClass('active');
+      });
 
+      $(document).ready(function() {
           var ruta = "{{ url('api/reporte_pacientes/0/0/:estado') }}";
           ruta = ruta.replace(':estado', $('#estado').val());
         $('#pacientes').DataTable({
@@ -128,12 +132,12 @@
           "ajax":ruta,
           "columns":
           [
-            {data: 'nombre', orderable: false, searchable: false},
-            {data: 'edad', orderable: false, searchable: false},
+            {data: 'nombre'},
+            {data: 'edad'},
             {data: 'peso'},
-            {data: 'descripcionAnimal'},
+            {data: 'tipo_animal.descripcion', name: 'tipo_animal.descripcion',},
             {data: 'sexo'},
-            {data: 'raza', orderable: false, searchable: false},
+            {data: 'raza'},
           ],
           "language":{
             "info": "Mostrando total registros",

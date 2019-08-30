@@ -17,7 +17,7 @@
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
-      <li><a href="#">Citas</a></li>
+      <li><a href="{{route('citas')}}">Citas</a></li>
       <li class="active">Registro</li>
     </ol>
   </section>
@@ -59,7 +59,7 @@
               <p class="error-paciente text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
               <small for="paciente" id="passwordHelpBlock" class="form-text text-muted">
                 <label for=""><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</label>
-                Puedes buscar por especie, raza y nombre del animal en cuestión.
+                Es posible buscar por especie, raza y nombre del animal en cuestión.
               </small>
             </div>
           </div>
@@ -100,6 +100,11 @@
                 </div>
                 <!-- /.form group -->
               </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="error-rango_invalido text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -329,6 +334,11 @@
             if(data.errors.paciente){
               $('.error-paciente').removeClass('hidden');
               $('.error-paciente').text(data.errors.paciente);
+            }
+
+            if(data.errors.rango_invalido){
+              $('.error-rango_invalido').removeClass('hidden');
+              $('.error-rango_invalido').text(data.errors.rango_invalido);
             }
 
           }else{

@@ -2,6 +2,9 @@
 
 namespace App\Mail;
 
+use App\EncSolicitud;
+use App\DetAdopcion;
+use App\EncAdopcion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

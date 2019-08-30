@@ -76,6 +76,7 @@
 @endsection
 @section('scripts')
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
   <script type="text/javascript">
       const Toast = Swal.mixin({
@@ -107,7 +108,13 @@
           [
             {data: 'nombreDueño', orderable: false, searchable: false},
             {data: 'nombrePaciente', orderable: false, searchable: false},
-            {data: 'fecha'},
+            {data: 'fecha',
+            render: function(data, type, row){
+                 if(type === "sort" || type === "type"){
+                     return data;
+                 }
+                 return moment(data).format("DD/MM/YYYY");
+             }},
             {data: 'horaInicio'},
             {data: 'horaFinal'},
             {data: 'descripcionServicio', orderable: false, searchable: false},
@@ -143,11 +150,11 @@
         var id = $(this).data('id');
 
         swal_confirm.fire({
-          title: '¿Estas seguro de habilitar esto?',
-          text: "!Podras deshabilitar esto después!",
+          title: '¿Estás seguro de habilitar esto?',
+          text: "!Podrás deshabilitar esto después!",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonText: '!Si, habilitalo!',
+          confirmButtonText: '!Si, habilítalo!',
           cancelButtonText: '!No, cancelar!',
           reverseButtons: true
         }).then((result) => {
@@ -175,7 +182,7 @@
           ) {
             swal_confirm.fire(
               'Cancelado',
-              'El dato esta seguro.',
+              'El dato está seguro.',
               'error'
             )
           }
@@ -187,11 +194,11 @@
         var id = $(this).data('id');
 
         swal_confirm.fire({
-          title: '¿Estas seguro de deshabilitar esto?',
-          text: "!Podras habilitar esto después!",
+          title: '¿Estás seguro de deshabilitar esto?',
+          text: "!Podrás habilitar esto después!",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonText: '!Si, deshabilitalo!',
+          confirmButtonText: '!Si, deshabilítalo!',
           cancelButtonText: '!No, cancelar!',
           reverseButtons: true
         }).then((result) => {
@@ -219,7 +226,7 @@
           ) {
             swal_confirm.fire(
               'Cancelado',
-              'El dato esta seguro.',
+              'El dato está seguro.',
               'error'
             )
           }

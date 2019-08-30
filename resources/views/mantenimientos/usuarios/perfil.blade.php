@@ -71,7 +71,7 @@
               <strong><i class="fa fa-file-text-o margin-r-5"></i> Información personal</strong>
 
               <ul>
-                <li><b>Cedula: </b>{{($usuario->cedula)?$usuario->cedula:"No registrada."}}</li>
+                <li><b>Cédula: </b>{{($usuario->cedula)?$usuario->cedula:"No registrada."}}</li>
                 <li><b>Sexo: </b>{{($usuario->sexo)?$usuario->sexo:"No registrado."}}</li>
                 <li><b>Nacionalidad: </b>{{($usuario->nacionalidad)?$usuario->nacionalidad:"No registrada."}}</li>
                 <li><b>Fecha de nacimiento: </b>{{($usuario->fecha_nacimiento)?Carbon\Carbon::parse($usuario->fecha_nacimiento)->format('d/m/Y'):"No registrada."}}</li>
@@ -82,6 +82,41 @@
               <strong><i class="fa fa-pencil margin-r-5"></i> Permisos</strong>
 
               <p>
+                @if ($usuario->rol->permisos->contains('categoria', 'calendarizacion'))
+                  <b>Calendarización: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','calendarizacion') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
+                @if ($usuario->rol->permisos->contains('categoria', 'expediente'))
+                  <b>Expediente médico: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','expediente') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
+                @if ($usuario->rol->permisos->contains('categoria', 'registro de adopcion'))
+                  <b>Registro de adopción: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','registro de adopcion') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
+                @if ($usuario->rol->permisos->contains('categoria', 'solicitud de adopcion'))
+                  <b>Solicitud de adopción: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','solicitud de adopcion') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
+                @if ($usuario->rol->permisos->contains('categoria', 'venta de animales'))
+                  <b>Venta de animales: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','venta de animales') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
                 @if ($usuario->rol->permisos->contains('categoria', 'usuarios'))
                   <b>Mantenimiento de usuarios: </b> <br>
                   @foreach ($usuario->rol->permisos->where('categoria','usuarios') as $permiso)
@@ -132,6 +167,43 @@
                   @endforeach
                   <br>
                 @endif
+
+
+                @if ($usuario->rol->permisos->contains('categoria', 'reporte de usuarios'))
+                  <b>Reporte de usuarios: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','reporte de usuarios') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
+                @if ($usuario->rol->permisos->contains('categoria', 'reporte de pacientes'))
+                  <b>Reporte de pacientes: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','reporte de pacientes') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
+                @if ($usuario->rol->permisos->contains('categoria', 'reporte de citas'))
+                  <b>Reporte de citas: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','reporte de citas') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
+                @if ($usuario->rol->permisos->contains('categoria', 'reporte de expediente medico'))
+                  <b>Reporte de expediente medico: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','reporte de expediente medico') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
+                @if ($usuario->rol->permisos->contains('categoria', 'respaldos'))
+                  <b>Respaldos: </b> <br>
+                  @foreach ($usuario->rol->permisos->where('categoria','respaldos') as $permiso)
+                    <span class="label label-info">{{$permiso->nombre}}</span>
+                  @endforeach
+                  <br>
+                @endif
               </p>
 
               <hr>
@@ -172,7 +244,7 @@
                                   <div class="row">
                                     <div class="col-md-12">
                                       <div class="form-group" style="padding-left:15px; padding-right:15px;">
-                                        <label for="cedula"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Cedula</h5></label>
+                                        <label for="cedula"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Cédula</h5></label>
                                         <input type="text" class="form-control form-control-sm form-control-alternative" id="cedula" name="cedula" placeholder="Cedula" value="{{$usuario->cedula}}">
                                         <p class="error_cedula text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                       </div>
@@ -262,7 +334,7 @@
                                     <div class="row">
                                       <div class="col-md-6">
                                         <div class="form-group" style="padding-left:15px; padding-right:15px;">
-                                          <label for="telefono"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Telefono</h5></label>
+                                          <label for="telefono"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Teléfono</h5></label>
                                           <input type="number" class="form-control form-control-sm form-control-alternative" id="telefono" name="telefono" placeholder="Telefono" value="{{$usuario->telefono}}">
                                           <p class="error_telefono text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                         </div>
@@ -284,7 +356,7 @@
                           <div class="box-header with-border">
                             <h4 class="box-title">
                               <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                Imagen de perfil
+                                Imágen de perfil
                               </a>
                             </h4>
                           </div>
@@ -309,7 +381,7 @@
                                 </div>
                                 <div class="col-lg-6 text-center">
                                   <div class="custom-file text-center">
-                                    <label class="custom-file-label" for="imagen">Seleccione una imagen</label>
+                                    <label class="custom-file-label" for="imagen">Seleccione una imágen</label>
                                     <input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01" accept="image/*" value="{{$usuario->imagen}}">
                                     <p class="error_imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                   </div>
@@ -416,6 +488,12 @@
             <!-- /.tab-content -->
           </div>
           <!-- /.nav-tabs-custom -->
+          <div class="row">
+            <div class="col-md-12 pull-left">
+            <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
+              <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
+            </div>
+          </div>
         </div>
         <!-- /.col -->
       </div>
@@ -528,9 +606,11 @@
     $('#imagen').change(function(){
       filePreview(this);
     });
-    
+
     //Añadir
     $('#registrar').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
       var form_data = new FormData();
       form_data.append('_token', $('input[name=_token]').val());
       form_data.append('id_edicion', $('#id_edicion').val());
@@ -570,6 +650,9 @@
               type: 'warning',
               title: 'Errores de validación!'
             })
+
+            $('#registrar').html('Guardar cambios');
+            $('#registrar').removeClass('disabled');
 
             if(data.errors.rol){
               $('.error_rol').removeClass('hidden');
@@ -628,6 +711,9 @@
               $('.error_condiciones').text(data.errors.condiciones);
             }
           }else{
+            $('#registrar').html('Guardar cambios');
+            $('#registrar').removeClass('disabled');
+
             Swal.fire({
               position: 'top-end',
               type: 'success',

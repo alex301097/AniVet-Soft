@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Http\Request;
 use App\Paciente;
 use App\User;
@@ -8,7 +7,6 @@ use App\TipoServicio;
 use App\AnimalVenta;
 use App\Cita;
 use App\Rol;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,7 +17,6 @@ use App\Rol;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::get('citas', function(){
   return datatables()
   ->eloquent(Cita::query()->orderBy('created_at', 'desc')->withTrashed())
@@ -27,7 +24,6 @@ Route::get('citas', function(){
   ->rawColumns(['btn'])
   ->toJson();
 });
-
 Route::get('roles', function(){
   return datatables()
   ->eloquent(Rol::query()->orderBy('created_at', 'desc')->withTrashed())
@@ -36,7 +32,6 @@ Route::get('roles', function(){
   ->rawColumns(['btn', 'estado'])
   ->toJson();
 });
-
 Route::get('pacientes', function(){
   return datatables()
   ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->withTrashed())
@@ -45,7 +40,6 @@ Route::get('pacientes', function(){
   ->rawColumns(['btn', 'estado'])
   ->toJson();
 });
-
 Route::get('usuarios', function(){
   return datatables()
   ->eloquent(User::query()->orderBy('created_at', 'desc')->withTrashed())
@@ -55,7 +49,6 @@ Route::get('usuarios', function(){
   ->rawColumns(['btn', 'estado', 'usuario'])
   ->toJson();
 });
-
 Route::get('tipos_animales', function(){
   return datatables()
   ->eloquent(TipoAnimal::query()->orderBy('created_at', 'desc')->withTrashed())
@@ -64,7 +57,6 @@ Route::get('tipos_animales', function(){
   ->rawColumns(['btn', 'estado'])
   ->toJson();
 });
-
 Route::get('tipos_servicios', function(){
   return datatables()
   ->eloquent(TipoServicio::query()->orderBy('created_at', 'desc')->withTrashed())
@@ -73,7 +65,6 @@ Route::get('tipos_servicios', function(){
   ->rawColumns(['btn', 'estado'])
   ->toJson();
 });
-
 Route::get('animales_en_venta', function(){
   return datatables()
   ->eloquent(AnimalVenta::query()->orderBy('created_at', 'desc')->withTrashed())
@@ -82,76 +73,146 @@ Route::get('animales_en_venta', function(){
   ->rawColumns(['btn', 'estado'])
   ->toJson();
 });
-
 Route::get('reporte_citas/{min?}/{max?}/{estado?}', function($min = null, $max = null, $estado = null){
   if(!empty($estado) && $estado == "deshabilitados"){
     if (!empty($min) && !empty($max)) {
     return datatables()
-    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->whereBetween('fecha', [$min, $max])->onlyTrashed())
+    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->whereBetween('fecha', [$min, $max])->onlyTrashed()->with('paciente', 'servicio'))
     ->toJson();
     }
     return datatables()
-    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->onlyTrashed())
+    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->onlyTrashed()->with('paciente', 'servicio'))
     ->toJson();
   }else {
     if (!empty($min) && !empty($max)) {
     return datatables()
-    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->whereBetween('fecha', [$min, $max]))
+    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->whereBetween('fecha', [$min, $max])->with('paciente', 'servicio'))
     ->toJson();
     }
     return datatables()
-    ->eloquent(Cita::query()->orderBy('created_at', 'desc'))
+    ->eloquent(Cita::query()->orderBy('created_at', 'desc')->with('paciente', 'servicio'))
     ->toJson();
   }
-
 });
-
-Route::get('reporte_usuarios/{min?}/{max?}/{estado?}', function($min = null, $max = null, $estado = null){
-  if(!empty($estado && $estado == "deshabilitados")){
+Route::get('reporte_usuarios/{min?}/{max?}/{rol?}/{estado?}', function($min = null, $max = null, $rol = null, $estado = null){
+  if(!empty($estado) && $estado == "deshabilitados"){
     if (!empty($min) && !empty($max)) {
-    return datatables()
-    ->eloquent(User::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max])->onlyTrashed())
-    ->toJson();
+      if(!empty($rol) && $rol != "0"){
+        return datatables()
+        ->eloquent(User::query()->orderBy('created_at', 'desc')
+        ->where('rol_id', '=', $rol)
+        ->whereBetween('created_at', [$min, $max])->onlyTrashed()
+        ->with('rol'))
+        ->toJson();
+      }else{
+        return datatables()
+        ->eloquent(User::query()->orderBy('created_at', 'desc')
+        ->whereBetween('created_at', [$min, $max])->onlyTrashed()
+        ->with('rol'))
+        ->toJson();
+      }
+    }else{
+      if(!empty($rol) && $rol != "0"){
+        return datatables()
+        ->eloquent(User::query()->orderBy('created_at', 'desc')
+        ->where('rol_id', '=', $rol)
+        ->onlyTrashed()
+        ->with('rol'))
+        ->toJson();
+      }else{
+        return datatables()
+        ->eloquent(User::query()->orderBy('created_at', 'desc')
+        ->onlyTrashed()
+        ->with('rol'))
+        ->toJson();
+      }
     }
-    return datatables()
-    ->eloquent(User::query()->orderBy('created_at', 'desc')->onlyTrashed())
-    ->toJson();
   }else {
     if (!empty($min) && !empty($max)) {
-    return datatables()
-    ->eloquent(User::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max]))
-    ->toJson();
+      if(!empty($rol) && $rol != "0"){
+        return datatables()
+        ->eloquent(User::query()->orderBy('created_at', 'desc')
+        ->where('rol_id', '=', $rol)
+        ->whereBetween('created_at', [$min, $max])
+        ->with('rol'))
+        ->toJson();
+      }else{
+        return datatables()
+        ->eloquent(User::query()->orderBy('created_at', 'desc')
+        ->whereBetween('created_at', [$min, $max])
+        ->with('rol'))
+        ->toJson();
+      }
+    }else{
+      if(!empty($rol) && $rol != "0"){
+        return datatables()
+        ->eloquent(User::query()->orderBy('created_at', 'desc')
+        ->where('rol_id', '=', $rol)
+        ->with('rol'))
+        ->toJson();
+      }else{
+        return datatables()
+        ->eloquent(User::query()->orderBy('created_at', 'desc')
+        ->with('rol'))
+        ->toJson();
+      }
     }
-    return datatables()
-    ->eloquent(User::query()->orderBy('created_at', 'desc'))
-    ->toJson();
   }
-
 });
-
 Route::get('reporte_pacientes/{min?}/{max?}/{estado?}', function($min = null, $max = null, $estado = null){
   if(!empty($estado) && $estado == "deshabilitados"){
     if (!empty($min) && !empty($max)) {
     return datatables()
-    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max])->onlyTrashed())
+    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max])->onlyTrashed()->with('tipo_animal'))
     ->toJson();
     }
     return datatables()
-    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->onlyTrashed())
+    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->onlyTrashed()->with('tipo_animal'))
     ->toJson();
   }else {
     if (!empty($min) && !empty($max)) {
     return datatables()
-    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max]))
+    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->whereBetween('created_at', [$min, $max])->with('tipo_animal'))
     ->toJson();
     }
     return datatables()
-    ->eloquent(Paciente::query()->orderBy('created_at', 'desc'))
+    ->eloquent(Paciente::query()->orderBy('created_at', 'desc')->with('tipo_animal'))
     ->toJson();
   }
-
 });
 
+Route::get('reporte_expediente_medico/{min?}/{max?}/{paciente?}', function($min = null, $max = null, $paciente = null){
+  if(!empty($paciente) && $paciente != "0"){
+    if (!empty($min) && !empty($max)) {
+    return datatables()
+    ->eloquent(Cita::query()->has('resultado')->orderBy('created_at', 'desc')
+    ->where('paciente_id', '=', $paciente)
+    ->whereBetween('fecha', [$min, $max])->withTrashed()->with('paciente', 'servicio'))
+    ->addColumn('btn', 'reportes.expediente_medico.actions')
+    ->rawColumns(['btn'])
+    ->toJson();
+    }
+    return datatables()
+    ->eloquent(Cita::query()->has('resultado')->orderBy('created_at', 'desc')
+    ->where('paciente_id', '=', $paciente)->withTrashed()->with('paciente', 'servicio'))
+    ->addColumn('btn', 'reportes.expediente_medico.actions')
+    ->rawColumns(['btn'])
+    ->toJson();
+  }else {
+    if (!empty($min) && !empty($max)) {
+    return datatables()
+    ->eloquent(Cita::query()->has('resultado')->orderBy('created_at', 'desc')->whereBetween('fecha', [$min, $max])->withTrashed()->with('paciente', 'servicio'))
+    ->addColumn('btn', 'reportes.expediente_medico.actions')
+    ->rawColumns(['btn'])
+    ->toJson();
+    }
+    return datatables()
+    ->eloquent(Cita::query()->has('resultado')->orderBy('created_at', 'desc')->withTrashed()->with('paciente', 'servicio'))
+    ->addColumn('btn', 'reportes.expediente_medico.actions')
+    ->rawColumns(['btn'])
+    ->toJson();
+  }
+});
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
-// });
+// });                                                                                                                       

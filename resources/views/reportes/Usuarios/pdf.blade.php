@@ -156,7 +156,7 @@
               <td width="30%" colspan="4" class="text-right">
                 <b>
                 <small>
-                  {{\Carbon\Carbon::now()->formatLocalized('%A, %d de %B del %Y, %H:%M hrs')}}
+                  {{\Carbon\Carbon::now()->formatLocalized('%A, %d de %B del %Y, %H:%m hrs')}}
                   <br>
                   Realizado por: {{auth()->user()->nombre}}
                 </small>
@@ -169,13 +169,13 @@
     </table>
     <table width="100%">
       <tr>
-        <td colspan="12" class="text-center">
+        <td colspan="6" class="text-center">
           <u><b><h2>Reporte de usuarios</h2></b></u>
         </br>
         </br>
         </td>
       </tr>
-      <tr class="text-size-10">
+      <tr class="text-size-10 text-center">
         <td><b>Nombre</b></td>
         <td><b>Apellidos</b></td>
         <td><b>Cédula</b></td>
@@ -188,9 +188,21 @@
           <td>{{$usuario->nombre}}</td>
           <td>{{$usuario->apellidos}}</td>
           <td>{{$usuario->cedula}}</td>
-          <td>{{$usuario->telefono}}</td>
+          <td>
+            @if ($usuario->telefono)
+              {{$usuario->telefono}}
+            @else
+              Sin registrar.
+            @endif
+          </td>
           <td>{{$usuario->rol->descripcion}}</td>
-          <td>{{$usuario->direccion}}</td>
+          <td>
+            @if ($usuario->direccion)
+              {{$usuario->direccion}}
+            @else
+              Sin registrar.
+            @endif
+          </td>
         </tr>
       @endforeach
     </table>

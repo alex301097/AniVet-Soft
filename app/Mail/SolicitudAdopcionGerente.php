@@ -29,7 +29,6 @@ class SolicitudAdopcionGerente extends Mailable
        $this->detalles_solicitud = $this->enc_solicitud->detalles_solicitud;
        $this->detalles_adopcion = DetAdopcion::find($this->detalles_solicitud->pluck('det_adopcion_id'));
        $this->encabezados_adopcion = EncAdopcion::find($this->detalles_adopcion->pluck('enc_adopcion_id'));
-
    }
 
    /**

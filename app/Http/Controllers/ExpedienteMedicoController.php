@@ -15,6 +15,7 @@ use App\TipoServicio;
 use App\TipoAnimal;
 use App\Checkeo;
 use App\Paciente;
+use App\Resultado;
 use Session;
 use PDF;
 
@@ -22,10 +23,6 @@ class ExpedienteMedicoController extends Controller
 {
   public function get_ficha_clinica()
   {
-    // $arreglo = Session::get("prueba");
-    // foreach ($arreglo as $key => $value) {
-    //   dd($value);
-    // }
     $citas = Cita::orderBy('created_at', 'desc')->where('paciente_id',2)->get();
     $chequeos = Checkeo::orderBy('created_at', 'desc')->get();
     return view('procesos.expediente_medico.index', ['citas'=>$citas,'chequeos'=>$chequeos]);
@@ -44,7 +41,11 @@ class ExpedienteMedicoController extends Controller
     if($validator->fails()){
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
-      $cita = Cita::find($request->input('cita'))->load('checkeos');
+      $cita = Cita::where('id', '=', $request->input('cita'))
+              ->with(['paciente' => function ($data) {
+                $data->with('user','imagenes');
+              },'resultado','checkeos'])->first();
+      // $cita = Cita::find($request->input('cita'))->load('checkeos');
       return response()->json($cita);
     }
   }
@@ -62,7 +63,8 @@ class ExpedienteMedicoController extends Controller
     if($validator->fails()){
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
-      $citas = Cita::orderBy('created_at', 'desc')->where('paciente_id',$request->input('paciente'))->get();
+      $citas = Cita::orderBy('horaInicio', 'desc')->where('paciente_id',$request->input('paciente'))
+      ->where('fecha', Carbon::today()->format('Y-m-d'))->get();
       return response()->json($citas);
     }
   }
@@ -130,6 +132,7 @@ class ExpedienteMedicoController extends Controller
   public function guardar_resultados(Request $request)
   {
     $reglas = [
+      'cita' => 'required',
       'analisis' => 'required|string|min:4|max:255',
       'diagnostico' => 'required|string|min:4|max:255',
       'tratamiento' => 'required|string|min:4|max:255',
@@ -137,6 +140,7 @@ class ExpedienteMedicoController extends Controller
     ];
 
     $inputs = [
+      'cita' => $request->cita,
       'analisis' => $request->analisis,
       'diagnostico' => $request->diagnostico,
       'tratamiento' => $request->tratamiento,
@@ -148,16 +152,18 @@ class ExpedienteMedicoController extends Controller
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
       $cita = Cita::find($request->input('cita'));
-      $chequeos = (array) $request->input('chequeos');
-      $descripciones = (array) $request->input('descripciones');
 
-      $datos = array_combine($chequeos, $chequeos);
+      $resultado = ($cita->resultado()->exists())?$cita->resultado:new Resultado();
+      $resultado->cita()->associate($request->input('cita'));
+      $resultado->analisis = $request->input('analisis');
+      $resultado->diagnostico = $request->input('diagnostico');
+      $resultado->tratamiento = $request->input('tratamiento');
+      $resultado->recomendaciones = $request->input('recomendaciones');
+      $resultado->save();
 
-      foreach ($datos as $key=>$dato) {
-       $cita->checkeos()->attach($key,['descripcion'=>$dato]);
-      }
+      $cita->delete();
 
-      return response()->json($tipo_animal);
+      return response()->json($resultado);
     }
   }
 }

@@ -4,13 +4,12 @@
   <link rel="stylesheet" href="{{URL::to('bower_components/select2/dist/css/select2.min.css')}}">
   <link rel="stylesheet" href="{{URL::to('css/checkbox_animated.css')}}">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
 @endsection
 @section('contenido')
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Expediente medico
+      Expediente médico
       <small>Proceso</small>
     </h1>
     <ol class="breadcrumb">
@@ -30,8 +29,6 @@
               <img class="profile-user-img img-responsive img-circle" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User profile picture">
             </div>
 
-              {{-- <img class="profile-user-img img-responsive img-circle" src="{{ url('imgPerfiles/'.$paciente->imagenes->imagen->first()) }}" alt="User profile picture"> --}}
-
             <h3 class="profile-username text-center" id="nombre_paciente">Sin seleccionar</h3>
 
             <p class="text-muted text-center">Paciente</p>
@@ -46,7 +43,7 @@
                     <p class="error-paciente text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     <small for="paciente" id="passwordHelpBlock" class="form-text text-muted">
                       <label for=""><i style="color:gray;" class="fas fa-asterisk"></i>&nbsp;</label>
-                      Puedes buscar por especie, raza y nombre del animal en cuestión.
+                      La busqueda es posible por especie, raza y nombre del animal en cuestión.
                     </small>
                   </div>
                 </div>
@@ -78,7 +75,7 @@
         <!-- About Me Box -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Ficha clinica</h3>
+            <h3 class="box-title">Ficha clínica</h3>
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                       title="Colapsar">
@@ -134,7 +131,7 @@
             <!-- Default box -->
             <div class="box box-warning">
               <div class="box-header with-border">
-                <h3 class="box-title">Chequeo Medico</h3>
+                <h3 class="box-title">Chequeo Médico</h3>
 
                 <div class="box-tools pull-right">
                   <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
@@ -149,15 +146,14 @@
                         <div class="col-md-6">
                           <div class="row">
                             <div class="col-md-12">
-                              <p style="margin-top:15px;"><input type="checkbox" id="{{ $chequeo->descripcion }}" name="chequeos" value="{{ $chequeo->id }}"
+                              <p style="margin-top:15px;"><input type="checkbox" id="{{ $chequeo->id }}" name="chequeos" value="{{ $chequeo->id }}"
                                 onclick="document.getElementById('descripcion-{{$chequeo->id}}').disabled = !this.checked; setValorDescripcion(this,document.getElementById('descripcion-{{$chequeo->id}}'))"/>
-                                <label for="{{ $chequeo->descripcion }}"><span class="ui"></span>
+                                <label for="{{ $chequeo->id }}"><span class="ui"></span>
                                   {{ $chequeo->descripcion }}
                                 </label>
                               </p>
-                              <input type="text" class="form-control form-control-sm col-md-8 descripcion" id="descripcion-{{$chequeo->id}}" name="descripciones" value="" disabled
-                              {{-- value="{{ $paciente->hallazgos->contains($tipoHallazgo->id) ? $paciente->hallazgos->find($tipoHallazgo->id)->pivot->intervencion : '' }}" --}}
-                              {{-- {{ $paciente->hallazgos->contains($tipoHallazgo->id) ? '' : 'disabled' }} --}} style="margin-top:5px;">
+                              <input type="text" class="form-control form-control-sm col-md-8 descripcion" id="descripcion-{{$chequeo->id}}" name="descripciones"
+                              value="" disabled style="margin-top:5px;">
                             </div>
                           </div>
                         </div>
@@ -167,7 +163,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="alert alert-info alert-dismissible alert_chequeo">
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                      <a type="button" class="close" onclick="$('.alert_chequeo').hide()">&times;</a>
                       <h4><i class="icon fa fa-info icono_alert_chequeo"></i> Información!</h4>
                       <span class="texto_alert_chequeo"></span>
                     </div>
@@ -241,7 +237,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="alert alert-info alert-dismissible alert_finalizar">
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                      <a type="button" class="close" onclick="$('.alert_finalizar').hide()">&times;</a>
                       <h4><i class="icon fa fa-info icono_alert_finalizar"></i> Información!</h4>
                       <span class="texto_alert_finalizar"></span>
                     </div>
@@ -294,11 +290,23 @@
 
     //Initialize Select2 Elements
     $('#cita').select2({
-      placeholder: "Por favor selecciona un paciente."
+      placeholder: "Por favor selecciona una cita.",
+      "language": {
+       "noResults": function(){
+           return "Debes de ingresar un paciente para cargar las citas.";
+           }
+       },
+      escapeMarkup: function (markup) {
+          return markup;
+      }
     });
 
     $('#limpiar_formulario_finalizar').click(function(){
       $('#form-finalizar').trigger("reset");
+      $('#diagnostico').text("");
+      $('#tratamiento').text("");
+      $('#recomendaciones').text("");
+
     });
 
     $('#limpiar_formulario_chequeo').click(function(){
@@ -309,14 +317,45 @@
     $('#limpiar_todos_formularios').click(function(){
       $('#form-todos').trigger("reset");
       $('#form-finalizar').trigger("reset");
+
+      $('#diagnostico').text("");
+      $('#tratamiento').text("");
+      $('#recomendaciones').text("");
+
       $('#form-chequeo').trigger("reset");
       $("#form-chequeo :input[type=text]").attr('disabled',true);
 
-      var citaSelect = $('#cita');
-      $('#cita').select2('data', null);
-      var option = new Option("", 0, true, true);
-      citaSelect.append(option);
-      citaSelect.trigger('change');
+      $('#nombre_paciente').text("Sin nombre");
+
+      //Perfil
+      $('.avatar_paciente').html("<img class='profile-user-img img-responsive img-circle' src='http://ssl.gstatic.com/accounts/ui/avatar_2x.png' alt='User profile picture'>");
+
+      //Info del paciente
+      $('#info_paciente_especie').text('No cargada');
+      $('#info_paciente_raza').text('No cargada');
+      $('#info_paciente_edad').text('No cargada');
+      $('#info_paciente_sexo').text('No cargado');
+      $('#info_paciente_color').text('No cargado.');
+
+      //Info del paciente
+      $('#info_cita_fecha').text('No cargada');
+      $('#info_cita_horaInicio').text('No cargada');
+      $('#info_cita_horaFinal').text('No cargada');
+      $('#info_cita_servicio').text('No cargado');
+      $('#info_cita_motivo').text('No cargado');
+      $('#info_cita_observaciones').text('No cargadas');
+
+      //Info del encargado
+      $('#info_encargado_nombre').text('No cargado');
+      $('#info_encargado_cedula').text('No cargada');
+      $('#info_encargado_sexo').text('No cargado');
+      $('#info_encargado_nacionalidad').text('No cargada');
+      $('#info_encargado_telefono').text('No cargado');
+      $('#info_encargado_direccion').text('No cargada');
+
+      // $("#cita").val(null).trigger("change");
+      // $('#cita').select2('data', null);
+      $('#cita').empty();
 
     });
 
@@ -343,18 +382,22 @@
                 var option = new Option("", 0, true, true);
 
                 $.each(data, function(index, value) {
-                  var option = new Option(value.fecha + " - " + value.horaInicio + " / " + value.horaFinal, value.id, true, true);
+                  var index_nuevo = index + 1;
+                  var option = new Option("Cita #" + index_nuevo + " - " + value.horaInicio + " / " + value.horaFinal, value.id, true, true);
                   citaSelect.append(option);
                   // $('#cita').append("<option value='" + value.id + "'>" +  + "</option>");
                 });
-                citaSelect.trigger('change');
-
+                citaSelect.val('').trigger('change');
+                // $('#cita').select2().select2('val', $('#cita option:eq(0)').val());
+                // citaSelect.trigger('change');
               }
             },
           });
       });
 
       $("#cita").on('change', function(){
+        // document.getElementById(17).attr("checked", true );
+        if($('#cita').val()){
           $.ajax({
             type: 'post',
             url: "{{route('autocompleteExpediente')}}",
@@ -371,54 +414,66 @@
                   });
                 }
               }else{
+                $('#form-chequeo').trigger("reset");
+                $("#form-chequeo :input[type=text]").attr('disabled',true);
+
                 $.each(value.checkeos, function(index, valor) {
-                  document.getElementById(valor.id).prop( "checked", true );
+                  document.getElementById(valor.id).checked = true;
                   $("#descripcion-"+valor.id).val(valor.pivot.descripcion);
                   $("#descripcion-"+valor.id).removeAttr('disabled');
                 });
-                  $('#nombre_paciente').text((value.paciente.nombre)?value.paciente.nombre:"Sin nombre");
 
-                  //Perfil
-                  if(Array.isArray(value.paciente.user.imagenes) && value.paciente.user.imagenes.length){
-                    var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
-                    imagen = imagen.replace(':ruta_imagen', value.paciente.user.imagenes[0].imagen);
-                    $('#avatar_paciente').html("<img class='profile-user-img img-responsive img-circle' src='" + imagen + "' alt='User profile picture'>");
-                  }else{
-                    $('#avatar_paciente').html("<img class='profile-user-img img-responsive img-circle' src='http://ssl.gstatic.com/accounts/ui/avatar_2x.png' alt='User profile picture'>");
-                  }
+                $('#nombre_paciente').text((value.paciente.nombre)?value.paciente.nombre:"Sin nombre");
 
-                  //Info del paciente
-                  $('#info_paciente_especie').text(value.paciente.tipo_animal.descripcion);
-                  $('#info_paciente_raza').text(value.paciente.raza);
-                  $('#info_paciente_edad').text(value.paciente.edad);
-                  $('#info_paciente_sexo').text(value.paciente.sexo);
-                  $('#info_paciente_color').text('No cargado.');
+                //Perfil
+                if(Array.isArray(value.paciente.imagenes) && value.paciente.imagenes.length){
+                  var imagen = "{{ url('imgPacientes/:ruta_imagen') }}";
+                  imagen = imagen.replace(':ruta_imagen', value.paciente.imagenes[0].imagen);
+                  $('.avatar_paciente').html("<img class='profile-user-img img-responsive img-circle' src='" + imagen + "' alt='User profile picture' style='width:100px;height:100px;'>");
+                }else{
+                  $('.avatar_paciente').html("<img class='profile-user-img img-responsive img-circle' src='http://ssl.gstatic.com/accounts/ui/avatar_2x.png' alt='User profile picture'>");
+                }
 
-                  //Info del paciente
-                  $('#info_cita_fecha').text(value.fecha);
-                  $('#info_cita_horaInicio').text(value.horaInicio);
-                  $('#info_cita_horaFinal').text(value.horaFinal);
-                  $('#info_cita_servicio').text(value.descripcionServicio);
-                  $('#info_cita_motivo').text(value.motivo);
-                  $('#info_cita_observaciones').text(value.observaciones);
+                //Info del paciente
+                $('#info_paciente_especie').text(value.paciente.tipo_animal.descripcion);
+                $('#info_paciente_raza').text(value.paciente.raza);
+                $('#info_paciente_edad').text(value.paciente.edad);
+                $('#info_paciente_sexo').text(value.paciente.sexo);
+                $('#info_paciente_color').text('No cargado.');
 
-                  //Info del encargado
-                  $('#info_encargado_nombre').text(value.paciente.user.nombre);
-                  $('#info_encargado_cedula').text(value.paciente.user.cedula);
-                  $('#info_encargado_sexo').text(value.paciente.user.sexo);
-                  $('#info_encargado_nacionalidad').text(value.paciente.user.nacionalidad);
-                  $('#info_encargado_telefono').text(value.paciente.user.telefono);
-                  $('#info_encargado_direccion').text(value.paciente.user.direccion);
+                //Info del paciente
+                $('#info_cita_fecha').text(value.fecha);
+                $('#info_cita_horaInicio').text(value.horaInicio);
+                $('#info_cita_horaFinal').text(value.horaFinal);
+                $('#info_cita_servicio').text(value.descripcionServicio);
+                $('#info_cita_motivo').text(value.motivo);
+                $('#info_cita_observaciones').text(value.observaciones);
 
-                  // //Info de los resultados
-                  // $('#tratamiento').text(value.resultados.tratamiento);
-                  // $('#diagnostico').text(value.resultados.diagnostico);
-                  // $('#analisis').text(value.resultados.analisis);
-                  // $('#recomendaciones').text(value.resultados.recomendaciones);
-                // });
+                //Info del encargado
+                $('#info_encargado_nombre').text((value.paciente.user.nombre)?value.paciente.user.nombre:'No cargado.');
+                $('#info_encargado_cedula').text((value.paciente.user.cedula)?value.paciente.user.cedula:'No cargada.');
+                $('#info_encargado_sexo').text((value.paciente.user.sexo)?value.paciente.user.sexo:'No cargado.');
+                $('#info_encargado_nacionalidad').text((value.paciente.user.nacionalidad)?value.paciente.user.nacionalidad:'No cargada.');
+                $('#info_encargado_telefono').text((value.paciente.user.telefono)?value.paciente.user.telefono:'No cargado.');
+                $('#info_encargado_direccion').text((value.paciente.user.direccion)?value.paciente.user.direccion:'No cargada.');
+
+                if(value.resultado =! null && value.resultado){
+                  //Info de los resultados
+                  $('#tratamiento').text(value.resultado.tratamiento);
+                  $('#diagnostico').text(value.resultado.diagnostico);
+                  $('#analisis').val(value.resultado.analisis);
+                  $('#recomendaciones').text(value.resultado.recomendaciones);
+                }else{
+                  //Info de los resultados
+                  $('#tratamiento').text('');
+                  $('#diagnostico').text('');
+                  $('#analisis').val('');
+                  $('#recomendaciones').text('');
+                }
               }
             },
           });
+        }
       });
     });
 
@@ -452,6 +507,8 @@
     $('#guardar_chequeo').click(function(){
       $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
       $(this).addClass('disabled');
+
+      var valido = false;
       var chequeos = [];
       $("input[name='chequeos']:checked").each ( function () {
         chequeos.push($(this).val());
@@ -470,25 +527,115 @@
       var arreglo = [];
       if(Array.isArray(chequeos) && chequeos.length && Array.isArray(descripciones) && descripciones.length){
         $.each(chequeos, function(index, value) {
-          var descripcion = $.trim($("#descripcion-" + value).val());
-          if(descripcion =! ""){
+          var descripcion = $("#descripcion-" + value).val();
+          if($.trim(descripcion).length === 0){
+            // $('.texto_alert_chequeo').hide();
+            $('.texto_alert_chequeo').html("");
+            var texto_error = "<ul><li>Hay chequeos sin descripción.</li></ul>";
+            $('.texto_alert_chequeo').append("Hay errores encontrados! <br>" + texto_error);
+            $('.alert_chequeo').show();
+
+            $('#guardar_chequeo').html('<span><i class="fas fa-save"></i></span>&nbsp;&nbsp;Guardar chequeo');
+            $('#guardar_chequeo').removeClass('disabled');
+            valido = false;
+            return false;
+          }else{
             var data = {};
             data.chequeo = value;
-            data.descripcion = $("#descripcion-" + value).val();
+            data.descripcion = descripcion;
 
             arreglo.push(data);
+            valido = true;
           }
         });
       }
+      if(valido){
+        $.ajax({
+          type: 'post',
+          url: '{{route('expediente_medico.guardar.chequeos')}}',
+          data: {
+            '_token': $('input[name=_token]').val(),
+            'cita': $('#cita').val(),
+            'chequeos': chequeos,
+            'descripciones': descripciones,
+            'arreglo': arreglo,
+          },
+          success: function(data){
+            if((data.errors)){
+              Toast.fire({
+                type: 'warning',
+                title: '!Errores de validación!'
+              })
+
+              $('#guardar_chequeo').html('<span><i class="fas fa-save"></i></span>&nbsp;&nbsp;Guardar chequeo');
+              $('#guardar_chequeo').removeClass('disabled');
+
+              $('.texto_alert_chequeo').html("");
+              var texto_error = "<ul>";
+              if(data.errors.cita){
+                texto_error += "<li>" + data.errors.cita + "</li>";
+              }
+
+              if(data.errors.chequeos){
+                texto_error += "<li>" + data.errors.chequeos + "</li>";
+              }
+
+              if(data.errors.descripciones){
+                texto_error += "<li>" + data.errors.descripciones + "</li>";
+              }
+
+              if(data.errors.arreglo){
+                texto_error += "<li>No se pudieron registrar los chequeos.</li>";
+              }
+              texto_error +=  "</ul>"
+
+              $('.texto_alert_chequeo').append("Hay errores encontrados! <br>" + texto_error);
+              // $('.alert_chequeo').removeClass('hidden');
+              $('.alert_chequeo').show();
+
+
+            }else{
+              Swal.fire({
+                position: 'top-end',
+                type: 'success',
+                title: '!Los detalles de chequeos medicos se han editado correctamente!',
+                showConfirmButton: false,
+                timer: 1500
+              })
+
+              $('#guardar_chequeo').html('<span><i class="fas fa-save"></i></span>&nbsp;&nbsp;Guardar chequeo');
+              $('#guardar_chequeo').removeClass('disabled');
+
+              // setTimeout(function(){
+              //   location.reload();
+              // }, 2000);
+            }
+          },
+        });
+      }else{
+        $('.texto_alert_chequeo').html("");
+        var texto_error = "<ul><li>Hay chequeos invalidos.</li></ul>";
+        $('.texto_alert_chequeo').append("Hay errores encontrados! <br>" + texto_error);
+        $('.alert_chequeo').show();
+
+        $('#guardar_chequeo').html('<span><i class="fas fa-save"></i></span>&nbsp;&nbsp;Guardar chequeo');
+        $('#guardar_chequeo').removeClass('disabled');
+      }
+    });
+
+    $('#finalizar_cita').click(function(){
+      $(this).html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $(this).addClass('disabled');
       $.ajax({
         type: 'post',
-        url: '{{route('expediente_medico.guardar.chequeos')}}',
+        url: '{{route('expediente_medico.guardar.resultados')}}',
         data: {
           '_token': $('input[name=_token]').val(),
           'cita': $('#cita').val(),
-          'chequeos': chequeos,
-          'descripciones': descripciones,
-          'arreglo': arreglo,
+          'analisis': $('#analisis').val(),
+          'diagnostico': $('#diagnostico').val(),
+          'tratamiento': $('#tratamiento').val(),
+          'recomendaciones': $('#recomendaciones').val(),
         },
         success: function(data){
           if((data.errors)){
@@ -497,52 +644,57 @@
               title: '!Errores de validación!'
             })
 
-            $('#guardar_chequeo').html('<span><i class="fas fa-save"></i></span>&nbsp;&nbsp;Guardar chequeo');
-            $('#guardar_chequeo').removeClass('disabled');
+            $('#finalizar_cita').html('<span><i class="fas fa-check"></i></span>&nbsp;&nbsp;Finalizar cita');
+            $('#finalizar_cita').removeClass('disabled');
+
+            $('.texto_alert_finalizar').html("");
 
             var texto_error = "<ul>";
             if(data.errors.cita){
               texto_error += "<li>" + data.errors.cita + "</li>";
             }
 
-            if(data.errors.chequeos){
-              texto_error += "<li>" + data.errors.chequeos + "</li>";
+            if(data.errors.analisis){
+              texto_error += "<li>" + data.errors.analisis + "</li>";
             }
 
-            if(data.errors.descripciones){
-              texto_error += "<li>" + data.errors.descripciones + "</li>";
+            if(data.errors.diagnostico){
+              texto_error += "<li>" + data.errors.diagnostico + "</li>";
             }
 
-            if(data.errors.arreglo){
-              texto_error += "<li>No se pudieron registrar los chequeos.</li>";
+            if(data.errors.tratamiento){
+              texto_error += "<li>" + data.errors.tratamiento + "</li>";
+            }
+
+            if(data.errors.recomendaciones){
+              texto_error += "<li>" + data.errors.recomendaciones + "</li>";
             }
             texto_error +=  "</ul>"
 
-            $('.texto_alert_chequeo').append("Hay errores encontrados! <br>" + texto_error);
+            $('.texto_alert_finalizar').append("Hay errores encontrados! <br>" + texto_error);
             // $('.alert_chequeo').removeClass('hidden');
-            $('.alert_chequeo').show();
+            $('.alert_finalizar').show();
 
 
           }else{
             Swal.fire({
               position: 'top-end',
               type: 'success',
-              title: '!Los detalles de chequeos medicos se han editado correctamente!',
+              title: '!La información de la cita se ha actualizado correctamente!',
               showConfirmButton: false,
               timer: 1500
             })
 
-            $('#guardar_chequeo').html('<span><i class="fas fa-save"></i></span>&nbsp;&nbsp;Guardar chequeo');
-            $('#guardar_chequeo').removeClass('disabled');
+            $('#finalizar_cita').html('<span><i class="fas fa-check"></i></span>&nbsp;&nbsp;Finalizar cita');
+            $('#finalizar_cita').removeClass('disabled');
 
-            // setTimeout(function(){
-            //   location.reload();
-            // }, 2000);
+            setTimeout(function(){
+              location.reload();
+            }, 2000);
         }
         },
       });
     });
-
 
   </script>
 @endsection

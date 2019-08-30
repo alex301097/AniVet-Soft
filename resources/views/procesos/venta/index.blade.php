@@ -44,8 +44,8 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="card_image">
-                      @if (empty($animales))
-                        <h3>No hay animales en venta disponibles</h3>
+                      @if (empty($animales) || count($animales) == 0)
+                        <h3 class="text-center">No hay animales en venta disponibles.</h3>
                       @else
                         <ul class="cards">
                           @foreach ($animales as $animal)
@@ -61,14 +61,13 @@
                                     <p class="card__text">
                                       <h5>
                                         <b>Peso: </b> {{$animal->peso}} - <b>Edad: </b> {{$animal->edad}} <br>
-                                        <b>Fecha de nacimiento: </b> {{$animal->fecha_nacimiento}} <br>
-                                        <b>Cantidad: </b> {{$animal->cantidad}} - <b>Precio: </b> {{$animal->precio}}<br>
+                                        <b>Fecha de nacimiento: </b> {{date('d/m/Y', strtotime($animal->fecha_nacimiento))}} <br>
+                                        <b>Cantidad: </b> {{$animal->cantidad}} - <b>Precio: </b> ₡{{$animal->precio}}<br>
                                         <b>Observaciones: </b> {{$animal->observaciones}}<br>
                                         <b>Condiciones: </b> {{$animal->condiciones}}
                                       </h5>
                                     </p>
-                                    {{-- {{(collect($detalles[0])->pluck('id')->contains($animal->id))?"disabled":""}} --}}
-                                    <a type="button" class="btn btn-sm btn-primary añadir_animales_venta" data-toggle="tooltip"
+                                    <a type="button" class="btn btn-sm btn-primary añadir_animales_venta {{(collect($detalles)->pluck('animal_venta_id')->contains($animal->id))?"disabled":""}}" data-toggle="tooltip"
                                       title="Click para agregar el animal a la lista de animales a comprar."
                                       id="añadir_animales_venta_{{$animal->id}}" data-id="{{$animal->id}}">
                                         Añadir animal
@@ -90,7 +89,7 @@
               <div class="box-header">
                 <i class="fa fa-list-ol"></i>
 
-                <h3 class="box-title">Lista de animales a comprar</h3>
+                <h3 class="box-title">Lista de animales a comprar.</h3>
               </div>
               <div class="box-body">
                 <div class="row">
@@ -99,18 +98,17 @@
                           @if (empty($detalles))
                             <h3>No hay animales a comprar agregados</h3>
                           @else
-                            @foreach ($detalles as $index1 =>$arreglo_detalles)
-                              @foreach ($arreglo_detalles as $index2 => $detalle)
-                                <div class="panel panel-default" id="venta_{{$detalle->animal_venta->id}}" name="venta_{{$detalle->id}}">
+                            @foreach ($detalles as $index => $detalle)
+                                <div class="panel panel-default" id="venta_{{$detalle->animal_venta->id}}" name="venta_{{$detalle->animal_venta->id}}">
                                   <div class="panel-heading" role="tab" id="heading_{{$detalle->animal_venta->id}}">
                                       <h4 class="panel-title">
-                                          <a class="{{($index1 == 1)?"":"collapsed"}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$detalle->id}}" aria-expanded="{{($index1 == 1)?"true":"false"}}" aria-controls="collapse_{{$detalle->animal_venta->id}}">
-                                              <span>{{$index1}}</span>
+                                          <a class="{{($index + 1 == 1)?"":"collapsed"}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$detalle->animal_venta->id}}" aria-expanded="{{($index + 1 == 1)?"true":"false"}}" aria-controls="collapse_{{$detalle->animal_venta->id}}">
+                                              <span>{{$index + 1}}</span>
                                               {{$detalle->animal_venta->tipo_animal->descripcion." - ".$detalle->animal_venta->raza." - ".$detalle->animal_venta->sexo}}
                                           </a>
                                       </h4>
                                   </div>
-                                  <div id="collapse_{{$detalle->animal_venta->id}}" class="panel-collapse collapse {{($index1 == 1)?"in":""}}" role="tabpanel" aria-labelledby="heading_{{$detalle->animal_venta->id}}">
+                                  <div id="collapse_{{$detalle->animal_venta->id}}" class="panel-collapse collapse {{($index + 1 == 1)?"in":""}}" role="tabpanel" aria-labelledby="heading_{{$detalle->animal_venta->id}}">
                                       <div class="panel-body">
                                           <p>
                                             <div class="row">
@@ -145,7 +143,7 @@
                                                 </div>
                                                 <div class="row">
                                                   <div class="col-md-6">
-                                                    <b>Precio: </b> {{$detalle->animal_venta->precio}} <br>
+                                                    <b>Precio: </b> ₡{{$detalle->animal_venta->precio}} <br>
                                                   </div>
                                                   <div class="col-md-6">
                                                     <b>Cantidad: </b> {{$detalle->animal_venta->cantidad}} <br>
@@ -165,7 +163,6 @@
                                       </div>
                                   </div>
                               </div>
-                              @endforeach
                             @endforeach
                           @endif
                         </div>
@@ -335,6 +332,8 @@
   });
 
   $(document).on("click", ".btn-eliminar-detalle", function(e) {
+    $('.btn-eliminar-detalle').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('.btn-eliminar-detalle').addClass('disabled');
       $.ajax({
         type: 'post',
         url: '{{route('venta_animales.solicitar.limpiar_individual')}}',
@@ -344,12 +343,15 @@
         },
         success: function(data){
           if((data.length == 0)){
+            $('.btn-eliminar-detalle').html('Eliminar');
+            $('.btn-eliminar-detalle').removeClass('disabled');
             Toast.fire({
               type: 'success',
               title: '¡Solicitud de compra correctamente eliminada!'
             });
 
             $('#accordion').empty();
+            $('.añadir_animales_venta').removeClass('disabled');
             $('#limpiar_lista_detalles').addClass('disabled');
             $('#efectuar_adopcion').addClass('disabled');
             $('#limpiar_formulario_dueño').addClass('disabled');
@@ -358,16 +360,18 @@
 
           }else{
             e.preventDefault()
+            $('.btn-eliminar-detalle').html('Eliminar');
+            $('.btn-eliminar-detalle').removeClass('disabled');
             $('#accordion').empty();
             $('.añadir_animales_venta').removeClass('disabled');
 
-            $.each(data, function(index1, value) {
-              $.each(value, function(index2, value){
+            $.each(data, function(index, value) {
+                var index = index + 1;
                 $('#añadir_animales_venta_' + value.animal_venta.id).addClass('disabled');
                 var titulo = value.animal_venta.tipo_animal.descripcion + " - " + value.animal_venta.raza + " - " + value.animal_venta.sexo;
-                var collapsed = (index1 == 1)?"":"collapsed";
-                var collapse_in = (index1 == 1)?"in":"";
-                var aria_expanded = (index1 == 1)?"true":"false";
+                var collapsed = (index == 1)?"":"collapsed";
+                var collapse_in = (index == 1)?"in":"";
+                var aria_expanded = (index == 1)?"true":"false";
                 if(Array.isArray(value.animal_venta.imagenes) && value.animal_venta.imagenes.length){
                   var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
                   imagen = imagen.replace(':ruta_imagen', value.animal_venta.imagenes[0].imagen);
@@ -414,7 +418,7 @@
                                 "</div>" +
                                 "<div class='row'>" +
                                   "<div class='col-md-6'>" +
-                                    "<b>Precio: </b>" + value.animal_venta.precio + "<br>" +
+                                    "<b>Precio: </b> ₡" + value.animal_venta.precio + "<br>" +
                                   "</div>" +
                                   "<div class='col-md-6'>" +
                                     "<b>Cantidad: </b>" + value.animal_venta.cantidad + "<br>" +
@@ -433,7 +437,6 @@
                         "</div>" +
                     "</div>" +
                 "</div>");
-  			       });
             });
           }
         },
@@ -441,6 +444,8 @@
   });
 
   $('#limpiar_lista_detalles').click(function(){
+    $('#limpiar_lista_detalles').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('#limpiar_lista_detalles').addClass('disabled');
     $.ajax({
       type: 'post',
       url: '{{route('venta_animales.solicitar.limpiar_todo')}}',
@@ -448,7 +453,10 @@
         '_token': $('input[name=_token]').val(),
       },
       success: function(data){
-          if(data == true){
+          if(data == true || data.length == 0){
+            alert('asjhask');
+            $('#limpiar_lista_detalles').html('&nbsp;<i class="fa fa-eraser"></i>&nbsp;');
+            $('#limpiar_lista_detalles').removeClass('disabled');
             $('#accordion').empty();
             $('.añadir_animales_venta').removeClass('disabled');
             $('#limpiar_lista_detalles').addClass('disabled');
@@ -472,6 +480,8 @@
 
   //Añadir
   $('.añadir_animales_venta').click(function(e){
+    $('.añadir_animales_venta').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('.añadir_animales_venta').addClass('disabled');
     $.ajax({
       type: 'post',
       url: '{{route('venta_animales.solicitar')}}',
@@ -481,6 +491,9 @@
       },
       success: function(data){
         if((data.errors)){
+          $('.añadir_animales_venta').html('Añadir animal');
+          $('.añadir_animales_venta').removeClass('disabled');
+
           Toast.fire({
             type: 'warning',
             title: '!Errores de validación!'
@@ -493,11 +506,12 @@
           });
 
         }else{
+          $('.añadir_animales_venta').html('Añadir animal');
+          $('.añadir_animales_venta').removeClass('disabled');
           e.preventDefault()
           $('#accordion').empty();
-          $.each(data, function(index1, value) {
-            $.each(value, function(index2, value){
-
+          $.each(data, function(index, value) {
+              var index1 = index + 1;
               $('#añadir_animales_venta_' + value.animal_venta.id).addClass('disabled');
 
               var titulo = value.animal_venta.tipo_animal.descripcion + " - " + value.animal_venta.raza + " - " + value.animal_venta.sexo;
@@ -550,7 +564,7 @@
                               "</div>" +
                               "<div class='row'>" +
                                 "<div class='col-md-6'>" +
-                                  "<b>Precio: </b>" + value.animal_venta.precio + "<br>" +
+                                  "<b>Precio: </b> ₡" + value.animal_venta.precio + "<br>" +
                                 "</div>" +
                                 "<div class='col-md-6'>" +
                                   "<b>Cantidad: </b>" + value.animal_venta.cantidad + "<br>" +
@@ -569,7 +583,6 @@
                       "</div>" +
                   "</div>" +
               "</div>");
-			       });
           });
             Toast.fire({
               type: 'success',
@@ -587,6 +600,8 @@
 
   //Finalizar
   $('#efectuar_adopcion').click(function(){
+    $('#efectuar_adopcion').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('#efectuar_adopcion').addClass('disabled');
     $.ajax({
       type: 'post',
       url: '{{route('venta_animales.solicitar.finalizar')}}',
@@ -603,6 +618,8 @@
       },
       success: function(data){
         if((data.errors)){
+          $('#efectuar_adopcion').html('Efectuar solicitud');
+          $('#efectuar_adopcion').removeClass('disabled');
           Toast.fire({
             type: 'warning',
             title: '¡Errores de validación!'
@@ -615,6 +632,9 @@
           });
 
         }else{
+          $('#efectuar_adopcion').html('Efectuar solicitud');
+          $('#efectuar_adopcion').removeClass('disabled');
+
           Swal.fire({
             position: 'top-end',
             type: 'success',
@@ -623,10 +643,10 @@
             timer: 1500
           })
 
-          // setTimeout(function(){
-          //   var url = "{{route('home')}}";
-          //       document.location.href=url;
-          // }, 2000);
+          setTimeout(function(){
+            var url = "{{route('home')}}";
+                document.location.href=url;
+          }, 2000);
       }
       },
     });

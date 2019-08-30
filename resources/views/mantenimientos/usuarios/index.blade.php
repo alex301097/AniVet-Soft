@@ -66,8 +66,8 @@
                     <tr>
                         <th scope="col">Usuario</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Cedula</th>
-                        <th scope="col">Telefono</th>
+                        <th scope="col">Cédula</th>
+                        <th scope="col">Teléfono</th>
                         <th scope="col">Rol</th>
                         <th scope="col">Estado</th>
                         <th scope="col">Acciones</th>
@@ -490,7 +490,7 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="codigo_detalle"><h5>&nbsp;Codigo</h5></label>
+                              <label for="codigo_detalle"><h5>&nbsp;Código</h5></label>
                               <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                 <input readonly type="text" class="form-control form-control-sm" placeholder="Codigo" id="codigo_detalle" name="codigo_detalle">
@@ -545,7 +545,7 @@
                                 <div class="col-lg-12">
                                   <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="imagen_edicion" name="imagen_edicion" aria-describedby="inputGroupFileAddon01" accept="image/*">
-                                    <label class="custom-file-label" for="imagen">Seleccione una imagen</label>
+                                    <label class="custom-file-label" for="imagen">Seleccione una imágen</label>
                                     <p class="error_imagen_edicion text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                   </div>
                                 </div>
@@ -642,7 +642,7 @@
                                     <br>
                                     <div class="row">
                                       <div class="col-md-6">
-                                        <input name="sexo_edicion" class="minimal" id="masculino_edicion" value="Masculino_edicion" checked type="radio">
+                                        <input name="sexo_edicion" class="minimal" id="masculino_edicion" value="Masculino" checked type="radio">
                                         <label class="custom-control-label" for="masculino">Masculino</label>
                                       </div>
                                       <div class="col-md-6">
@@ -657,7 +657,7 @@
                               <div class="row">
                                 <div class="col-md-6">
                                   <div class="form-group">
-                                    <label for="telefono_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Telefono</h5></label>
+                                    <label for="telefono_edicion"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Teléfono</h5></label>
                                     <input type="number" class="form-control form-control-sm form-control-alternative" id="telefono_edicion" name="telefono_edicion" placeholder="Telefono">
                                     <p class="error_telefono text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                                   </div>
@@ -1083,6 +1083,8 @@
       $('#nacionalidad_edicion').val($(this).data('nacionalidad'));
       if ($(this).data('fecha_nacimiento')) {
         $('#fecha_nacimiento_edicion').val(moment($(this).data('fecha_nacimiento')).format('DD/MM/YYYY'));
+        $('#fecha_nacimiento_edicion_formato').val($(this).data('fecha_nacimiento'));
+
       }
       $('#estado_civil_edicion').val($(this).data('estado_civil'));
       if($(this).data('sexo') == "Masculino"){
@@ -1194,11 +1196,11 @@
       var id = $(this).data('id');
 
       swal_confirm.fire({
-        title: '¿Estas seguro de habilitar esto?',
-        text: "!Podras deshabilitar esto después!",
+        title: '¿Estás seguro de habilitar esto?',
+        text: "!Podrás deshabilitar esto después!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: '!Si, habilitalo!',
+        confirmButtonText: '!Si, habilítalo!',
         cancelButtonText: '!No, cancelar!',
         reverseButtons: true
       }).then((result) => {
@@ -1226,7 +1228,7 @@
         ) {
           swal_confirm.fire(
             'Cancelado',
-            'Los datos del usuario estan seguros.',
+            'Los datos del usuario están seguros.',
             'error'
           )
         }
@@ -1238,11 +1240,11 @@
       var id = $(this).data('id');
 
       swal_confirm.fire({
-        title: '¿Estas seguro de deshabilitar esto?',
-        text: "!Podras habilitar esto después!",
+        title: '¿Estás seguro de deshabilitar esto?',
+        text: "!Podrás habilitar esto después!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: '!Si, deshabilitalo!',
+        confirmButtonText: '!Si, deshabilítalo!',
         cancelButtonText: '!No, cancelar!',
         reverseButtons: true
       }).then((result) => {
@@ -1270,7 +1272,7 @@
         ) {
           swal_confirm.fire(
             'Cancelado',
-            'Los datos del usuario estan seguros.',
+            'Los datos del usuario están seguros.',
             'error'
           )
         }

@@ -16,7 +16,7 @@
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
-      <li><a href="#">Pacientes</a></li>
+      <li><a href="{{route('pacientes')}}">Pacientes</a></li>
       <li class="active">Registro</li>
     </ol>
   </section>

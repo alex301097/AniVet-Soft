@@ -26,7 +26,7 @@ class CitasController extends Controller
 
   public function get_detalle_citas($id)
   {
-    $cita = Cita::find($id);
+    $cita = Cita::withTrashed()->find($id);
     $servicios = TipoServicio::all();
     return view('mantenimientos.citas.detalle', ['cita'=>$cita,'servicios'=>$servicios]);
   }
@@ -43,39 +43,78 @@ class CitasController extends Controller
       'fecha' => 'required',
       'horaInicio' => 'required',
       'horaFinal' => 'required',
-      'motivo' => 'required|string|min:4|max:255',
-      'observaciones' => 'required|string|min:4|max:255',
-      'servicio' => 'required',
-      'paciente' => 'required',
     ];
 
     $inputs = [
       'fecha' => $request->fecha,
       'horaInicio' => $request->horaInicio,
       'horaFinal' => $request->horaFinal,
-      'motivo' => $request->motivo,
-      'observaciones' => $request->observaciones,
-      'servicio' => $request->servicio,
-      'paciente' => $request->paciente,
     ];
 
     $validator = Validator::make($inputs, $reglas);
     if($validator->fails()){
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
-      $cita = new Cita();
+      $rangos_ocupadas = Cita::where('fecha','=',$request->input('fecha'))->get();
+      $valido = true;
+      foreach ($rangos_ocupadas as $value) {
+        $rango1 = Carbon::parse($value->horaInicio)->format('H:i');
+        $rango2 = Carbon::parse($value->horaFinal)->format('H:i');
 
-      $cita->fecha = $request->input('fecha');
-      $cita->horaInicio = $request->input('horaInicio');
-      $cita->horaFinal = $request->input('horaFinal');
-      $cita->motivo = $request->input('motivo');
-      $cita->observaciones = $request->input('observaciones');
-      $cita->servicio()->associate($request->input('servicio'));
-      $cita->paciente()->associate($request->input('paciente'));
-      $cita->user_create()->associate(Auth::user());
-      $cita->save();
+        $rango_nuevo1 = Carbon::parse($request->input('horaInicio'))->format('H:i');
+        $rango_nuevo2 = Carbon::parse($request->input('horaFinal'))->format('H:i');
 
-      return response()->json($cita);
+        if(($rango2 <= $rango_nuevo1) || ($rango_nuevo2 <= $rango1) && $rango_nuevo1 < $rango_nuevo2){
+          $valido = true;
+        }else{
+          $valido = false;
+          continue;
+        }
+      }
+
+      if($valido){
+        $reglas = [
+          'fecha' => 'required|after:'.Carbon::yesterday(),
+          'horaInicio' => 'required',
+          'horaFinal' => 'required',
+          'motivo' => 'required|string|min:4|max:255',
+          'observaciones' => 'required|string|min:4|max:255',
+          'servicio' => 'required',
+          'paciente' => 'required',
+        ];
+
+        $inputs = [
+          'fecha' => $request->fecha,
+          'horaInicio' => $request->horaInicio,
+          'horaFinal' => $request->horaFinal,
+          'motivo' => $request->motivo,
+          'observaciones' => $request->observaciones,
+          'servicio' => $request->servicio,
+          'paciente' => $request->paciente,
+        ];
+
+        $validator = Validator::make($inputs, $reglas);
+        if($validator->fails()){
+          return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
+        }else{
+
+          $cita = new Cita();
+
+          $cita->fecha = $request->input('fecha');
+          $cita->horaInicio = $request->input('horaInicio');
+          $cita->horaFinal = $request->input('horaFinal');
+          $cita->motivo = $request->input('motivo');
+          $cita->observaciones = $request->input('observaciones');
+          $cita->servicio()->associate($request->input('servicio'));
+          $cita->paciente()->associate($request->input('paciente'));
+          $cita->user_create()->associate(Auth::user());
+          $cita->save();
+
+          return response()->json($cita);
+        }
+      }else{
+        return Response::json(array('errors'=>array('rango_invalido'=>'El rango de hora es invalido.')));
+      }
     }
   }
 
@@ -88,44 +127,83 @@ class CitasController extends Controller
 
   public function editar_citas(Request $request)
   {
-
-    $cita = Cita::find($request->input('id_edicion'));
-
     $reglas = [
-      'fecha' => 'required',
+      'fecha' => 'required|after:'.Carbon::yesterday(),
       'horaInicio' => 'required',
       'horaFinal' => 'required',
-      'motivo' => 'required|string|min:4|max:255',
-      'observaciones' => 'required|string|min:4|max:255',
-      'servicio' => 'required',
-      'paciente' => 'required',
     ];
 
     $inputs = [
       'fecha' => $request->fecha,
       'horaInicio' => $request->horaInicio,
       'horaFinal' => $request->horaFinal,
-      'motivo' => $request->motivo,
-      'observaciones' => $request->observaciones,
-      'servicio' => $request->servicio,
-      'paciente' => $request->paciente,
     ];
 
     $validator = Validator::make($inputs, $reglas);
     if($validator->fails()){
       return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
     }else{
-      $cita->fecha = $request->input('fecha');
-      $cita->horaInicio = $request->input('horaInicio');
-      $cita->horaFinal = $request->input('horaFinal');
-      $cita->motivo = $request->input('motivo');
-      $cita->observaciones = $request->input('observaciones');
-      $cita->servicio()->associate($request->input('servicio'));
-      $cita->paciente()->associate($request->input('paciente'));
-      $cita->user_create()->associate(Auth::user());
-      $cita->save();
+      $rangos_ocupadas = Cita::where('fecha','=',$request->input('fecha'))->where('id', '!=', $request->input('id_edicion'))->get();
 
-      return response()->json($cita);
+      $valido = true;
+      foreach ($rangos_ocupadas as $value) {
+        $rango1 = Carbon::parse($value->horaInicio)->format('H:i');
+        $rango2 = Carbon::parse($value->horaFinal)->format('H:i');
+
+        $rango_nuevo1 = Carbon::parse($request->input('horaInicio'))->format('H:i');
+        $rango_nuevo2 = Carbon::parse($request->input('horaFinal'))->format('H:i');
+
+        if(($rango2 <= $rango_nuevo1) || ($rango_nuevo2 <= $rango1) && $rango_nuevo1 < $rango_nuevo2  && $rango1 != $rango_nuevo1 && $rango2 != $rango_nuevo2 && $rango_nuevo1 < $rango_nuevo2){
+          $valido = true;
+        }else{
+          $valido = false;
+          continue;
+        }
+      }
+
+      if($valido){
+        $reglas = [
+          'fecha' => 'required',
+          'horaInicio' => 'required',
+          'horaFinal' => 'required',
+          'motivo' => 'required|string|min:4|max:255',
+          'observaciones' => 'required|string|min:4|max:255',
+          'servicio' => 'required',
+          'paciente' => 'required',
+        ];
+
+        $inputs = [
+          'fecha' => $request->fecha,
+          'horaInicio' => $request->horaInicio,
+          'horaFinal' => $request->horaFinal,
+          'motivo' => $request->motivo,
+          'observaciones' => $request->observaciones,
+          'servicio' => $request->servicio,
+          'paciente' => $request->paciente,
+        ];
+
+        $validator = Validator::make($inputs, $reglas);
+        if($validator->fails()){
+          return Response::json(array('errors'=>$validator->getMessageBag()->toArray()));
+        }else{
+
+          $cita = Cita::find($request->input('id_edicion'));
+
+          $cita->fecha = $request->input('fecha');
+          $cita->horaInicio = $request->input('horaInicio');
+          $cita->horaFinal = $request->input('horaFinal');
+          $cita->motivo = $request->input('motivo');
+          $cita->observaciones = $request->input('observaciones');
+          $cita->servicio()->associate($request->input('servicio'));
+          $cita->paciente()->associate($request->input('paciente'));
+          $cita->user_create()->associate(Auth::user());
+          $cita->save();
+
+          return response()->json($cita);
+        }
+      }else{
+        return Response::json(array('errors'=>array('rango_invalido'=>'El rango de hora es invalido.')));
+      }
     }
   }
 

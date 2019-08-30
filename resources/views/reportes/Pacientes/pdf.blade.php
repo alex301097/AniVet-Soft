@@ -156,7 +156,7 @@
               <td width="30%" colspan="4" class="text-right">
                 <b>
                 <small>
-                  {{\Carbon\Carbon::now()->formatLocalized('%A, %d de %B del %Y, %H:%M hrs')}}
+                  {{\Carbon\Carbon::now()->formatLocalized('%A, %d de %B del %Y, %H:%m hrs')}}
                   <br>
                   Realizado por: {{auth()->user()->nombre}}
                 </small>
@@ -169,14 +169,16 @@
     </table>
     <table width="100%">
       <tr>
-        <td colspan="12" class="text-center">
+        <td colspan="6" class="text-center">
           <u><b><h2>Reporte de pacientes</h2></b></u>
         </br>
         </br>
         </td>
       </tr>
-      <tr class="text-size-10">
+      <tr class="text-size-10 text-center">
         <td><b>Paciente</b></td>
+        <td><b>Encargado</b></td>
+        <td><b>Datos del encargado</b></td>
         <td><b>Edad</b></td>
         <td><b>Peso</b></td>
         <td><b>Tipo</b></td>
@@ -185,7 +187,15 @@
       </tr>
       @foreach ($pacientes as $paciente)
         <tr class="text-size-10 text-center">
-          <td>{{$paciente->nombre}}</td>
+          <td>
+            @if ($paciente->nombre)
+              {{$paciente->nombre}}
+            @else
+              Sin registrar.
+            @endif
+          </td>
+          <td>{{$paciente->user->nombre." ".$paciente->user->apellidos}}</td>
+          <td>{{"Ced: ".$paciente->user->cedula." | Tel: ".$paciente->user->telefono}}</td>
           <td>{{$paciente->edad }}</td>
           <td>{{$paciente->peso}}</td>
           <td>{{$paciente->tipo_animal->descripcion}}</td>

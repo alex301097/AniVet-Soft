@@ -39,7 +39,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="alert alert-info alert-dismissible error_vacio_div">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <a type="button" class="close" onclick="$('.error_vacio_div').hide()">&times;</a>
                   <h4><i class="icon fa fa-info"></i> Información!</h4>
                   <span class="error_vacio">Debes agregar animales a adoptar a la lista</span>
                 </div>
@@ -69,21 +69,19 @@
             <div class="col-md-12">
               <div id="accordeon_img">
                  <ul  id="accordion" name="accordion">
-                  @foreach ($detalles as $arreglo_detalles)
-                    @foreach ($arreglo_detalles as $id => $detalle)
-                      <li id="info_animal_{{$id}}">
-                        <a class="hor_accordion" id="{{($id == 1)?"a1":""}}" data-id="{{$id}}">
-                          <span id="info_animal_close_{{$id}}" data-id="{{$id}}" class="close hidden btn-eliminar-detalle"><i class="fa fa-close" style="color:white;"></i></span>
-                          <img src="{{ url('imgPerfiles/'.$detalle->imagen) }}" style="width:74px; height:72px;"/>
-                          <p>
-                            <strong>{{(!empty($detalle->nombre))?$detalle->nombre:"Sin nombre"}}</strong><br/>
-                            {{$detalle->tipo_animal." - ".$detalle->raza}}
-                            <br>
-                            {{$detalle->observaciones}}
-                          </p>
-                        </a>
-                      </li>
-                    @endforeach
+                  @foreach ($detalles as $id => $detalle)
+                    <li id="info_animal_{{$detalle->det_adopcion->id}}">
+                      <a class="hor_accordion" id="{{($id + 1 == 1)?"a1":""}}" data-id="{{$detalle->det_adopcion->id}}">
+                        <span id="info_animal_close_{{$detalle->det_adopcion->id}}" data-id="{{$detalle->det_adopcion->id}}" class="close hidden btn-eliminar-detalle"><i class="fa fa-close" style="color:white;"></i></span>
+                        <img src="{{ url('imgPerfiles/'.$detalle->det_adopcion->imagen) }}" style="width:74px; height:72px;"/>
+                        <p>
+                          <strong>{{(!empty($detalle->det_adopcion->nombre))?$detalle->det_adopcion->nombre:"Sin nombre"}}</strong><br/>
+                          {{$detalle->det_adopcion->tipo_animal." - ".$detalle->det_adopcion->raza}}
+                          <br>
+                          {{$detalle->det_adopcion->observaciones}}
+                        </p>
+                      </a>
+                    </li>
                   @endforeach
                 </ul>
               </div>
@@ -148,9 +146,8 @@
                         <br>
                         <div class="row">
                           <div class="col-md-12 text-center">
-                            <a type="submit" class="btn btn-sm bg-orange info_registro_animal_{{$detalle->id}}" id="añadir_solicitud" name="añadir_solicitud" title="Click para añadir la solicitud de este animal a la lista de animales a adoptar"
-                            data-id="{{$detalle->id}}">
-                              Añadir animal
+                            <a type="submit" class="btn btn-sm bg-orange info_registro_animal_{{$detalle->id}} {{(collect($detalles)->pluck('det_adopcion_id')->contains($detalle->id))?"disabled":""}}" id="añadir_solicitud" name="añadir_solicitud" title="Click para añadir la solicitud de este animal a la lista de animales a adoptar"
+                            data-id="{{$detalle->id}}">Añadir animal
                             </a>
                           </div>
                         </div>
@@ -324,6 +321,8 @@
     });
 
     $(document).on("click", ".btn-eliminar-detalle", function(e) {
+      $('#btn-eliminar-detalle').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+      $('#btn-eliminar-detalle').addClass('disabled');
       $.ajax({
         type: 'post',
         url: '{{route('adopciones.solicitar.limpiar_individual')}}',
@@ -333,6 +332,9 @@
         },
         success: function(data){
           if((data.errors)){
+            $('#btn-eliminar-detalle').html('<i class="fa fa-close" style="color:white;"></i>');
+            $('#btn-eliminar-detalle').removeClass('disabled');
+
             Toast.fire({
               type: 'warning',
               title: '!Errores de validación!'
@@ -345,32 +347,68 @@
             });
 
           }else{
+
             e.preventDefault();
             $('#accordion').empty();
-            if(data != []){
+            $('#añadir_solicitud').html('Añadir animal');
+            $('#añadir_solicitud').removeClass('disabled');
+            if((data.length > 0)){
               $.each(data, function(index, value) {
-                $.each(value, function(index, value){
 
-                  var nombre = (value.nombre)?value.nombre:"Sin nombre";
+                  var nombre = (value.det_adopcion.nombre)?value.det_adopcion.nombre:"Sin nombre";
                   var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
-                  imagen = imagen.replace(':ruta_imagen', value.imagen);
-                  var id = (index == 1)?"id='a1'":"";
+                  imagen = imagen.replace(':ruta_imagen', value.det_adopcion.imagen);
+                  var id = (index + 1 == 1)?"id='a1'":"";
                   let lst = document.querySelector('#accordion');
                   lst.appendChild(document.createElement('li'));
                   let lstChild = lst.lastChild;
-                  lstChild.innerHTML = "<a " + id + " class='hor_accordion' data-id='"+ index +"'><span id='info_animal_close_"+ index +"' data-id='"+index+"' class='close hidden btn-eliminar-detalle'><i class='fa fa-close' style='color:white;'></i></span><img src='" + imagen + "' style='width:72px; height:72px;'/><p><strong>" + nombre + "</strong><br/>" + value.tipo_animal + " - " + value.raza + "<br/>" + value.observaciones + "</p></a>";
-                  lstChild.className = 'info_animal_' + index;
-                });
+                  var etiqueta = "<a class='hor_accordion' id='" + id + "' data-id='" + value.det_adopcion.id + "'>" +
+                    "<span id='info_animal_close_" + value.det_adopcion.id + "' data-id='" + value.det_adopcion.id + "' class='close hidden btn-eliminar-detalle'>" +
+                      "<i class='fa fa-close' style='color:white;'></i>"+
+                    "</span>"+
+                    "<img src='" + imagen + "' style='width:74px; height:72px;'/>"+
+                    "<p>"+
+                      "<strong>" + nombre + "</strong><br/>"+
+                      value.det_adopcion.tipo_animal + " -  " + value.det_adopcion.raza +
+                      "<br>" +
+                      value.det_adopcion.observaciones +
+                    "</p>" +
+                  "</a>";
+                  lstChild.innerHTML = etiqueta;
+
+                  $('.info_registro_animal_' + value.det_adopcion.id).addClass('disabled');
+
+                  var clase_info = ".info_registro_animal_" + value.det_adopcion.id;
+                  $(clase_info).addClass('disabled');
               });
-            }else{
-              $('.alert').show();
-            }
 
               Toast.fire({
                 type: 'success',
                 title: '¡Solicitud de adopción correctamente eliminada!'
               });
 
+              $('#btn-eliminar-detalle').html('<i class="fa fa-close" style="color:white;"></i>');
+              $('#btn-eliminar-detalle').removeClass('disabled');
+
+            }else{
+              alert('ahsjas');
+              $('#accordion').empty();
+
+              $('.error_vacio_div').show();
+
+              $('#limpiar_lista_detalles').addClass('disabled');
+              $('#limpiar_lista_detalles').addClass('hidden');
+
+              $('#finalizar_adopcion').addClass('disabled');
+              $('#finalizar_adopcion').addClass('hidden');
+
+              $('#limpiar_formulario_dueño').addClass('hidden');
+              $('#limpiar_formulario_dueño').addClass('disabled');
+
+              $('#efectuar_adopcion').addClass('disabled');
+              $('#efectuar_adopcion').addClass('hidden');
+
+            }
           }
         },
       });
@@ -385,6 +423,8 @@
 
   //Añadir
   $('#añadir_solicitud').click(function(e){
+    $('#añadir_solicitud').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('#añadir_solicitud').addClass('disabled');
     $.ajax({
       type: 'post',
       url: '{{route('adopciones.solicitar')}}',
@@ -394,6 +434,8 @@
       },
       success: function(data){
         if((data.errors)){
+          $('#añadir_solicitud').html('Añadir animal');
+          $('#añadir_solicitud').removeClass('disabled');
           Toast.fire({
             type: 'warning',
             title: '!Errores de validación!'
@@ -408,19 +450,33 @@
         }else{
           e.preventDefault()
           $('#accordion').empty();
+          $('#añadir_solicitud').html('Añadir animal');
+          $('#añadir_solicitud').removeClass('disabled');
           $.each(data, function(index, value) {
-            $.each(value, function(index, value){
+            var nombre = (value.det_adopcion.nombre)?value.det_adopcion.nombre:"Sin nombre";
+            var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
+            imagen = imagen.replace(':ruta_imagen', value.det_adopcion.imagen);
+            var id = (index + 1 == 1)?"id='a1'":"";
+            let lst = document.querySelector('#accordion');
+            lst.appendChild(document.createElement('li'));
+            let lstChild = lst.lastChild;
+            var etiqueta = "<a class='hor_accordion' id='" + id + "' data-id='" + value.det_adopcion.id + "'>" +
+              "<span id='info_animal_close_" + value.det_adopcion.id + "' data-id='" + value.det_adopcion.id + "' class='close hidden btn-eliminar-detalle'>" +
+                "<i class='fa fa-close' style='color:white;'></i>"+
+              "</span>"+
+              "<img src='" + imagen + "' style='width:74px; height:72px;'/>"+
+              "<p>"+
+                "<strong>" + nombre + "</strong><br/>"+
+                value.det_adopcion.tipo_animal + " -  " + value.det_adopcion.raza +
+                "<br>" +
+                value.det_adopcion.observaciones +
+              "</p>" +
+            "</a>";
+            lstChild.innerHTML = etiqueta;
 
-              var nombre = (value.nombre)?value.nombre:"Sin nombre";
-              var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
-              imagen = imagen.replace(':ruta_imagen', value.imagen);
-              var id = (index == 1)?"id='a1'":"";
-              let lst = document.querySelector('#accordion');
-              lst.appendChild(document.createElement('li'));
-              let lstChild = lst.lastChild;
-              lstChild.innerHTML = "<a " + id + " class='hor_accordion' data-id='"+ index +"'><span id='info_animal_close_"+ index +"' data-id='"+index+"' class='close hidden btn-eliminar-detalle'><i class='fa fa-close' style='color:white;'></i></span><img src='" + imagen + "' style='width:72px; height:72px;'/><p><strong>" + nombre + "</strong><br/>" + value.tipo_animal + " - " + value.raza + "<br/>" + value.observaciones + "</p></a>";
-              lstChild.className = 'info_animal_' + index;
-             });
+            var clase_info = ".info_registro_animal_" + value.det_adopcion.id;
+            $(clase_info).addClass('disabled');
+
           });
 
             Toast.fire({
@@ -428,7 +484,7 @@
               title: '¡Solicitud de adopción correctamente añadida!'
             });
 
-            $('.alert').hide();
+            $('.error_vacio_div').hide();
 
             $('#limpiar_lista_detalles').removeClass('disabled');
             $('#limpiar_lista_detalles').removeClass('hidden');
@@ -449,6 +505,8 @@
 
   //Finalizar
   $('#efectuar_adopcion').click(function(){
+    $('#efectuar_adopcion').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('#efectuar_adopcion').addClass('disabled');
     $.ajax({
       type: 'post',
       url: '{{route('adopciones.solicitar.finalizar')}}',
@@ -465,6 +523,9 @@
       },
       success: function(data){
         if((data.errors)){
+          $('#efectuar_adopcion').html('Efectuar solicitud');
+          $('#efectuar_adopcion').removeClass('disabled');
+
           Toast.fire({
             type: 'warning',
             title: '¡Errores de validación!'
@@ -483,24 +544,29 @@
           });
 
         }else{
+          $('#efectuar_adopcion').html('Efectuar solicitud');
+          $('#efectuar_adopcion').removeClass('disabled');
+
           Swal.fire({
             position: 'top-end',
             type: 'success',
             title: '¡Has adoptado los animales correctamente! Se te enviaran al correo electronico todos los datos pertinentes.',
             showConfirmButton: false,
-            timer: 1500
-          })
+            timer: 2500
+          });
 
           setTimeout(function(){
             var url = "{{route('home')}}";
                 document.location.href=url;
-          }, 2000);
+          }, 3000);
       }
       },
     });
   });
 
   $('#limpiar_lista_detalles').click(function(){
+    $('#limpiar_lista_detalles').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('#limpiar_lista_detalles').addClass('disabled');
     $.ajax({
       type: 'post',
       url: '{{route('adopciones.solicitar.limpiar_todo')}}',
@@ -511,10 +577,13 @@
           if(data == true){
             $('#accordion').empty();
 
-            $('.alert').show();
+            $('.error_vacio_div').show();
 
             $('#limpiar_lista_detalles').addClass('disabled');
             $('#limpiar_lista_detalles').addClass('hidden');
+
+            $('#añadir_solicitud').removeClass('disabled');
+            // $('#añadir_solicitud').removeClass('hidden');
 
             $('#finalizar_adopcion').addClass('disabled');
             $('#finalizar_adopcion').addClass('hidden');
@@ -524,60 +593,13 @@
 
             $('#efectuar_adopcion').addClass('disabled');
             $('#efectuar_adopcion').addClass('hidden');
+
+            $('#limpiar_lista_detalles').html('&nbsp;<i class="fa fa-eraser"></i>&nbsp;');
+            $('#limpiar_lista_detalles').addClass('disabled');
           }
       },
     });
   });
-
-
-  // $('.btn-eliminar-detalle').click(function(e){
-  //   $.ajax({
-  //     type: 'post',
-  //     url: '{{route('adopciones.solicitar.limpiar_individual')}}',
-  //     data: {
-  //       '_token': $('input[name=_token]').val(),
-  //       'detalle_solicitud_id': $(this).data('id')
-  //     },
-  //     success: function(data){
-  //       if((data.errors)){
-  //         Toast.fire({
-  //           type: 'warning',
-  //           title: 'Errores de validación!'
-  //         });
-  //
-  //         $.each(data.errors, function( index, value ) {
-  //           var clase = ".error-" + index;
-  //           $(clase).removeClass('hidden');
-  //           $(clase).text(value);
-  //         });
-  //
-  //       }else{
-  //         e.preventDefault();
-  //         $('#accordion').empty();
-  //         $.each(data, function(index, value) {
-  //           $.each(value, function(index, value){
-  //
-  //             var nombre = (value.nombre)?value.nombre:"Sin nombre";
-  //             var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
-  //             imagen = imagen.replace(':ruta_imagen', value.imagen);
-  //             var id = (index == 1)?"id='a1'":"";
-  //             let lst = document.querySelector('#accordion');
-  //             lst.appendChild(document.createElement('li'));
-  //             let lstChild = lst.lastChild;
-  //             lstChild.innerHTML = "<a " + id + " class='hor_accordion' data-id='"+ index +"'><span id='info_animal_close_"+ index +"' data-id='"+index+"' class='close hidden'><i class='fa fa-close' style='color:white;'></i></span><img src='" + imagen + "' style='width:72px; height:72px;'/><p><strong>" + nombre + "</strong><br/>" + value.tipo_animal + " - " + value.raza + "<br/>" + value.observaciones + "</p></a>";
-  //             lstChild.className = 'info_animal_' + index;
-  //            });
-  //         });
-  //
-  //           Toast.fire({
-  //             type: 'success',
-  //             title: '¡Solicitud de adopción correctamente eliminada!'
-  //           });
-  //
-  //       }
-  //     },
-  //   });
-  // });
 
   $('#limpiar_formulario_dueño').click(function(){
     $('#form-dueño').trigger("reset");

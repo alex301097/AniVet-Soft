@@ -16,7 +16,7 @@
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
-      <li><a href="#">Animales en venta</a></li>
+      <li><a href="{{route('animales_venta')}}">Animales en venta</a></li>
       <li class="active">Detalle</li>
     </ol>
   </section>
@@ -89,7 +89,7 @@
           <div class="demo-gallery">
             <ul id="lightgallery">
               @foreach ($animal->imagenes as $imagen)
-                <li  data-src="{{ url('imgPerfiles/'.$imagen->imagen) }}"
+                <li style="width:150px;height:150px;" data-src="{{ url('imgPerfiles/'.$imagen->imagen) }}"
                 data-sub-html="<h4>Nombre: {{$animal->nombre}}</h4>
                 <p>
                   Especie: {{$animal->tipo_animal->descripcion}} - Raza: {{$animal->raza}} - Edad: {{$animal->edad}} años
@@ -99,7 +99,7 @@
                   Observaciones: {{$animal->observaciones}}
                 </p>">
                   <a href="">
-                    <img class="img-responsive" src="{{ url('imgPerfiles/'.$imagen->imagen) }}" alt="{{$animal->nombre}}">
+                    <img class="img-responsive" style="width:150px;height:150px;" src="{{ url('imgPerfiles/'.$imagen->imagen) }}" alt="{{$animal->nombre}}">
                     <div class="demo-gallery-poster">
                       <img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
                     </div>

@@ -447,7 +447,7 @@
                  </div>
                </div>
                <div class="row">
-                 <div class="col-md-12 text-center">
+                 <div class="col-md-6">
                    <h3>Permisos disponibles para la sección de reporte de pacientes.</h3>
                    <div class="row">
                      <div class="col-md-12 text-center">
@@ -462,19 +462,41 @@
                      </div>
                    </div>
                  </div>
+                 <div class="col-md-6">
+                   <h3>Permisos disponibles para la sección de reporte de expediente medico.</h3>
+                   <div class="row">
+                     <div class="col-md-12 text-center">
+                       <ul class="ks-cboxtags">
+                         @foreach ($permisos_reporte_expediente_medico as $permiso)
+                             <li>
+                               <input type="checkbox" id="permiso-{{$permiso->id}}" class="permiso-reporte_expediente_medico " name="permisos[]" {{($rol->permisos->contains($permiso))?"checked":""}} value="{{$permiso->id}}">
+                               <label for="permiso-{{$permiso->id}}">{{$permiso->nombre}}</label>
+                             </li>
+                         @endforeach
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
                </div>
               <ul class="list-unstyled list-inline pull-right">
                <li><button type="button" class="btn btn-default prev-step"><i class="fa fa-chevron-left"></i> Atras</button></li>
-               <li><a id="asignar" type="button" class="btn btn-success"><i class="fa fa-check"></i> ¡Hecho!</a></li>
+               <li>
+                 <input type="hidden" name="id_edicion" id="id_edicion" value="{{$rol->id}}">
+                 <a id="asignar" type="button" class="btn btn-success"><i class="fa fa-check"></i> ¡Hecho!</a>
+               </li>
               </ul>
              </div>
             </div>
           </div>
         </div>
         <p class="error-rol text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
-
       <!-- /.box-body -->
-
+      <div class="row">
+        <div class="col-md-12 pull-left">
+        <a class="btn bg-orange btn-sm pull-left" style="width:100px;" href="{{ URL::previous() }}">
+          <span><i class="fas fa-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;Regresar</a>
+        </div>
+      </div>
       <!-- /.box-footer-->
     </div>
     <!-- /.box -->

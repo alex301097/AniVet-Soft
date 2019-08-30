@@ -18,27 +18,41 @@
 
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
+        @if (auth()->user())
         <!-- Notifications: style can be found in dropdown.less -->
         <li class="dropdown notifications-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-bell-o"></i>
-            <span class="label label-warning">10</span>
+            <span class="label label-warning">{{count($citas_por_vencer)}}</span>
           </a>
           <ul class="dropdown-menu">
-            <li class="header">You have 10 notifications</li>
-            <li>
-              <!-- inner menu: contains the actual data -->
-              <ul class="menu">
-                <li>
-                  <a href="#">
-                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="footer"><a href="#">View all</a></li>
+
+              <li class="header">Tienes {{count($citas_por_vencer)}} notificaciones | Citas cercanas</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  @foreach ($citas_por_vencer as $key => $cita)
+                    <li>
+                      <a href="{{route('citas.get_detalle', $cita->id)}}">
+                        <i class="fa fa-calendar-o text-orange"></i> Aproximación: {{ \Carbon\Carbon::parse($cita->fecha." ".$cita->horaInicio)->diffForHumans(\Carbon\Carbon::now())}}.
+                        <br>
+                        {{-- Carbon::now()->diffInDays($now)->subDays(7) $date --}}
+                        @if ($cita->nombrePaciente)
+                          <b>Paciente:</b> {{$cita->nombrePaciente}}.<br>
+                        @endif
+                        <b>Encargado:</b> {{$cita->nombreDueño}}.<br>
+                        <b>Fecha:</b> {{ \Carbon\Carbon::parse($cita->fecha)->format('d/m/Y')}}.<br>
+                        <b>Hora:</b> {{$cita->horaInicio}}&nbsp;&nbsp;&nbsp;<i class="fa fa-arrows-h"></i>&nbsp;{{$cita->horaFinal}}.
+                      </a>
+                    </li>
+                  @endforeach
+                </ul>
+              </li>
+            {{-- <li class="footer"><a href="#">View all</a></li> --}}
           </ul>
         </li>
+      @endif
+
       <!-- User Account: style can be found in dropdown.less -->
       <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -81,14 +95,23 @@
           <!-- Menu Footer-->
           <li class="user-footer">
             <div class="pull-left">
-              <a href="{{route('usuarios.get_editar_perfil',auth()->user()->id)}}" class="btn btn-default btn-flat">Perfil</a>
+              @if (auth()->user())
+                <a href="{{route('usuarios.get_editar_perfil',auth()->user()->id)}}" class="btn btn-default btn-flat">Perfil</a>
+              @else
+                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+              @endif
             </div>
             <div class="pull-right">
-              <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-               class="btn btn-default btn-flat">Cerrar sesión</a>
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
-                @csrf
-              </form>
+              @if (auth()->user())
+                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                 class="btn btn-default btn-flat">Cerrar sesión</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+                  @csrf
+                </form>
+              @else
+                <a href="{{ route('login') }}"
+                 class="btn btn-default btn-flat">Iniciar sesion</a>
+              @endif
             </div>
           </li>
         </ul>

@@ -124,6 +124,11 @@
                     </div>
                   </div>
                   <div class="row">
+                    <div class="col-md-12">
+                      <p class="error-rango_invalido text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
+                    </div>
+                  </div>
+                  <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="motivo"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Motivo</h5></label>
@@ -362,7 +367,7 @@
       data: {
 
         '_token': $('input[name=_token]').val(),
-        'id_cita': $('#id_cita').val(),
+        'id_cita': $('#idCita').val(),
         'fecha': moment($('#fecha_formato').val()).format('YYYY-MM-DD'),
         'horaInicio': $('#horaInicio').val(),
         'horaFinal': $('#horaFinal').val(),
@@ -415,11 +420,15 @@
             $('.error-paciente').text(data.errors.paciente);
           }
 
+          if(data.errors.rango_invalido){
+            $('.error-rango_invalido').removeClass('hidden');
+            $('.error-rango_invalido').text(data.errors.rango_invalido);
+          }
         }else{
           Swal.fire({
             position: 'top-end',
             type: 'success',
-            title: '!La cita se ha registrado correctamente!',
+            title: '!La cita se ha registrado/actualizado correctamente!',
             showConfirmButton: false,
             timer: 1500
           })
@@ -435,20 +444,23 @@
   });
 
   function editarCita(event){
-    $('#title-cita').text('Detalle de la Cita');
-    $('#idCita').val(event.cita.id);
-    $('#paciente').val(event.cita.paciente.nombre + ' - ' + event.cita.paciente.tipo_animal.descripcion + ' ~ ' + event.cita.paciente.raza +' - ' + event.cita.paciente.sexo);
-    $('#idPaciente').val(event.cita.paciente.id);
-    $('#fecha').val(event.cita.fecha);
-    $('#horaInicio').val(event.cita.horaInicio);
-    $('#horaFinal').val(event.cita.horaFinal);
-    $('#motivo').val(event.cita.motivo);
-    $('#servicio').val(event.cita.servicio.id);
-    $('#observaciones').val(event.cita.observaciones);
-    $('#btnSubmit').text('Actualizar cita');
-    $('#btn-eliminar').removeClass('hidden');
-    $('#btnLimpiar').removeClass('hidden');
-    $('#deshablitarCitaId').val(event.cita.id);
+    if(!event.cita.deleted_at){
+      $('#title-cita').text('Detalle de la Cita');
+      $('#idCita').val(event.cita.id);
+      $('#paciente').val(event.cita.paciente.nombre + ' - ' + event.cita.paciente.tipo_animal.descripcion + ' ~ ' + event.cita.paciente.raza +' - ' + event.cita.paciente.sexo);
+      $('#idPaciente').val(event.cita.paciente.id);
+      $('#fecha').val(moment(event.cita.fecha).format('DD/MM/YYYY'));
+      $('#fecha_formato').val(event.cita.fecha);
+      $('#horaInicio').val(event.cita.horaInicio);
+      $('#horaFinal').val(event.cita.horaFinal);
+      $('#motivo').val(event.cita.motivo);
+      $('#servicio').val(event.cita.servicio.id);
+      $('#observaciones').val(event.cita.observaciones);
+      $('#btnSubmit').text('Actualizar cita');
+      $('#btn-eliminar').removeClass('hidden');
+      $('#btnLimpiar').removeClass('hidden');
+      $('#deshablitarCitaId').val(event.cita.id);
+    }
   }
 
 
@@ -456,6 +468,7 @@
     $('#btnSubmit').text('Registrar cita');
     $('#title-cita').text('Registrar cita');
     $('#form-cita').trigger("reset");
+    $('#idPaciente').val("");
     $('#btnSubmit').removeClass('hidden');
     $('#btn-eliminar').addClass('hidden');
     $('#btnLimpiar').addClass('hidden');

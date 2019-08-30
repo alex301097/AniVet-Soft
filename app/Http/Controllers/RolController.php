@@ -56,6 +56,7 @@ class RolController extends Controller
     $permisos_reporte_usuarios = Permiso::where('categoria','reporte de usuarios')->get();
     $permisos_reporte_pacientes = Permiso::where('categoria','reporte de pacientes')->get();
     $permisos_reporte_citas = Permiso::where('categoria','reporte de citas')->get();
+    $permisos_reporte_expediente_medico = Permiso::where('categoria','reporte de expediente medico')->get();
     $permisos_respaldos = Permiso::where('categoria','respaldos')->get();
 
     return view('mantenimientos.roles.asignar', ['rol'=>$rol, 'permisos_usuario'=>$permisos_usuario,'permisos_paciente'=>$permisos_paciente,
@@ -64,7 +65,7 @@ class RolController extends Controller
     'permisos_expediente'=>$permisos_expediente,'permisos_registro_adopcion_animales'=>$permisos_registro_adopcion_animales,
     'permisos_solicitud_adopcion_animales'=>$permisos_solicitud_adopcion_animales,'permisos_venta_animales'=>$permisos_venta_animales,
     'permisos_reporte_usuarios'=>$permisos_reporte_usuarios,'permisos_reporte_pacientes'=>$permisos_reporte_pacientes,
-    'permisos_reporte_citas'=>$permisos_reporte_citas,'permisos_respaldos'=>$permisos_respaldos]);
+    'permisos_reporte_citas'=>$permisos_reporte_citas,'permisos_reporte_expediente_medico'=>$permisos_reporte_expediente_medico,'permisos_respaldos'=>$permisos_respaldos]);
   }
 
   public function asignar_permisos(Request $request)

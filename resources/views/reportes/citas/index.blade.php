@@ -49,8 +49,8 @@
               <div class="form-group">
                 <h4>Filtro por estado</h4>
                 <select class="form-control form-control-sm" id="estado" name="estado" style="max-width:250px;">
-                  <option value="habilitados">Citas habilitadas</option>
-                  <option value="deshabilitados">Citas deshabilitadas</option>
+                  <option value="habilitados">Citas habilitados</option>
+                  <option value="deshabilitados">Citas deshabilitados</option>
                 </select>
               </div>
             </div>
@@ -119,6 +119,11 @@
         buttonsStyling: false,
       });
 
+      $(document).ready(function(){
+        $('#side_bar-reportes').addClass('active');
+        $('#side_bar_option-reportes-citas').addClass('active');
+      });
+
       $(document).ready(function() {
 
           var ruta = "{{ url('api/reporte_citas/0/0/:estado') }}";
@@ -130,11 +135,17 @@
           "columns":
           [
             {data: 'nombreDueño', orderable: false, searchable: false},
-            {data: 'nombrePaciente', orderable: false, searchable: false},
-            {data: 'fecha'},
+            {data: 'paciente.nombre', name:'paciente.nombre'},
+            {data: 'fecha',
+            render: function(data, type, row){
+                 if(type === "sort" || type === "type"){
+                     return data;
+                 }
+                 return moment(data).format("DD/MM/YYYY");
+             }},
             {data: 'horaInicio'},
             {data: 'horaFinal'},
-            {data: 'descripcionServicio', orderable: false, searchable: false},
+            {data: 'servicio.descripcion', name:'servicio.descripcion'},
             {data: 'motivo'},
           ],
           "language":{

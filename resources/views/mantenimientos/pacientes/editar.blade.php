@@ -16,7 +16,7 @@
     <ol class="breadcrumb">
       <li><a href="{{route('home')}}"><i class="fa fa-home"></i> Inicio</a></li>
       <li><a href="#">Mantenimientos</a></li>
-      <li><a href="#">Pacientes</a></li>
+      <li><a href="{{route('pacientes')}}">Pacientes</a></li>
       <li class="active">Edición</li>
     </ol>
   </section>
@@ -80,7 +80,7 @@
               <label for="fecha_nacimiento"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Fecha de nacimiento</h5></label>
                 <div class="input-group">
                     <input type="text" class="form-control form-control-sm" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento" value="{{date('d/m/Y', strtotime($paciente->fecha_nacimiento))}}">
-                    <input type="hidden" id="fecha_nacimiento_formato" value="">
+                    <input type="hidden" id="fecha_nacimiento_formato" value="{{$paciente->fecha_nacimiento}}">
                 </div>
                 <p class="error-fecha_nacimiento text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
             </div>

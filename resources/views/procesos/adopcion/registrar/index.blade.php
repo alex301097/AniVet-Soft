@@ -38,7 +38,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="alert alert-info alert-dismissible error_vacio_div hidden">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <a type="button" class="close" onclick="$('.error_vacio_div').hide()">&times;</a>
                 <h4><i class="icon fa fa-info"></i> Información!</h4>
                 <span class="error_vacio hidden"></span>
               </div>
@@ -141,19 +141,20 @@
                               </div>
                           </span>
                       </div><!-- /input-group image-preview [TO HERE]-->
+                      <p class="error-imagen text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label for="condiciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Condiciones</h5></label>
+                        <label for="condiciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Condiciones (Salud, estado fisico, etc.)</h5></label>
                         <textarea class="form-control form-control-sm" id="condiciones" name="condiciones" rows="3" placeholder="Condiciones"></textarea>
                         <p class="error-condiciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones</h5></label>
+                        <label for="observaciones"><h5><i style="color:red;" class="fas fa-asterisk"></i>&nbsp;Observaciones (Personalidad, comportamiento, etc.)</h5></label>
                         <textarea class="form-control form-control-sm" id="observaciones" name="observaciones" rows="3" placeholder="Observaciones"></textarea>
                         <p class="error-observaciones text-center alert alert-danger hidden" style="padding-top:4px; padding-bottom:4px; font-size:14px;"></p>
                       </div>
@@ -190,51 +191,57 @@
                           @if (empty($detalles))
                             <h3>No hay animales en adopción agregados</h3>
                           @else
-                            @foreach ($detalles as $arreglo_detalles)
-                              @foreach ($arreglo_detalles as $index => $detalle)
-                                <div class="panel panel-default" id="adopcion_{{$index}}" name="adopcion_{{$index}}">
-                                  <div class="panel-heading" role="tab" id="heading_{{$index}}">
-                                      <h4 class="panel-title">
-                                          <a class="{{($index == 1)?"":"collapsed"}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$index}}" aria-expanded="{{($index == 1)?"true":"false"}}" aria-controls="collapse_{{$index}}">
-                                              <span>{{$index}}</span>
-                                              {{(!empty($detalle->nombre))?$detalle->nombre." - ".$detalle->tipo_animal." - ".$detalle->raza." - ".$detalle->sexo:$detalle->tipo_animal." - ".$detalle->raza." - ".$detalle->sexo}}
-                                          </a>
-                                      </h4>
-                                  </div>
-                                  <div id="collapse_{{$index}}" class="panel-collapse collapse {{($index == 1)?"in":""}}" role="tabpanel" aria-labelledby="heading_{{$index}}">
-                                      <div class="panel-body">
-                                          <p>
-                                            <div class="row">
-                                              <div class="col-md-4 text-center" id="avatar_animal_{{$index}}">
-                                                <img src="{{ url('imgPerfiles/'.$detalle->imagen) }}" class="img-circle" alt="Animal Image" style="width:100px; height:100px; top:100px; left:100px;">
-                                              </div>
-                                              <div class="col-md-8">
-                                                <div class="row">
-                                                  <div class="col-md-4">
-                                                    <b>Edad: </b> {{$detalle->edad}} <br>
-                                                  </div>
-                                                  <div class="col-md-4">
-                                                    <b>Peso: </b> {{$detalle->peso}} <br>
-                                                  </div>
-                                                  <div class="col-md-4">
-                                                    <b>Color: </b> {{$detalle->color}} <br>
-                                                  </div>
-                                                </div>
-                                                <div class="row">
-                                                  <div class="col-md-6">
-                                                    <b>Condiciones: </b> {{$detalle->condiciones}} <br>
-                                                  </div>
-                                                  <div class="col-md-6">
-                                                    <b>Observaciones: </b> {{$detalle->observaciones}} <br>
-                                                  </div>
+                            @foreach ($detalles as $index => $detalle)
+                              <div class="panel panel-default" id="adopcion_{{$index + 1}}" name="adopcion_{{$index + 1}}">
+                                <div class="panel-heading" role="tab" id="heading_{{$index + 1}}">
+                                    <h4 class="panel-title">
+                                        <a class="{{($index + 1 == 1)?"":"collapsed"}}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$index + 1}}" aria-expanded="{{($index + 1 == 1)?"true":"false"}}" aria-controls="collapse_{{$index + 1}}">
+                                            <span>{{$index + 1}}</span>
+                                            {{(!empty($detalle->nombre))?$detalle->nombre." - ".$detalle->tipo_animal." - ".$detalle->raza." - ".$detalle->sexo:$detalle->tipo_animal." - ".$detalle->raza." - ".$detalle->sexo}}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_{{$index + 1}}" class="panel-collapse collapse {{($index + 1 == 1)?"in":""}}" role="tabpanel" aria-labelledby="heading_{{$index}}">
+                                    <div class="panel-body">
+                                        <p>
+                                          <div class="row">
+                                            <div class="col-md-4 text-center" id="avatar_animal_{{$index + 1}}">
+                                              <img src="{{ url('imgPerfiles/'.$detalle->imagen) }}" class="img-circle" alt="Animal Image" style="width:100px; height:100px; top:100px; left:100px;">
+                                              <div class="row">
+                                                <div class="col-md-12">
+                                                    <a type="button" class="btn btn-sm btn-danger text-center btn-eliminar-registro" data-toggle="tooltip"
+                                                      title="Click para eliminar la registro de adopción" id="btn-eliminar-registro_{{$index}}" data-id="{{$index}}">
+                                                      Eliminar
+                                                    </a>
                                                 </div>
                                               </div>
                                             </div>
-                                          </p>
-                                      </div>
-                                  </div>
+                                            <div class="col-md-8">
+                                              <div class="row">
+                                                <div class="col-md-4">
+                                                  <b>Edad: </b> {{$detalle->edad}} <br>
+                                                </div>
+                                                <div class="col-md-4">
+                                                  <b>Peso: </b> {{$detalle->peso}} <br>
+                                                </div>
+                                                <div class="col-md-4">
+                                                  <b>Color: </b> {{$detalle->color}} <br>
+                                                </div>
+                                              </div>
+                                              <div class="row">
+                                                <div class="col-md-6">
+                                                  <b>Condiciones: </b> {{$detalle->condiciones}} <br>
+                                                </div>
+                                                <div class="col-md-6">
+                                                  <b>Observaciones: </b> {{$detalle->observaciones}} <br>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </p>
+                                    </div>
+                                </div>
                               </div>
-                              @endforeach
                             @endforeach
                           @endif
                         </div>
@@ -362,10 +369,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-          <button type="button" id="limpiar_formulario_dueño" class="btn bg-navy btn-sm pull-left" data-toggle="tooltip" title="Limpiar formulario de datos del dueño del animal">
+          <a type="button" id="limpiar_formulario_dueño" class="btn bg-navy btn-sm pull-left {{(empty($detalles)?"disabled":"")}}" data-toggle="tooltip" title="Limpiar formulario de datos del dueño del animal">
            &nbsp;<i class="fa fa-eraser"></i>&nbsp;
-          </button>
-          <button type="button" class="btn btn-sm btn-primary disabled" id="efectuar_adopcion" name="efectuar_adopcion">Efectuar registro</button>
+         </a>
+          <a type="button" class="btn btn-sm btn-primary {{(empty($detalles)?"disabled":"")}}" id="efectuar_adopcion" name="efectuar_adopcion">Efectuar registro</a>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -414,9 +421,12 @@
   $('#limpiar_formulario_cita').click(function(){
     $('#form-cita').trigger("reset");
     $('.image-preview-clear').trigger('click');
+    $('.alert').addClass('hidden');
   });
 
   $('#limpiar_lista_detalles').click(function(){
+    $('#limpiar_lista_detalles').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('#limpiar_lista_detalles').addClass('disabled');
     $.ajax({
       type: 'post',
       url: '{{route('adopciones.registrar.limpiar_todo')}}',
@@ -428,11 +438,113 @@
             $('#accordion').empty();
             $('#finalizar_adopcion').addClass('disabled');
             $('#efectuar_adopcion').addClass('disabled');
+            $('#limpiar_lista_detalles').addClass('disabled');
+
+            $('#limpiar_lista_detalles').html('&nbsp;<i class="fa fa-eraser"></i>&nbsp;');
 
             $('#accordion').append("<h3>No hay animales en adopción agregados</h3>");
           }
       },
     });
+  });
+
+  $(document).on("click", ".btn-eliminar-registro", function(e) {
+    $('.btn-eliminar-registro').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('.btn-eliminar-registro').addClass('disabled');
+    $.ajax({
+        type: 'post',
+        url: '{{route('adopciones.registrar.limpiar_individual')}}',
+        data: {
+          '_token': $('input[name=_token]').val(),
+          'posicion': $(this).data('id')
+        },
+        success: function(data){
+          if((data.length == 0)){
+            $('.btn-eliminar-registro').html('Eliminar');
+            $('.btn-eliminar-registro').removeClass('disabled');
+            Toast.fire({
+              type: 'success',
+              title: 'Registro de adopción correctamente eliminado!'
+            });
+
+            $('#accordion').empty();
+            $('#finalizar_adopcion').addClass('disabled');
+            $('#efectuar_adopcion').addClass('disabled');
+            $('#limpiar_lista_detalles').addClass('disabled');
+            $('#accordion').append("<h3>No hay animales en adopción agregados</h3>");
+
+          }else{
+            e.preventDefault()
+            $('.btn-eliminar-registro').html('Eliminar');
+            $('.btn-eliminar-registro').removeClass('disabled');
+            $('#accordion').empty();
+
+            $.each(data, function(index, value) {
+              var index1 = index + 1;
+                if(value.nombre){
+                  var titulo = value.nombre + " - " + value.tipo_animal + " - " + value.raza  + " - " + value.sexo;
+                }else{
+                  var titulo = value.tipo_animal + " - " + value.raza + " - " + value.sexo;
+                }
+                var collapsed = (index == 1)?"":"collapsed";
+                var collapse_in = (index == 1)?"in":"";
+                var aria_expanded = (index == 1)?"true":"false";
+                var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
+                imagen = imagen.replace(':ruta_imagen', value.imagen);
+
+
+                $('#accordion').append("<div class='panel panel-default' id='adopcion_" + index1 + "' name='adopcion_" + index1 + "'>" +
+                    "<div class='panel-heading' role='tab' id='heading_" + index1 + "'>" +
+                        "<h4 class='panel-title'>" +
+                            "<a class='"+ collapsed +"' role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse_" + index1 + "' aria-expanded='" + aria_expanded + "' aria-controls='collapse_" + index1 + "'>" +
+                                "<span>" + index1 + "</span>" +
+                                  titulo +
+                            "</a>" +
+                        "</h4>" +
+                    "</div>" +
+                    "<div id='collapse_" + index1 + "' class='panel-collapse collapse " + collapse_in + "' role='tabpanel' aria-labelledby='heading_" + index1 + "'>" +
+                        "<div class='panel-body'>" +
+                            "<div class='row'>" +
+                              "<div class='col-md-4 text-center'>" +
+                              "<img src='" + imagen + "' class='img-circle' alt='Animal Image' style='width:100px; height:100px; top:100px; left:100px;'>" +
+                              "<div class='row'>" +
+                                "<div class='col-md-12'>" +
+                                    "<a type='button' class='btn btn-sm btn-danger text-center btn-eliminar-registro' data-toggle='tooltip'" +
+                                      "title='Click para eliminar el registro de adopción' id='btn-eliminar-registro_" + index1 + "' data-id='" + index1 + "'>" +
+                                      "Eliminar" +
+                                    "</a>" +
+                                "</div>" +
+                              "</div>" +
+                              "</div>" +
+                              "<div class='col-md-8'>" +
+                                "<div class='row'>" +
+                                  "<div class='col-md-4'>" +
+                                    "<b>Edad: </b>"+ value.edad+ "<br>" +
+                                  "</div>" +
+                                  "<div class='col-md-4'>" +
+                                    "<b>Peso: </b>" +value.peso +"<br>" +
+                                  "</div>" +
+                                  "<div class='col-md-4'>" +
+                                    "<b>Color: </b>"+value.color +"<br>" +
+                                  "</div>" +
+                                "</div>" +
+                                "<div class='row'>" +
+                                  "<div class='col-md-6'>" +
+                                    "<b>Condiciones: </b>" +value.condiciones +"<br>" +
+                                  "</div>" +
+                                  "<div class='col-md-6'>" +
+                                    "<b>Observaciones: </b>" +value.observaciones +"<br>" +
+                                  "</div>"+
+                                "</div>"+
+                              "</div>"+
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>");
+            });
+          }
+        },
+      });
   });
 
   $('#limpiar_formulario_dueño').click(function(){
@@ -444,7 +556,9 @@
   });
 
   //Añadir
-  $('#añadir_adopcion').click(function(e){
+  $(document).on("click", "#añadir_adopcion", function(e) {
+    $('#añadir_adopcion').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('#añadir_adopcion').addClass('disabled');
     var form_data = new FormData();
     form_data.append('_token', $('input[name=_token]').val());
     if($('#imagen')[0].files[0]){
@@ -469,6 +583,9 @@
       contentType: false,
       success: function(data){
         if((data.errors)){
+          $('#añadir_adopcion').html('&nbsp;<i class="fa fa-plus-square"></i>&nbsp;&nbsp;Añadir animal');
+          $('#añadir_adopcion').removeClass('disabled');
+
           Toast.fire({
             type: 'warning',
             title: '!Errores de validación!'
@@ -484,7 +601,7 @@
           e.preventDefault()
           $('#accordion').empty();
           $.each(data, function(index, value) {
-            $.each(value, function(index, value){
+            var index1 = index + 1;
               if(value.nombre){
                 var titulo = value.nombre + " - " + value.tipo_animal + " - " + value.raza  + " - " + value.sexo;
               }else{
@@ -496,51 +613,59 @@
               var imagen = "{{ url('imgPerfiles/:ruta_imagen') }}";
               imagen = imagen.replace(':ruta_imagen', value.imagen);
 
-      				$('#accordion').append("<div class='panel panel-default' id='adopcion_" + index + "' name='adopcion_" + index + "'>" +
-                  "<div class='panel-heading' role='tab' id='heading_" + index + "'>" +
+
+              $('#accordion').append("<div class='panel panel-default' id='adopcion_" + index1 + "' name='adopcion_" + index1 + "'>" +
+                  "<div class='panel-heading' role='tab' id='heading_" + index1 + "'>" +
                       "<h4 class='panel-title'>" +
-                          "<a class='"+ collapsed +"' role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse_" + index + "' aria-expanded='" + aria_expanded + "' aria-controls='collapse_" + index + "'>" +
-                              "<span>" + index + "</span>" +
+                          "<a class='"+ collapsed +"' role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse_" + index1 + "' aria-expanded='" + aria_expanded + "' aria-controls='collapse_" + index1 + "'>" +
+                              "<span>" + index1 + "</span>" +
                                 titulo +
                           "</a>" +
                       "</h4>" +
                   "</div>" +
-                  "<div id='collapse_" + index + "' class='panel-collapse collapse " + collapse_in + "' role='tabpanel' aria-labelledby='heading_" + index + "'>" +
+                  "<div id='collapse_" + index1 + "' class='panel-collapse collapse " + collapse_in + "' role='tabpanel' aria-labelledby='heading_" + index1 + "'>" +
                       "<div class='panel-body'>" +
                           "<div class='row'>" +
-                            "<div class='col-md-4 text-center' id='avatar_animal_" + index + "'>" +
+                            "<div class='col-md-4 text-center'>" +
+                            "<img src='" + imagen + "' class='img-circle' alt='Animal Image' style='width:100px; height:100px; top:100px; left:100px;'>" +
+                            "<div class='row'>" +
+                              "<div class='col-md-12'>" +
+                                  "<a type='button' class='btn btn-sm btn-danger text-center btn-eliminar-registro' data-toggle='tooltip'" +
+                                    "title='Click para eliminar el registro de adopción' id='btn-eliminar-registro_" + index1 + "' data-id='" + index1 + "'>" +
+                                    "Eliminar" +
+                                  "</a>" +
+                              "</div>" +
+                            "</div>" +
                             "</div>" +
                             "<div class='col-md-8'>" +
-                              "<p>" +
                               "<div class='row'>" +
                                 "<div class='col-md-4'>" +
-                                  "<b>Edad: </b>" + value.edad + "<br>" +
+                                  "<b>Edad: </b>"+ value.edad+ "<br>" +
                                 "</div>" +
                                 "<div class='col-md-4'>" +
-                                    "<b>Peso: </b>" + value.peso + "<br>" +
+                                  "<b>Peso: </b>" +value.peso +"<br>" +
                                 "</div>" +
                                 "<div class='col-md-4'>" +
-                                  "<b>Color: </b>" + value.color + "<br>" +
+                                  "<b>Color: </b>"+value.color +"<br>" +
                                 "</div>" +
                               "</div>" +
                               "<div class='row'>" +
                                 "<div class='col-md-6'>" +
-                                  "<b>Condiciones: </b>" + value.condiciones + "<br>" +
+                                  "<b>Condiciones: </b>" +value.condiciones +"<br>" +
                                 "</div>" +
                                 "<div class='col-md-6'>" +
-                                  "<b>Observaciones: </b>" + value.observaciones + "<br>" +
-                                "</div>" +
-                              "</div>" +
-                              "</p>" +
-                            "</div>" +
+                                  "<b>Observaciones: </b>" +value.observaciones +"<br>" +
+                                "</div>"+
+                              "</div>"+
+                            "</div>"+
                           "</div>" +
                       "</div>" +
                   "</div>" +
               "</div>");
+          });
 
-              $('#avatar_animal_' + index).html("<img src='" + imagen + "' class='img-circle' alt='Animal Image' style='width:100px; height:100px; top:100px; left:100px;'>");
-      			 });
-					});
+          $('#añadir_adopcion').html('&nbsp;<i class="fa fa-plus-square"></i>&nbsp;&nbsp;Añadir animal');
+          $('#añadir_adopcion').removeClass('disabled');
 
             Toast.fire({
               type: 'success',
@@ -549,8 +674,14 @@
 
             $('#form-cita').trigger("reset");
             $('.image-preview-clear').trigger('click');
+
             $('#finalizar_adopcion').removeClass('disabled');
+            $('#limpiar_lista_detalles').removeClass('disabled');
+            $('#limpiar_formulario_dueño').removeClass('disabled');
             $('#efectuar_adopcion').removeClass('disabled');
+
+            $('.alert').addClass('hidden');
+
         }
       },
     });
@@ -558,6 +689,8 @@
 
   //Finalizar
   $('#efectuar_adopcion').click(function(){
+    $('#efectuar_adopcion').html('<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;Procesando');
+    $('#efectuar_adopcion').addClass('disabled');
     $.ajax({
       type: 'post',
       url: '{{route('adopciones.registrar.finalizar')}}',
@@ -574,6 +707,9 @@
       },
       success: function(data){
         if((data.errors)){
+          $('#efectuar_adopcion').html('Finalizar adopción ✔');
+          $('#efectuar_adopcion').removeClass('disabled');
+
           Toast.fire({
             type: 'warning',
             title: '¡Errores de validación!'
@@ -592,6 +728,9 @@
           });
 
         }else{
+          $('#efectuar_adopcion').html('Finalizar adopción ✔');
+          $('#efectuar_adopcion').removeClass('disabled');
+
           Swal.fire({
             position: 'top-end',
             type: 'success',

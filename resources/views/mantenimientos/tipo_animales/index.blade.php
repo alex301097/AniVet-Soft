@@ -295,11 +295,11 @@
       var id = $(this).data('id');
 
       swal_confirm.fire({
-        title: '¿Estas seguro de habilitar esto?',
-        text: "!Podras deshabilitar esto después!",
+        title: '¿Estás seguro de habilitar esto?',
+        text: "!Podrás deshabilitar esto después!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: '!Si, habilitalo!',
+        confirmButtonText: '!Si, habilítalo!',
         cancelButtonText: '!No, cancelar!',
         reverseButtons: true
       }).then((result) => {
@@ -327,7 +327,7 @@
         ) {
           swal_confirm.fire(
             'Cancelado',
-            'El dato esta seguro.',
+            'El dato está seguro.',
             'error'
           )
         }
@@ -339,11 +339,11 @@
       var id = $(this).data('id');
 
       swal_confirm.fire({
-        title: '¿Estas seguro de deshabilitar esto?',
-        text: "!Podras habilitar esto después!",
+        title: '¿Estás seguro de deshabilitar esto?',
+        text: "!Podrás habilitar esto después!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: '!Si, deshabilitalo!',
+        confirmButtonText: '!Si, deshabilítalo!',
         cancelButtonText: '!No, cancelar!',
         reverseButtons: true
       }).then((result) => {
@@ -371,7 +371,7 @@
         ) {
           swal_confirm.fire(
             'Cancelado',
-            'El dato esta seguro.',
+            'El dato está seguro.',
             'error'
           )
         }

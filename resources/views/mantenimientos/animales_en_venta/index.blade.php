@@ -87,7 +87,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Añadir imagenes al animal en venta</h4>
+          <h4 class="modal-title">Añadir imágenes al animal en venta</h4>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -247,11 +247,11 @@
         var id = $(this).data('id');
 
         swal_confirm.fire({
-          title: '¿Estas seguro de habilitar esto?',
-          text: "¡Podras deshabilitar esto después!",
+          title: '¿Estás seguro de habilitar esto?',
+          text: "¡Podrás deshabilitar esto después!",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonText: '¡Si, habilitalo!',
+          confirmButtonText: '¡Si, habilítalo!',
           cancelButtonText: '¡No, cancelar!',
           reverseButtons: true
         }).then((result) => {
@@ -279,7 +279,7 @@
           ) {
             swal_confirm.fire(
               'Cancelado',
-              'El dato esta seguro.',
+              'El dato está seguro.',
               'error'
             )
           }
@@ -291,11 +291,11 @@
         var id = $(this).data('id');
 
         swal_confirm.fire({
-          title: '¿Estas seguro de deshabilitar esto?',
-          text: "¡Podras habilitar esto después!",
+          title: '¿Estás seguro de deshabilitar esto?',
+          text: "¡Podrás habilitar esto después!",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonText: '¡Si, deshabilitalo!',
+          confirmButtonText: '¡Si, deshabilítalo!',
           cancelButtonText: '¡No, cancelar!',
           reverseButtons: true
         }).then((result) => {
@@ -323,7 +323,7 @@
           ) {
             swal_confirm.fire(
               'Cancelado',
-              'El dato esta seguro.',
+              'El dato está seguro.',
               'error'
             )
           }

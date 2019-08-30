@@ -208,7 +208,7 @@
   $(document).on('click', '#eliminar_respaldo', function(e) {
     e.preventDefault();
     swal_confirm.fire({
-      title: '¿Estas seguro de eliminar esto?',
+      title: '¿Estás seguro de eliminar esto?',
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si, eliminalo.',
@@ -239,7 +239,7 @@
       ) {
         swal_confirm.fire(
           'Cancelado',
-          'Los respaldo esta seguro.',
+          'Los respaldo está seguro.',
           'error'
         )
       }

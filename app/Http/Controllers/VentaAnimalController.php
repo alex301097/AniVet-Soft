@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SolicitudVentaCliente;
+use App\Mail\SolicitudVentaGerente;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Auth;
@@ -49,7 +52,7 @@ class VentaAnimalController extends Controller
       'precio' => 'required|numeric',
       'observaciones' => 'required|string|min:3|max:255',
       'condiciones' => 'required|string|min:3|max:255',
-      'cantidad' => 'required|numeric',
+      'cantidad' => 'required|numeric|min:1',
     ];
 
     $inputs = [
@@ -109,7 +112,7 @@ class VentaAnimalController extends Controller
       'precio' => 'required|numeric',
       'observaciones' => 'required|string|min:3|max:255',
       'condiciones' => 'required|string|min:3|max:255',
-      'cantidad' => 'required|numeric',
+      'cantidad' => 'required|numeric|min:1',
     ];
 
     $inputs = [
@@ -192,6 +195,7 @@ class VentaAnimalController extends Controller
   public function get_solicitar_ventas()
   {
     $animales = AnimalVenta::all();
+
     if (!Session::has('detalles_solicitud')) {
       Session::forget("detalles_solicitud");
       Session::put("detalles_solicitud",[]);
@@ -203,6 +207,7 @@ class VentaAnimalController extends Controller
 
   public function solicitar_ventas(Request $request)
   {
+
       if (!Session::has('detalles_solicitud')) {
         Session::forget("detalles_solicitud");
         Session::put("detalles_solicitud",[]);
@@ -218,11 +223,9 @@ class VentaAnimalController extends Controller
 
       $detalle = Session::get("detalles_solicitud");
 
-      $conteo = count($detalle) + 1;
-
-      Session::push("detalles_solicitud",[$conteo=>$det_solicitud]);
+      Session::push("detalles_solicitud",$det_solicitud);
       // Session::push("detalles_solicitud_descripcion",[$conteo2=>$det_solicitud->animal_venta->load(['imagenes'])]);
-
+      // dd(Session::get("detalles_solicitud"));
       return response()->json(Session::get("detalles_solicitud"));
   }
 
@@ -247,11 +250,9 @@ class VentaAnimalController extends Controller
     Session::forget("detalles_solicitud");
     Session::put("detalles_solicitud",[]);
 
-    foreach ($detalle as $id => $arreglo_detalles) {
-      foreach ($arreglo_detalles as $key => $detalle) {
-        if($detalle->animal_venta->id != $id_animal) {
-          Session::push("detalles_solicitud",[$key=>$detalle]);
-        }
+    foreach ($detalle as $id => $detalle) {
+      if($detalle->animal_venta->id != $id_animal) {
+        Session::push("detalles_solicitud",$detalle);
       }
     }
       return response()->json(Session::get('detalles_solicitud'));
@@ -287,11 +288,15 @@ class VentaAnimalController extends Controller
 
         if (Session::has('detalles_solicitud')) {
           $detalles = Session::get('detalles_solicitud');
-          dd($detalles);
-          foreach ($detalles as $arreglo_detalles) {
-            foreach ($arreglo_detalles as $detalle) {
-              $detalle->enc_venta_id = $enc_solicitud->id;
-              $detalle->save();
+          // dd($detalles);
+          foreach ($detalles as $detalle) {
+            $detalle->enc_venta_id = $enc_solicitud->id;
+            $detalle->save();
+            if((int)$detalle->animal_venta->cantidad > 1){
+              $detalle->animal_venta->cantidad = $detalle->animal_venta->cantidad - 1;
+              $detalle->animal_venta->save();
+            }else{
+              $detalle->animal_venta()->delete();
             }
           }
           $request->session()->forget('detalles_solicitud');
@@ -299,6 +304,8 @@ class VentaAnimalController extends Controller
 
         Mail::to($enc_solicitud->correo)->send(new SolicitudVentaCliente($enc_solicitud));
         Mail::to("alexandervillalobos50@gmail.com")->send(new SolicitudVentaGerente($enc_solicitud));
+
+        Session::forget("detalles_solicitud");
 
         return response()->json($enc_solicitud);
       }
